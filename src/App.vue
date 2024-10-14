@@ -12,13 +12,18 @@ import FooterBar from './components/FooterBar.vue';
     <RouterView />
   </div>
   <div id="layout">
-    
+
     <FooterBar></FooterBar>
   </div>
 </template>
 
 <style scoped>
-  #layout {
+#layout {
   width: 100%;
-  }
+  
+}
+#app{
+  grid-template-columns: 1fr;
+
+}
 </style>
