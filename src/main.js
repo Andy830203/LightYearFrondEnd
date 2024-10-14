@@ -1,4 +1,4 @@
-import './assets/main.css'
+// import './assets/main.css'
 import './assets/style.css'
 
 // 引入 Bootstrap CSS
@@ -12,8 +12,13 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 import 'jquery/dist/jquery.min.js';
 
-import WOW from 'wowjs';
-new WOW.WOW().init();
+import 'animate.css/animate.min.css';
+import 'lightbox2/dist/css/lightbox.min.css';
+import 'lightbox2/dist/js/lightbox.min.js';
+// import 'owl.carousel/dist/assets/owl.carousel.min.css';
+// import 'owl.carousel';
+// import WOW from 'wowjs';
+// new WOW.WOW().init();
 
 
 import { createApp } from 'vue'

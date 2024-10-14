@@ -4,7 +4,7 @@
 
 <template>
     <!-- Navbar start -->
-    <div class="container-fluid border-bottom bg-light wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid border-bottom bg-light wow fadeIn" data-wow-delay="0.1s" >
             <div class="container topbar bg-primary d-none d-lg-block py-2" style="border-radius: 0 40px">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
