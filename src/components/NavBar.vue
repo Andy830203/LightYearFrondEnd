@@ -38,25 +38,30 @@
                     <div class="navbar-nav mx-auto">
                         <router-link to="/" class="nav-link" style="color: black;">首頁</router-link>
                         <div class="nav-item dropdown">
-                            <router-link to="/shopping" class="nav-link dropdown-toggle" style="color: black;" data-bs-toggle="dropdown">購物車</router-link>
+                            <router-link to="/shopping" class="nav-link dropdown-toggle" style="color: black;"
+                                data-bs-toggle="dropdown">購物車</router-link>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <router-link to="/shopping" class="dropdown-item" style="color: black;">購物車</router-link>
+                                <router-link to="/shopping" class="dropdown-item"
+                                    style="color: black;">購物車</router-link>
                             </div>
                         </div>
                         <div class="nav-item dropdown">
-                            <router-link to="/login" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: black;">會員</router-link>
+                            <router-link to="/login" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                                style="color: black;">會員</router-link>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <router-link to="/login" class="dropdown-item" style="color: black;">會員</router-link>
                             </div>
                         </div>
                         <div class="nav-item dropdown">
-                            <router-link to="/event" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: black;">活動</router-link>
+                            <router-link to="/event" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                                style="color: black;">活動</router-link>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <router-link to="/event" class="dropdown-item" style="color: black;">活動</router-link>
                             </div>
                         </div>
                         <div class="nav-item dropdown">
-                            <router-link to="/location" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: black;">地圖</router-link>
+                            <router-link to="/location" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                                style="color: black;">地圖</router-link>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <router-link to="/location" class="dropdown-item" style="color: black;">地圖</router-link>
                             </div>
@@ -78,9 +83,9 @@
                             </div>
                         </div> -->
                     <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn-search btn btn-primary btn-md-square rounded-circle" data-bs-toggle="modal"
-                        data-bs-target="#searchModal"><i class="fas fa-search text-white"></i></button>
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn-search btn btn-primary btn-md-square rounded-circle" data-bs-toggle="modal"
+                            data-bs-target="#searchModal"><i class="fas fa-search text-white"></i></button>
                     </form>
                 </div>
             </nav>
@@ -89,4 +94,8 @@
     <!-- Navbar End -->
 </template>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+.btn{
+    display: flex;
+}
+</style>
