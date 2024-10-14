@@ -10,7 +10,23 @@ const router = createRouter({
       component: HomeView,
       name: 'home',
       alias: '/index'    //http://localhost:5173/index
-    }
+    },
+    {
+      path: '/shopping',
+      component: Wj1
+    },
+    {
+      path: '/login',
+      component: Xp1
+    },
+    {
+      path: '/event',
+      component: Yt1
+    },
+    {
+      path: '/location',
+      component: Hb1
+    },
   ]
 })
 
