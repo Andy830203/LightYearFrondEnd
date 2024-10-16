@@ -1,0 +1,20 @@
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 撐滿整個視窗的高度 */
+  }
+  
+  .content {
+    flex: 1; /* 讓內容區域撐開頁面 */
+  }
+  
+  footer {
+    background-color: #f8f9fa; /* 這裡可以根據需要自定義背景色 */
+    text-align: center;
+    padding: 1rem 0;
+  }

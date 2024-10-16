@@ -5,20 +5,18 @@ import FooterBar from './components/FooterBar.vue';
 </script>
 
 <template>
-  <div id="layout">
+  <div class="wrapper">
     <NavBar></NavBar>
-  </div>
-  <div>
-    <RouterView />
-  </div>
-  <div id="layout">
-    
+    <main class="content">
+      <!-- 主要內容 -->
+      <RouterView />
+    </main>
     <FooterBar></FooterBar>
+  </div>
+  <div >
+    
   </div>
 </template>
 
 <style scoped>
-  #layout {
-  width: 100%;
-}
 </style>

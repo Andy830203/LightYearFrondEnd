@@ -1,8 +1,9 @@
 // import './assets/main.css'
-import './assets/style.css'
+// import './assets/style.css'
 
+import './assets/IndexStyle.css';
 // 引入 Bootstrap CSS
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 // 引入 Bootstrap JavaScript
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
