@@ -5,9 +5,9 @@
 <template>
     
     <!-- header start-->
-    <header>
-        <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow">
-            <div class="container-fluid">
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow">
+        <div class="container-fluid">
                 <a class="navbar-brand" href="./index.html">食益光年</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -82,9 +82,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+
     <!-- header end -->
 </template>
 

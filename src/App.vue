@@ -6,7 +6,9 @@ import FooterBar from './components/FooterBar.vue';
 
 <template>
   <div class="wrapper">
-    <NavBar></NavBar>
+    <header>
+      <NavBar></NavBar>
+    </header>
     <main class="content">
       <!-- 主要內容 -->
       <RouterView />
