@@ -74,8 +74,12 @@
 
                         </ul>
                         <div class="d-flex">
-                            <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                class="me-1 text-black"><i class="bi bi-person-fill fs-3 text-primary"></i></a>
+                            <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"                               
+                            class="me-1 text-black">
+                            <router-link to="/login" class="me-1 text-black">
+                            <i class="bi bi-person-fill fs-3 text-primary"></i>
+                            </router-link>
+                        </a> <!--會員-->
                             <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
                                 aria-controls="offcanvasExample" class="me-1 text-black"><i
                                     class="bi bi-cart-fill fs-3 text-primary"></i></a>
@@ -87,6 +91,8 @@
     </header>
     <!-- header end -->
 </template>
+
+
 
 <style lang="css" scoped>
 
