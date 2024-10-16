@@ -8,10 +8,10 @@
         <div class="container topbar bg-primary d-none d-lg-block py-2" style="border-radius: 0 40px">
             <div class="d-flex justify-content-between">
                 <div class="top-info ps-2">
-                    <!-- <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
+                    <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
                             class="text-white">123 Street, New York</a></small>
                     <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#"
-                            class="text-white">Email@Example.com</a></small> -->
+                            class="text-white">Email@Example.com</a></small>
                 </div>
                 <div class="top-link pe-2">
                     <a href="" class="btn btn-light btn-sm-square rounded-circle"><i
@@ -28,7 +28,7 @@
         <div class="container px-0">
             <nav class="navbar navbar-light navbar-expand-xl py-3">
                 <a href="index.html" class="navbar-brand">
-                    <h1 class="text-primary display-6">食益<span class="text-secondary">忘了</span></h1>
+                    <h1 class="text-primary display-6">Baby<span class="text-secondary">Care</span></h1>
                 </a>
                 <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
@@ -36,33 +36,22 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
-                        <router-link to="/" class="nav-link" style="color: black;">首頁</router-link>
+                        <a href="index.html" class="nav-item nav-link active">Home</a>
+                        <a href="about.html" class="nav-item nav-link">About</a>
+                        <a href="service.html" class="nav-item nav-link">Services</a>
+                        <a href="program.html" class="nav-item nav-link">Programs</a>
+                        <a href="event.html" class="nav-item nav-link">Events</a>
                         <div class="nav-item dropdown">
-                            <router-link to="/shopping" class="nav-link dropdown-toggle" style="color: black;" data-bs-toggle="dropdown">購物車</router-link>
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <router-link to="/shopping" class="dropdown-item" style="color: black;">購物車</router-link>
+                                <a href="blog.html" class="dropdown-item">Our Blog</a>
+                                <a href="team.html" class="dropdown-item">Our Team</a>
+                                <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                                <a href="404.html" class="dropdown-item">404 Page</a>
                             </div>
                         </div>
-                        <div class="nav-item dropdown">
-                            <router-link to="/login" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: black;">會員</router-link>
-                            <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <router-link to="/login" class="dropdown-item" style="color: black;">會員</router-link>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown">
-                            <router-link to="/event" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: black;">活動</router-link>
-                            <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <router-link to="/event" class="dropdown-item" style="color: black;">活動</router-link>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown">
-                            <router-link to="/location" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: black;">地圖</router-link>
-                            <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <router-link to="/location" class="dropdown-item" style="color: black;">地圖</router-link>
-                            </div>
-                        </div>
+                        <a href="contact.html" class="nav-item nav-link">Contact</a>
                     </div>
-
                     <!-- <div class="d-flex me-4">
                             <div id="phone-tada" class="d-flex align-items-center justify-content-center">
                                 <a href="" class="position-relative wow tada" data-wow-delay=".9s" >
