@@ -6,7 +6,9 @@ import FooterBar from './components/FooterBar.vue';
 
 <template>
   <div class="wrapper">
-    <NavBar></NavBar>
+    <header>
+      <NavBar></NavBar>
+    </header>
     <main class="content">
       <!-- 主要內容 -->
       <RouterView />
@@ -19,4 +21,18 @@ import FooterBar from './components/FooterBar.vue';
 </template>
 
 <style scoped>
+  .wrapper {
+    display: flex;
+    justify-content: space-around;
+  }
+  /* :global(body) {
+    display: flex;
+    place-items: center;
+  }
+  :global(#app) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  } */
+  
 </style>
