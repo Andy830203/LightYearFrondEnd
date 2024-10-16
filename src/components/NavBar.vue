@@ -80,6 +80,11 @@
             </div>
         </div>
     </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="navbar-brand">佔住空間</div>
+        </div>
+    </nav>
     <!-- header end -->
 </template>
 
