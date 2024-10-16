@@ -20,5 +20,5 @@ import FooterBar from './components/FooterBar.vue';
 <style scoped>
   #layout {
   width: 100%;
-  }
+}
 </style>
