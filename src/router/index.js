@@ -18,7 +18,7 @@ const router = createRouter({
       component: Hb1,
       beforeEnter: (to, from) => {//當進入此組件時觸發
         state.isDisabled = true;
-        console.log("進入"+state.isDisabled);//debug用
+        console.log("進入"+state.isDisabled);
       },
     },
   ]
