@@ -4,7 +4,7 @@
 
 <template>
     <div class="col-md-6 col-lg-6 col-xl-4">
-        <div class="rounded position-relative fruite-item">
+        <div class="rounded position-relative product-item">
             <div class="product-img">
                 <img src="@/assets/products/pencil.jpg" class="img-fluid w-100 rounded-top" alt="">
             </div>
