@@ -1,7 +1,12 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView,} from 'vue-router'
 import NavBar from './components/NavBar.vue';
 import FooterBar from './components/FooterBar.vue';
+import { provide } from 'vue';
+import { state } from '@/global_value';  // 從外部文件引入狀態
+
+// 提供狀態給子組件
+provide('isDisabled', state);
 </script>
 
 <template>
@@ -11,8 +16,7 @@ import FooterBar from './components/FooterBar.vue';
   <div>
     <RouterView />
   </div>
-  <div id="layout">
-
+  <div id="layout2" v-if="!state.isDisabled">
     <FooterBar></FooterBar>
   </div>
 </template>
@@ -20,10 +24,5 @@ import FooterBar from './components/FooterBar.vue';
 <style scoped>
 #layout {
   width: 100%;
-  
-}
-#app{
-  grid-template-columns: 1fr;
-
 }
 </style>

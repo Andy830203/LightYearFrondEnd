@@ -1,10 +1,17 @@
 <script setup>
-    
+// 從 App.vue 中注入 isDisabled 狀態 St
+// import { inject, watch } from 'vue';
+// const isDisabled = inject('isDisabled');
+// watch(isDisabled, (newValue, oldValue) => {
+//   console.log('footer的isDisabled 變化:', oldValue, ' -> ', newValue);
+// });
+// 從 App.vue 中注入 isDisabled 狀態 end
 </script>
 
 <template>
     <!-- Footer Start -->
-    <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.1s">
+    <!-- 有新增v-if="!isDisabled"-->
+    <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.1s" >
             <div class="container py-5">
                 <div class="row g-5">
                     <div class="col-md-6 col-lg-4 col-xl-3">

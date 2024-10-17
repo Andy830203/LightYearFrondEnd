@@ -1,33 +1,67 @@
 <script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+
+const scale = ref(1); // 全局 scale 狀態
+const navbar = ref(null);
+
+// 滑鼠移入事件：變大
+const m_e_move = () => {
+    console.log("滑鼠進入了");
+    scale.value = 1; // large
+};
+
+// 滑鼠移出事件：變小
+const m_e_leave = () => {
+    console.log("滑鼠離開了");
+    scale.value = 0.1; // small
+};
+
+// 動態綁定 CSS class
+const navClass = computed(() => {
+    return scale.value === 1 ? 'large-nav' : 'small-nav';
+});
+
+onMounted(() => {
+    console.log("navbar is mounted");
+});
+
+onBeforeUnmount(() => {
+    if (navbar.value) {
+        navbar.value.removeEventListener('mouseenter', m_e_move);
+        navbar.value.removeEventListener('mouseleave', m_e_leave);
+    }
+});
 
 </script>
 
 <template>
     <!-- Navbar start -->
-    <div class="container-fluid border-bottom bg-light wow fadeIn" data-wow-delay="0.1s">
-        <div class="container topbar bg-primary d-none d-lg-block py-2" style="border-radius: 0 40px">
-            <div class="d-flex justify-content-between">
-                <div class="top-info ps-2">
-                    <!-- <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
-                            class="text-white">123 Street, New York</a></small>
-                    <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#"
-                            class="text-white">Email@Example.com</a></small> -->
-                </div>
-                <div class="top-link pe-2">
-                    <a href="" class="btn btn-light btn-sm-square rounded-circle"><i
-                            class="fab fa-facebook-f text-secondary"></i></a>
-                    <a href="" class="btn btn-light btn-sm-square rounded-circle"><i
-                            class="fab fa-twitter text-secondary"></i></a>
-                    <a href="" class="btn btn-light btn-sm-square rounded-circle"><i
-                            class="fab fa-instagram text-secondary"></i></a>
-                    <a href="" class="btn btn-light btn-sm-square rounded-circle me-0"><i
-                            class="fab fa-linkedin-in text-secondary"></i></a>
-                </div>
+    <!--原本0 40px，style="border-radius: 40px 40px"-->
+    <!--v-if-->
+    <div class="container topbar bg-primary d-none d-lg-block py-2 position-absolute translate-middle" style="border-radius: 40px 40px"@mouseenter="m_e_move" id="topbar_e1" ref="topbar" v-if="false">
+        <div class="d-flex justify-content-between">
+            <div class="top-info ps-2">
+                <!-- <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
+                        class="text-white">123 Street, New York</a></small>
+                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#"
+                        class="text-white">Email@Example.com</a></small> -->
+            </div>
+            <div class="top-link pe-2">
+                <a href="" class="btn btn-light btn-sm-square rounded-circle"><i
+                        class="fab fa-facebook-f text-secondary"></i></a>
+                <a href="" class="btn btn-light btn-sm-square rounded-circle"><i
+                        class="fab fa-twitter text-secondary"></i></a>
+                <a href="" class="btn btn-light btn-sm-square rounded-circle"><i
+                        class="fab fa-instagram text-secondary"></i></a>
+                <a href="" class="btn btn-light btn-sm-square rounded-circle me-0"><i
+                        class="fab fa-linkedin-in text-secondary"></i></a>
             </div>
         </div>
+    </div>
+    <div class="container-fluid border-bottom bg-light wow fadeIn" data-wow-delay="0.1s" id="navbar_e1" ref="navbar" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass">
         <div class="container px-0">
             <nav class="navbar navbar-light navbar-expand-xl py-3">
-                <a href="index.html" class="navbar-brand">
+                    <a href="index.html" class="navbar-brand row">
                     <h1 class="text-primary display-6">食益<span class="text-secondary">忘了</span></h1>
                 </a>
                 <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
@@ -97,5 +131,31 @@
 <style lang="css" scoped>
 .btn{
     display: flex;
+}
+/**選項間距加大**/
+.navbar .navbar-nav .nav-link {
+    margin-right: 30px;
+}
+/**適配放大**/
+.topbar{
+    max-width:900px;
+    top:4%; 
+    left:50%;
+}
+#navbar_e1{
+    scale: 1;
+    position: relative;
+}
+/* 大小變換 */
+.large-nav {
+    transform: translateX(0%) scale(1);
+    transition:transform 0.8s ease-in-out;
+}
+
+.small-nav {
+    top:4%; 
+    left:0%;
+    transform: translateY(-30%) scale(0.4);
+    transition:transform 0.8s ease-in-out;
 }
 </style>

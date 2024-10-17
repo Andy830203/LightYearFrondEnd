@@ -20,7 +20,6 @@ import 'lightbox2/dist/js/lightbox.min.js';
 // import WOW from 'wowjs';
 // new WOW.WOW().init();
 
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
