@@ -1,5 +1,6 @@
 <script setup>
     
+
 </script>
 
 <template>
@@ -55,6 +56,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="./form.html">聯絡我們</a>
+                        </li>
+                        <li>
+                            <router-link to="/location" style="color: black;">地圖</router-link>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
