@@ -9,7 +9,7 @@
     <header>
         <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow">
             <div class="container-fluid">
-                <a class="navbar-brand" href="./index.html">食益光年</a>
+                <a class="navbar-brand" href="/">食益光年</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -17,58 +17,18 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <!-- <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li> -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                關於狸小路
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="./about.html">關於狸小路</a></li>
-                                <li><a class="dropdown-item" href="">媒體報導</a>
-                                </li>
-                            </ul>
+                        <li  class="nav-item">
+                            <router-link to="/location" class="nav-link">地圖</router-link>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                全部商品
+                                下拉選單預留
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="./productListAll.html">全部商品</a>
+                                <li><a class="dropdown-item" href="#">下拉1</a>
                                 </li>
-                                <li><a class="dropdown-item" href="./productListAll.html">蛋糕系列</a>
-                                </li>
-                                <li><a class="dropdown-item" href="./productListAll.html">Mini蛋糕系列</a>
-                                </li>
-                                <li><a class="dropdown-item" href="./productListAll.html">千層系列</a>
-                                </li>
-                                <li><a class="dropdown-item" href="./productListAll.html">宅配千層系列</a>
-                                </li>
-                                <li><a class="dropdown-item" href="./productListAll.html">初雪蛋糕系列</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./faq.html">常見問題</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./form.html">聯絡我們</a>
-                        </li>
-                        <li>
-                            <router-link to="/location" style="color: black;">地圖</router-link>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                門市據點
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="./shops.html">門市據點</a>
-                                </li>
-                                <li><a class="dropdown-item" href="">快閃資訊</a>
+                                <li><a class="dropdown-item" href="">下拉2</a>
                                 </li>
                             </ul>
                         </li>
