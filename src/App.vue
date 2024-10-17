@@ -15,24 +15,11 @@ import FooterBar from './components/FooterBar.vue';
     </main>
     <FooterBar></FooterBar>
   </div>
-  <div >
+  <div>
     
   </div>
 </template>
 
 <style scoped>
-  .wrapper {
-    display: flex;
-    justify-content: space-around;
-  }
-  /* :global(body) {
-    display: flex;
-    place-items: center;
-  }
-  :global(#app) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  } */
   
 </style>

@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
+import StartView from '@/views/event/StartView.vue'
+import SignUpView from '@/views/event/SignUpView.vue'
+import TrackView from '@/views/event/TrackView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,7 +12,26 @@ const router = createRouter({
       path: '/',
       component: HomeView,
       name: 'home',
-      alias: '/index'    //http://localhost:5173/index
+      //http://localhost:5173/index
+      alias: '/index'
+    },
+    {
+      // http://localhost:5173/start
+      path: '/start',
+      component: StartView,
+      name: 'eventStart'
+    },
+    {
+      // http://localhost:5173/signup
+      path: '/signup',
+      component: SignUpView,
+      name: 'eventSignUp'
+    },
+    {
+      // http://localhost:5173/track
+      path: '/track',
+      component: TrackView,
+      name: 'eventTrack'
     }
   ]
 })
