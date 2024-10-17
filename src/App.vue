@@ -14,7 +14,7 @@ provide('isDisabled', state);// 提供狀態給子組件
       <!-- 主要內容 -->
       <RouterView />
     </main>
-    <FooterBar></FooterBar>
+    <FooterBar v-if="!state.isDisabled"></FooterBar>
   </div>
   <div >
     
