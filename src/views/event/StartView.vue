@@ -14,9 +14,9 @@ const submit = () => {
 <template>
     <div>
         <form class="">
-            <div class="container">
+            <div class="container mt-3">
                 <div class="row">
-                    <div class="col-12 col-md-5 container">
+                    <div class="col-12 col-lg-5 container">
                         <div class="row g-3 align-items-center">
                             <!-- 發起人 -->
                             <h2 class="text-left">發起人: <span id="startPerson">123</span></h2>
@@ -74,7 +74,7 @@ const submit = () => {
                                 rows="10"></textarea>
                         </div>
                     </div>
-                    <div class="col-12 col-md-5 container">
+                    <div class="col-12 col-lg-5 container">
                         <div class="row g-3 align-items-center">
                             <!-- 活動照片 -->
                             <label for="evePhoto" class="mb-2 form-label">活動照片</label>
@@ -95,7 +95,7 @@ const submit = () => {
 
                             <!-- 最大活動人數 -->
                             <ColumnInputFieldComponent Type="number" Id="eveCap" Label="最大活動人數" Indent="false"
-                                LabelCol="4" InputCol="8" SpaceCol="0" class="gt-3">
+                                LabelCol="4" InputCol="8" SpaceCol="0" class="mt-5">
                             </ColumnInputFieldComponent>
                             <!-- <InputFieldComponent Type="number" Id="eveCap" Label="最大活動人數"></InputFieldComponent> -->
                         </div>
