@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import StartView from '@/views/event/StartView.vue'
 import SignUpView from '@/views/event/SignUpView.vue'
 import TrackView from '@/views/event/TrackView.vue'
+import EventView from '@/views/event/EventView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,7 +33,13 @@ const router = createRouter({
       path: '/track',
       component: TrackView,
       name: 'eventTrack'
-    }
+    },
+    {
+      // http://localhost:5173/event + id
+      path: '/event',
+      component: EventView,
+      name: 'event'
+    },
   ]
 })
 

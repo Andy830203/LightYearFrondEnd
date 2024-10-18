@@ -16,10 +16,8 @@ import FooterBar from './components/FooterBar.vue';
     <FooterBar></FooterBar>
   </div>
   <div>
-    
+
   </div>
 </template>
 
-<style scoped>
-  
-</style>
+<style scoped></style>

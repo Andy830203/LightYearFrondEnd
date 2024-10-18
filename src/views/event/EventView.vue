@@ -3,10 +3,8 @@
 </script>
 
 <template>
-    <div class="mt-3 container">
-        <form>
+    <div>
 
-        </form>
     </div>
 </template>
 
