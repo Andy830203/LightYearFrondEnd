@@ -4,15 +4,14 @@ import NavBar from './components/NavBar.vue';
 import FooterBar from './components/FooterBar.vue';
 import { provide } from 'vue';
 import { state } from '@/global_value'; // 從外部文件引入狀態
-provide('isDisabled', state);// 提供狀態給子組件
+//provide('isDisabled', state);// 提供狀態給子組件//
 </script>
-
 <template>
   <div class="wrapper">
     <header>
       <NavBar></NavBar>
     </header>
-    <main class="content">
+    <main class="content" style="height: 100%;width: 100%;">
       <!-- 主要內容 -->
       <RouterView />
     </main>
@@ -28,14 +27,9 @@ provide('isDisabled', state);// 提供狀態給子組件
     display: flex;
     justify-content: space-around;
   }
-  /* :global(body) {
-    display: flex;
-    place-items: center;
-  }
-  :global(#app) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  } */
-  
+  html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 </style>

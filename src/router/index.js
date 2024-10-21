@@ -18,7 +18,7 @@ const router = createRouter({
       component: Hb1,
       beforeEnter: (to, from) => {//當進入此組件時觸發
         state.isDisabled = true;
-        console.log("進入"+state.isDisabled);//debug用
+        console.log("進入" + state.isDisabled);//debug用
       },
     },
   ]
@@ -28,7 +28,7 @@ router.afterEach((to, from) => {
   if (to.path !== '/location') {
     // 當離開 /location 路由時恢復 A 組件的顯示
     state.isDisabled = false;
-    console.log("離開後"+state.isDisabled);
+    console.log("離開後" + state.isDisabled);
   }
 });
 export default router
