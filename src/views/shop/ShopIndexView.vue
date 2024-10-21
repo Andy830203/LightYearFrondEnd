@@ -1,5 +1,6 @@
 <script setup>
-    import ProductBox from '@/components/shop/ProductBox.vue';
+    import ProductCard from '@/components/shop/ProductCard.vue';
+    import SearchBar from '@/components/shop/SearchBar.vue';
 </script>
 
 <template>
@@ -10,6 +11,7 @@
                 <div class="col-lg-12">
                     <div class="row g-4">
                         <div class="col-xl-3">
+                            <SearchBar></SearchBar>
                             <!-- 搜尋 -->
                         </div>
                         <div class="col-6"></div>
@@ -24,10 +26,10 @@
                         <div class="col-lg-9">
                             <div class="row g-4 justify-content-center">
                                 <!-- 商品 card -->
-                                <ProductBox></ProductBox>
+                                <ProductCard></ProductCard>
                             </div>
                             <div class="col-12">
-                                <!-- 分頁 -->
+                                <!-- 分頁功能區域 -->
                             </div>
                         </div>
                     </div>
