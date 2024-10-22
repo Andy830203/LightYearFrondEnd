@@ -20,7 +20,7 @@ m_e_onBeforeUnmount()
                 <img src="../assets/images/members/logo圖0.png" alt="Logo">
             </a>
             
-            <!-- 漢堡選單按鈕（小螢幕時） -->
+            <!-- 選單按鈕（小螢幕時） -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,10 @@ m_e_onBeforeUnmount()
                             <li><a class="dropdown-item" href="#">下拉2</a></li>
                         </ul>
                     </li>
-
+                    <!-- 愛心商城連結 -->
+                    <li class="nav-item">
+                        <router-link to="/shop" class="nav-link">愛心商城</router-link>
+                    </li>
                     <!-- 其他連結 -->
                     <li class="nav-item"><a class="nav-link" href="./faq.html">常見問題</a></li>
                     <li class="nav-item"><a class="nav-link" href="./form.html">聯絡我們</a></li>
