@@ -1,6 +1,6 @@
 <script setup>
 /* 縮放st */
-import { m_e_move,m_e_leave,navClass,m_e_onBeforeUnmount } from '@/hb1_t_js/NAV_c'
+import { m_e_move,m_e_leave,navClass,m_e_onBeforeUnmount } from '@/hb1_t_js/NAV_c'//nav樣式更改
 import { state } from '@/global_value'; // 從外部文件引入狀態
 m_e_onBeforeUnmount()
 /* 縮放end */

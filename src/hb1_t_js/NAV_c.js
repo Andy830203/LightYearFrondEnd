@@ -1,5 +1,5 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-
+import { state } from '@/global_value';
 const scale = ref(1); // 全局 scale 狀態
 const navbar = ref(null);
 export function m_e_move() {// 滑鼠移入事件：變大
@@ -8,7 +8,13 @@ export function m_e_move() {// 滑鼠移入事件：變大
 }
 export function m_e_leave() {// 滑鼠移出事件：變小
         console.log("滑鼠離開了");
-        scale.value = 0.1; // small
+        if (state.isDisabled) {
+            scale.value = 0.1; // small
+        }
+        else{
+            scale.value = 1;
+        }
+        
 }
 export const navClass = computed(() => {// 動態綁定 CSS class
     return scale.value === 1 ? 'large-nav' : 'small-nav';
