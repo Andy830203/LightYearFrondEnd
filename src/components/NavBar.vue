@@ -13,7 +13,8 @@ m_e_onBeforeUnmount()
     <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass">
         <div class="container-fluid">
             <!-- <a class="navbar-brand" href="/">食益光年</a> -->
-            <a class="navbar-brand" href="/"><img src="C:\Users\User\Desktop\專題\前端\LightYearFrondEnd\src\assets\images\members\logo圖0.png"></a>
+            <!-- logo圖路徑之後用ref路徑指向一個變數，下面佔位子的導覽列也是 -->
+            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo圖0.png"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -79,29 +80,7 @@ m_e_onBeforeUnmount()
                         </ul>
                     </li>
                 </ul>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-
-                    </ul>
-                    <div class="d-flex">
-                        <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                            class="me-1 text-black"><i class="bi bi-person-fill fs-3 text-primary"></i></a>
-                        <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                            aria-controls="offcanvasExample" class="me-1 text-black"><i
-                                class="bi bi-cart-fill fs-3 text-primary"></i></a>
-                    </div>
-                </div>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    </ul>
-                    <div class="d-flex">
-                        <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                            class="me-1 text-black"><i class="bi bi-person-fill fs-3 text-primary"></i></a>
-                        <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                            aria-controls="offcanvasExample" class="me-1 text-black"><i
-                                class="bi bi-cart-fill fs-3 text-primary"></i></a>
-                    </div>
-                </div>
+            
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             </ul>
@@ -123,6 +102,7 @@ m_e_onBeforeUnmount()
     </nav>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="!state.isDisabled">
         <div class="container-fluid">
+            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo圖0.png"></a>
             <div class="navbar-brand">.</div>
         </div>
     </nav>
