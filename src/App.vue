@@ -33,5 +33,14 @@ import { state } from '@/global_value'; // 從外部文件引入狀態
   margin: 0;
   padding: 0;
 }
+  /* :global(body) {
+    display: flex;
+    place-items: center;
+  }
+  :global(#app) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  } */
 </style>
 <!-- <style scoped></style> -->
