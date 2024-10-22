@@ -1,7 +1,11 @@
 // import './assets/main.css'
+
 // import './assets/style.css'
 
 import './assets/IndexStyle.css';
+
+import './assets/product.css';
+
 // 引入 Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 // 引入 Bootstrap JavaScript
