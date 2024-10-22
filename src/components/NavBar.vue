@@ -125,9 +125,9 @@ m_e_onBeforeUnmount()
 }
 .small-nav {
     /* scale: 1; */
-    top:4%; 
+    top:0%; 
     left:0%;
-    transform: translateY(-100%) scale(0.4);
+    transform: translateY(-23%) scale(0.4);
     transition:transform 0.8s ease-in-out;
 }
 /* 縮放end */
