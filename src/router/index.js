@@ -8,6 +8,7 @@ import TrackView from '@/views/event/TrackView.vue'
 import EventView from '@/views/event/EventView.vue'
 
 import ShopIndexView from '@/views/shop/ShopIndexView.vue'
+import ItemView from '@/views/shop/ItemView.vue';
 import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
 import ForgotPassword from '@/components/ForgotPassword.vue'
@@ -39,6 +40,12 @@ const router = createRouter({
       path: '/shop',
       component: ShopIndexView,
       name: 'shop',
+    },
+    {
+      //http://localhost:5173/itemDetails
+      path: '/itemDetails',
+      component: ItemView,
+      name: 'itemDetails',
     },
     {
       // http://localhost:5173/start

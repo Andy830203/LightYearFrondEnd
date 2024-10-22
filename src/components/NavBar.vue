@@ -50,6 +50,9 @@ m_e_onBeforeUnmount()
                     <li class="nav-item">
                         <router-link to="/shop" class="nav-link">愛心商城</router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link to="/itemDetails" class="nav-link">商品內容測試</router-link>
+                    </li>
                     <!-- 其他連結 -->
                     <li class="nav-item"><a class="nav-link" href="./faq.html">常見問題</a></li>
                     <li class="nav-item"><a class="nav-link" href="./form.html">聯絡我們</a></li>
