@@ -65,18 +65,29 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            活動
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><RouterLink class="dropdown-item" :to="{name: 'eventStart'}">發起活動</RouterLink></li>
+                            <li><RouterLink class="dropdown-item" :to="{name: 'eventSignUp'}">報名活動</RouterLink></li>
+                            <li><RouterLink class="dropdown-item" :to="{name: 'eventTrack'}">追蹤活動</RouterLink></li>
+                        </ul>
+                    </li>
                 </ul>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-            </ul>
-            <div class="d-flex">
-                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    class="me-1 text-black"><i class="bi bi-person-fill fs-3 text-primary"></i></a>
-                <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                    aria-controls="offcanvasExample" class="me-1 text-black"><i
-                        class="bi bi-cart-fill fs-3 text-primary"></i></a>
-            </div>
-        </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    </ul>
+                    <div class="d-flex">
+                        <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            class="me-1 text-black"><i class="bi bi-person-fill fs-3 text-primary"></i></a>
+                        <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                            aria-controls="offcanvasExample" class="me-1 text-black"><i
+                                class="bi bi-cart-fill fs-3 text-primary"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
