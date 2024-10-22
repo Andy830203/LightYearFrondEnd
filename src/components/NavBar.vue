@@ -6,7 +6,7 @@
     <!-- header start-->
     <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./index.html">食益光年</a>
+            <a class="navbar-brand" href="./index.html"><img src="C:\Users\User\Desktop\專題\前端\LightYearFrondEnd\src\assets\images\members\logo圖0.png"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,31 @@
                     <li class="nav-item">
                         <a class="nav-link" href="./form.html">聯絡我們</a>
                     </li>
+                    <!--會員-->
+                    <li class="nav-item dropdown">
+                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i style="color: black;" class="bi bi-person"></i> 會員專區
+                         </a>
+                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                          <a class="dropdown-item" href="/MemberInFo">
+                         <i class="bi bi-info-circle"></i> 會員資訊
+                         </a>
+                    </li>
+                    <li>
+                          <a class="dropdown-item" href="/MemberSettingView">
+                            <i class="fa-solid fa-gear"></i> 設定
+                         </a>
+                    </li>
+                    <li>
+                          <a class="dropdown-item" href="/MemberFavorite">
+                            <i class="fa-solid fa-heart"></i> 我的收藏
+                         </a>
+                    </li>
+                     </ul>                    
+                    </li>
+                   
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -70,8 +95,13 @@
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             </ul>
             <div class="d-flex">
-                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    class="me-1 text-black"><i class="bi bi-person-fill fs-3 text-primary"></i></a>
+                <!--會員-->               
+                <!-- <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    class="me-1 text-black"> -->
+                    <RouterLink to="/login" class="me-1 text-black">
+                        <i class="bi bi-person-fill fs-3 text-primary"></i>
+                    </RouterLink>
+                <!-- </a> -->
                 <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
                     aria-controls="offcanvasExample" class="me-1 text-black"><i
                         class="bi bi-cart-fill fs-3 text-primary"></i></a>
@@ -86,6 +116,7 @@
         </div>
     </nav>
     <!-- header end -->
+
 </template>
 
 

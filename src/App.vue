@@ -34,5 +34,4 @@ import FooterBar from './components/FooterBar.vue';
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   } */
-  
 </style>
