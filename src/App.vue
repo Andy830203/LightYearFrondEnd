@@ -13,7 +13,7 @@ import { state } from '@/global_value'; // 從外部文件引入狀態
     </header>
     <main class="content" style="height: 100%;width: 100%;">
       <!-- 主要內容 -->
-      <RouterLink :to="{name:'shop'}">商店</RouterLink>
+      <!-- <RouterLink :to="{name:'shop'}">商店</RouterLink> -->
       <RouterView />
     </main>
     <FooterBar v-if="!state.isDisabled"></FooterBar>
