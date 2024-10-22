@@ -1,0 +1,43 @@
+/*** Product Start ***/
+.product .tab-class .nav-item a.active {
+    background: var(--bs-secondary) !important;
+}
+
+.product .tab-class .nav-item a.active span {
+    color: var(--bs-white) !important; 
+}
+
+.product .product-categorie .product-name {
+    line-height: 40px;
+}
+
+.product .product-categorie .product-name a {
+    transition: 0.5s;
+}
+
+.product .product-categorie .product-name a:hover {
+    color: var(--bs-secondary);
+}
+
+.product .product-item {
+    height: 100%;
+    transition: 0.5s;
+}
+.product .product-item:hover {
+    box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
+}
+
+.product .product-item .product-img {
+    overflow: hidden;
+    transition: 0.5s;
+    border-radius: 10px 10px 0 0;
+}
+
+.product .product-item .product-img img {
+    transition: 0.5s;
+}
+
+.product .product-item .product-img img:hover {
+    transform: scale(1.3);
+}
+/*** Product End ***/
