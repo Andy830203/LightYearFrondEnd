@@ -1,14 +1,18 @@
 <script setup>
-import { defineComponent, ref } from 'vue'
+import { ref } from 'vue'
 import { Carousel, Slide } from 'vue3-carousel'
 
 import 'vue3-carousel/dist/carousel.css'
 
+// 輪播
 const currentSlide = ref(0)
 
 const slideTo = (val) => {
     currentSlide.value = val
 }
+
+// props
+// TODO
 </script>
 
 <template>
@@ -30,7 +34,7 @@ const slideTo = (val) => {
 <style lang="css" scoped>
 .carousel__item {
     min-height: 200px;
-    /* height: 50%; */
+    /* height: 100%; */
     width: 100%;
     /* background-color: var(--vp-c-green); */
     background-color: var(--vc-clr-primary);

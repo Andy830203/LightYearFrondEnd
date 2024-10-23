@@ -22,26 +22,26 @@ const submit = () => {
                             <!-- 發起人 -->
                             <h2 class="text-left">發起人: <span id="startPerson">123</span></h2>
                             <!-- 活動名稱 -->
-                            <div class="col-3 offset-1">
+                            <div class="col-3 ">
                                 <label for="eveTitle" class="col-form-label">活動名稱</label>
                             </div>
-                            <div class="col-5">
+                            <div class="col-6">
                                 <input type="text" class="form-control" id="eveTitle">
                             </div>
                             <div class="col-3"></div>
                             <!-- 報名費 -->
-                            <div class="col-3 offset-1">
+                            <div class="col-3 ">
                                 <label for="eveFee" class="col-form-label">報名費</label>
                             </div>
-                            <div class="col-5">
+                            <div class="col-6">
                                 <input type="number" class="form-control" id="eveFee">
                             </div>
                             <div class="col-3"></div>
                             <!-- 活動類別 -->
-                            <div class="col-3 offset-1">
+                            <div class="col-3 ">
                                 <label for="eveType" class="col-form-label">活動類別</label>
                             </div>
-                            <div class="col-5">
+                            <div class="col-6">
                                 <!-- <input type="number" class="form-control" id="eveType"> -->
                                 <select class="form-select" name="" id="eveType">
                                     <option value="">type 1</option>
@@ -51,10 +51,10 @@ const submit = () => {
                             </div>
                             <div class="col-3"></div>
                             <!-- 活動優先級 -->
-                            <div class="col-3 offset-1">
+                            <div class="col-3">
                                 <label for="evePrior" class="col-form-label">活動優先級</label>
                             </div>
-                            <div class="col-5">
+                            <div class="col-6">
                                 <!-- <input type="number" class="form-control" id="eveType"> -->
                                 <select class="form-select" name="" id="evePrior">
                                     <option value="">prior 1</option>
@@ -98,8 +98,8 @@ const submit = () => {
                             <InputFieldComponent Type="time" Id="eveEndTime" Label="活動結束時間"></InputFieldComponent>
 
                             <!-- 最大活動人數 -->
-                            <ColumnInputFieldComponent Type="number" Id="eveCap" Label="最大活動人數" Indent=true LabelCol="4"
-                                InputCol="7" class="mt-5">
+                            <ColumnInputFieldComponent Type="number" Id="eveCap" Label="最大活動人數" Indent="false"
+                                LabelCol="4" InputCol="7" class="mt-5">
                             </ColumnInputFieldComponent>
                             <!-- <InputFieldComponent Type="number" Id="eveCap" Label="最大活動人數"></InputFieldComponent> -->
                         </div>
@@ -140,5 +140,9 @@ const submit = () => {
     height: 400px;
     width: 100%;
     border: 1px solid salmon;
+}
+
+:deep(label) {
+    font-weight: bold;
 }
 </style>

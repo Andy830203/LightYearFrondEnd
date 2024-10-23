@@ -11,4 +11,8 @@ import CarouselComponent from '@/components/event/CarouselComponent.vue';
     </div>
 </template>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+/* .carousel-height {
+    height: 500px;
+} */
+</style>
