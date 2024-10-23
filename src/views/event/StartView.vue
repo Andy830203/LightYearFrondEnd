@@ -1,20 +1,27 @@
 <script setup>
-import CarouselComponent from '@/components/event/CarouselComponent.vue';
-import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldComponent.vue';
-import InputFieldComponent from '@/components/event/InputFieldComponent.vue';
-import { ref } from 'vue';
+import CarouselComponent from '@/components/event/CarouselComponent.vue'
+import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldComponent.vue'
+import InputFieldComponent from '@/components/event/InputFieldComponent.vue'
+import { ref } from 'vue'
 
-const startDate = ref('');
+const startDate = ref('')
 
-const submit = () => {
-    alert(startDate.value);
+const onSubmit = () => {
+    // alert(startDate.value);
+    alert('123')
+    console.log('123')
+
+    fetch('127.0.0.1', {
+        body: '123321',
+        method: 'POST'
+    })
 }
 
 </script>
 
 <template>
     <div>
-        <form class="">
+        <form class="" @submit.prevent="onSubmit">
             <div class="container mt-3">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-5">
@@ -108,7 +115,7 @@ const submit = () => {
             </div>
 
             <!-- submit -->
-            <button class="fixedBtn roundBtn btn btn-primary" type="submit" @submit="submit">
+            <button class="fixedBtn roundBtn btn btn-primary" type="submit">
                 <i class="bi bi-plus-circle-fill"></i>
             </button>
         </form>
