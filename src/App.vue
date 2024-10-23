@@ -35,5 +35,6 @@ const RouterViewclass = computed(() => {// 動態綁定 CSS class
 }
 .map_r{
   margin-top: 0%;
+  height: 100%;
 }
 </style>
