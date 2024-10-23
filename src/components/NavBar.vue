@@ -1,6 +1,6 @@
 <script setup>
 /* 縮放st */
-import { m_e_move,m_e_leave,navClass,m_e_onBeforeUnmount } from '@/hb1_t_js/NAV_c'//nav樣式更改
+import { m_e_move,m_e_leave,navClass,m_e_onBeforeUnmount} from '@/hb1_t_js/NAV_c'//nav樣式更改
 import { state } from '@/global_value'; // 從外部文件引入狀態
 m_e_onBeforeUnmount()
 /* 縮放end */
@@ -14,16 +14,23 @@ m_e_onBeforeUnmount()
         <div class="container-fluid">
             <!-- <a class="navbar-brand" href="/">食益光年</a> -->
             <!-- logo圖路徑之後用ref路徑指向一個變數，下面佔位子的導覽列也是 -->
-            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo圖0.png"></a>
+            <div class="navbar-brand" style="position: absolute; z-index: 999; top: 10%;">
+                <a class="navbar-brand" href="/"><img src="../assets/images/members/logo去背22.png"></a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+            <div class="collapse navbar-collapse mx-auto">
+                <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-text-top"> -->
+                <ul class="navbar-nav mb-2 mb-lg-0 justify-content-center mx-auto">
                     <li class="nav-item">
-                        <router-link to="/location" class="nav-link">地圖</router-link>
+                            <router-link to="/location" class="nav-link">
+                                <i class="bi bi-globe-americas"></i>
+                                <span>地圖</span>
+                            </router-link>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -80,44 +87,25 @@ m_e_onBeforeUnmount()
                         </ul>
                     </li>
                 </ul>
-            
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-            </ul>
-            <div class="d-flex">
-                <!--會員-->               
-                <!-- <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    class="me-1 text-black"> -->
-                    <RouterLink to="/login" class="me-1 text-black">
-                        <i class="bi bi-person-fill fs-3 text-primary"></i>
-                    </RouterLink>
-                <!-- </a> -->
-                <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                    aria-controls="offcanvasExample" class="me-1 text-black"><i
-                        class="bi bi-cart-fill fs-3 text-primary"></i></a>
+                <div class="d-flex"><!--會員-->                     
+                            <RouterLink to="/login" class="me-1 text-black">
+                                <i class="bi bi-person-fill fs-3 text-primary"></i>
+                            </RouterLink>
+                        <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                            aria-controls="offcanvasExample" class="me-1 text-black"><i
+                                class="bi bi-cart-fill fs-3 text-primary"></i></a>
+                    </div>
             </div>
-        </div>
-            </div>
-        </div>
-    </nav>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="!state.isDisabled">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo圖0.png"></a>
-            <div class="navbar-brand">.</div>
         </div>
     </nav>
     <!-- header end -->
+
 
 </template>
 
 
 
 <style lang="css" scoped>
-/* 縮放st */
-/* #navbar_e1{
-    scale: 1;
-    position: relative;
-} */
 /* 大小變換 */
 .large-nav {
     transform: translateX(0%) scale(1);
