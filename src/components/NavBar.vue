@@ -1,20 +1,21 @@
 <script setup>
 /* 縮放st */
-import { m_e_move,m_e_leave,navClass,m_e_onBeforeUnmount } from '@/hb1_t_js/NAV_c'//nav樣式更改
+import { m_e_move, m_e_leave, navClass, m_e_onBeforeUnmount } from '@/hb1_t_js/NAV_c'//nav樣式更改
 import { state } from '@/global_value'; // 從外部文件引入狀態
 m_e_onBeforeUnmount()
 /* 縮放end */
 </script>
 
 <template>
-<!-- 原有的 -->
+    <!-- 原有的 -->
     <!-- <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow"> -->
     <!-- 更改的 -->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow" id="navbar_e1" @mouseenter="m_e_move"
+        @mouseleave="m_e_leave" :class="navClass">
         <div class="container-fluid">
             <!-- <a class="navbar-brand" href="/">食益光年</a> -->
             <!-- logo圖路徑之後用ref路徑指向一個變數，下面佔位子的導覽列也是 -->
-            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo圖0.png"></a>
+            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo去背22.png"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -45,64 +46,70 @@ m_e_onBeforeUnmount()
                     </li>
                     <!--會員-->
                     <li class="nav-item dropdown">
-                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                        <i style="color: black;" class="bi bi-person"></i> 會員專區
-                         </a>
-                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
-                          <a class="dropdown-item" href="/MemberInFo">
-                         <i class="bi bi-info-circle"></i> 會員資訊
-                         </a>
+                            <i style="color: black;" class="bi bi-person"></i> 會員專區
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="/MemberInFo">
+                                    <i class="bi bi-info-circle"></i> 會員資訊
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/MemberSettingView">
+                                    <i class="fa-solid fa-gear"></i> 設定
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/MemberFavorite">
+                                    <i class="fa-solid fa-heart"></i> 我的收藏
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
-                          <a class="dropdown-item" href="/MemberSettingView">
-                            <i class="fa-solid fa-gear"></i> 設定
-                         </a>
-                    </li>
-                    <li>
-                          <a class="dropdown-item" href="/MemberFavorite">
-                            <i class="fa-solid fa-heart"></i> 我的收藏
-                         </a>
-                    </li>
-                     </ul>                    
-                    </li>
-                   
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             活動
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><RouterLink class="dropdown-item" :to="{name: 'eventStart'}">發起活動</RouterLink></li>
-                            <li><RouterLink class="dropdown-item" :to="{name: 'eventSignUp'}">報名活動</RouterLink></li>
-                            <li><RouterLink class="dropdown-item" :to="{name: 'eventTrack'}">追蹤活動</RouterLink></li>
+                            <li>
+                                <RouterLink class="dropdown-item" :to="{ name: 'eventStart' }">發起活動</RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink class="dropdown-item" :to="{ name: 'eventSignUp' }">報名活動</RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink class="dropdown-item" :to="{ name: 'eventTrack' }">追蹤活動</RouterLink>
+                            </li>
                         </ul>
                     </li>
                 </ul>
-            
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-            </ul>
-            <div class="d-flex">
-                <!--會員-->               
-                <!-- <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    </ul>
+                    <div class="d-flex">
+                        <!--會員-->
+                        <!-- <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     class="me-1 text-black"> -->
-                    <RouterLink to="/login" class="me-1 text-black">
-                        <i class="bi bi-person-fill fs-3 text-primary"></i>
-                    </RouterLink>
-                <!-- </a> -->
-                <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                    aria-controls="offcanvasExample" class="me-1 text-black"><i
-                        class="bi bi-cart-fill fs-3 text-primary"></i></a>
-            </div>
-        </div>
+                        <RouterLink to="/login" class="me-1 text-black">
+                            <i class="bi bi-person-fill fs-3 text-primary"></i>
+                        </RouterLink>
+                        <!-- </a> -->
+                        <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                            aria-controls="offcanvasExample" class="me-1 text-black"><i
+                                class="bi bi-cart-fill fs-3 text-primary"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="!state.isDisabled">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo圖0.png"></a>
+            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo去背22.png"></a>
             <div class="navbar-brand">.</div>
         </div>
     </nav>
@@ -121,14 +128,16 @@ m_e_onBeforeUnmount()
 /* 大小變換 */
 .large-nav {
     transform: translateX(0%) scale(1);
-    transition:transform 0.8s ease-in-out;
+    transition: transform 0.8s ease-in-out;
 }
+
 .small-nav {
     /* scale: 1; */
-    top:4%; 
-    left:0%;
+    top: 4%;
+    left: 0%;
     transform: translateY(-100%) scale(0.4);
-    transition:transform 0.8s ease-in-out;
+    transition: transform 0.8s ease-in-out;
 }
+
 /* 縮放end */
 </style>

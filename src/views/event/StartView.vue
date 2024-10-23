@@ -1,4 +1,5 @@
 <script setup>
+import CarouselComponent from '@/components/event/CarouselComponent.vue';
 import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldComponent.vue';
 import InputFieldComponent from '@/components/event/InputFieldComponent.vue';
 import { ref } from 'vue';
@@ -79,7 +80,10 @@ const submit = () => {
                             <!-- 活動照片 -->
                             <label for="evePhoto" class="mb-2 form-label">活動照片</label>
                             <!-- 實作輪播 -->
-                            <div class="holdplace">實作輪播</div>
+                            <div>
+                                實作輪播
+                                <CarouselComponent></CarouselComponent>
+                            </div>
                             <input type="file" name="Photo" id="evePhoto" class="form-control">
 
                             <!-- 活動時間 -->
@@ -133,7 +137,7 @@ const submit = () => {
 }
 
 .holdplace {
-    height: 200px;
+    height: 400px;
     width: 100%;
     border: 1px solid salmon;
 }
