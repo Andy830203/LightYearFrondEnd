@@ -1,5 +1,6 @@
 <script setup>
 import CarouselComponent from '@/components/event/CarouselComponent.vue';
+import PlacesComponent from '@/components/event/PlacesComponent.vue';
 
 
 </script>
@@ -8,6 +9,7 @@ import CarouselComponent from '@/components/event/CarouselComponent.vue';
     <div>
         <h2>Home Page</h2>
         <CarouselComponent></CarouselComponent>
+        <PlacesComponent></PlacesComponent>
     </div>
 </template>
 

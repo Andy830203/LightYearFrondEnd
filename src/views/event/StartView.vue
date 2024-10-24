@@ -4,17 +4,37 @@ import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldCompon
 import InputFieldComponent from '@/components/event/InputFieldComponent.vue'
 import { ref } from 'vue'
 
-const startDate = ref('')
+const getData = ref({
+    'eveTypes': [
+        'type 1',
+        'type 2',
+        'type 3'
+    ],
+    'evePriors': [
+        'Prior 1',
+        'Prior 2',
+        'Prior 3'
+    ],
+})
+
+const startData = ref({
+    'startPerson': '123',
+    'eveTitle': '',
+    'eveFee': '',
+    'eveType': '',
+    'evePrior': '',
+    'eveFee2': '',
+    'eveFee3': '',
+})
 
 const onSubmit = () => {
-    // alert(startDate.value);
-    alert('123')
-    console.log('123')
-
-    fetch('127.0.0.1', {
-        body: '123321',
-        method: 'POST'
-    })
+    // alert('123')
+    // console.log('123')
+    // fetch('127.0.0.1', {
+    //     body: '123321',
+    //     method: 'POST'
+    // })
+    console.log(startData.value)
 }
 
 </script>
@@ -27,13 +47,13 @@ const onSubmit = () => {
                     <div class="col-12 col-lg-5">
                         <div class="row g-3 align-items-center">
                             <!-- 發起人 -->
-                            <h2 class="text-left">發起人: <span id="startPerson">123</span></h2>
+                            <h2 class="text-left">發起人: {{ startData.startPerson }}</h2>
                             <!-- 活動名稱 -->
                             <div class="col-3 ">
                                 <label for="eveTitle" class="col-form-label">活動名稱</label>
                             </div>
                             <div class="col-6">
-                                <input type="text" class="form-control" id="eveTitle">
+                                <input type="text" class="form-control" id="eveTitle" v-model="startData.eveTitle">
                             </div>
                             <div class="col-3"></div>
                             <!-- 報名費 -->
@@ -41,7 +61,7 @@ const onSubmit = () => {
                                 <label for="eveFee" class="col-form-label">報名費</label>
                             </div>
                             <div class="col-6">
-                                <input type="number" class="form-control" id="eveFee">
+                                <input type="number" class="form-control" id="eveFee" v-model="startData.eveFee">
                             </div>
                             <div class="col-3"></div>
                             <!-- 活動類別 -->
@@ -50,10 +70,13 @@ const onSubmit = () => {
                             </div>
                             <div class="col-6">
                                 <!-- <input type="number" class="form-control" id="eveType"> -->
-                                <select class="form-select" name="" id="eveType">
-                                    <option value="">type 1</option>
+                                <select class="form-select" name="" id="eveType" v-model="startData.eveType">
+                                    <!-- <option value="">type 1</option>
                                     <option value="">type 2</option>
-                                    <option value="">type 3</option>
+                                    <option value="">type 3</option> -->
+                                    <option v-for="type in getData.eveTypes" :value="type" :key="type"> {{ type }}
+                                    </option>
+
                                 </select>
                             </div>
                             <div class="col-3"></div>
@@ -63,10 +86,12 @@ const onSubmit = () => {
                             </div>
                             <div class="col-6">
                                 <!-- <input type="number" class="form-control" id="eveType"> -->
-                                <select class="form-select" name="" id="evePrior">
-                                    <option value="">prior 1</option>
+                                <select class="form-select" name="" id="evePrior" v-model="startData.evePrior">
+                                    <!-- <option value="">prior 1</option>
                                     <option value="">prior 2</option>
-                                    <option value="">prior 3</option>
+                                    <option value="">prior 3</option> -->
+                                    <option v-for="prior in getData.evePriors" :key="prior" :value="prior"> {{ prior }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-3"></div>
@@ -74,7 +99,9 @@ const onSubmit = () => {
                             <!-- 活動地點 -->
                             <label for="eveLoc" class="mb-2 form-label">活動地點</label>
                             <!-- table of locations -->
-                            <div class="mt-0 holdplace"></div>
+                            <div class="mt-0 holdplace">
+
+                            </div>
 
                             <!-- 活動描述 -->
                             <label for="eveDesc" class="mb-2 form-label">活動描述</label>
@@ -99,7 +126,7 @@ const onSubmit = () => {
                             <label for="eveStartTime" class="mb-2 form-label">活動開始時間</label>
                             <input type="time" name="" id="eveStartTime" class="form-control"> -->
                             <InputFieldComponent Type="date" Id="eveStartDay" Label="活動開始日期"></InputFieldComponent>
-                            <InputFieldComponent Type="time" Id="eveStartTime" Label="活動開始時間" v-model="startDate">
+                            <InputFieldComponent Type="time" Id="eveStartTime" Label="活動開始時間" v-model="startData">
                             </InputFieldComponent>
                             <InputFieldComponent Type="date" Id="eveEndDay" Label="活動結束日期"></InputFieldComponent>
                             <InputFieldComponent Type="time" Id="eveEndTime" Label="活動結束時間"></InputFieldComponent>
