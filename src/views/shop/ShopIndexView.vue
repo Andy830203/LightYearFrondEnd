@@ -4,6 +4,46 @@
     import SortingSelection from '@/components/shop/SortingSelection.vue';
     import CategoryFilter from '@/components/shop/CategoryFilter.vue';
     import PriceRangeBar from '@/components/shop/PriceRangeBar.vue';
+    import PagingComponent from '@/components/shop/PagingComponent.vue';
+    import { ref, watchEffect } from 'vue';
+    const BASE_URL = import.meta.env.VITE_API_BASEURL
+    const API_URL = `${BASE_URL}/shop`
+
+    // 定義價格範圍的值
+    const terms = ref({
+        "keyword": "",
+        "categoryId": 0,
+        "sortBy": "Id",
+        "page": 1,
+        "pageSize": 9,
+    })
+
+    //API 回傳結果
+    const result = ref({
+        "totalPages": 0, 
+        "products": [] 
+    })
+
+    watchEffect(async function() {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify(terms.value),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        const datas = await response.json()
+        result.value.totalPages = datas.totalPages
+        result.value.products = datas.productsResult
+    })
+
+    const pagingHandler = function(page) {
+        terms.value.page = page
+    }
+
+    const searchHandler = function(keyword) {
+        terms.value.keyword = keyword
+    }
+
+    // const CategoryHandler = function() {}
 </script>
 
 <template>
@@ -36,10 +76,19 @@
                         <div class="col-lg-9">
                             <div class="row g-4 justify-content-center">
                                 <!-- 商品 card -->
-                                <ProductCard></ProductCard>
+                                <ProductCard 
+                                    v-for="product in result.products" 
+                                    :productId="product.productId"
+                                    :productName="product.productName"
+                                    :productCategory="product.category"
+                                    :productImage="product.productImage"
+                                    :productDescription="product.productDescription"
+                                    :productPrice="product.productPrice"
+                                />
                             </div>
                             <div class="col-12">
                                 <!-- 分頁功能區域 -->
+                                <PagingComponent @goPaging="pagingHandler" :totalPages="result.totalPages" :thePage="terms.page"></PagingComponent>
                             </div>
                         </div>
                     </div>
