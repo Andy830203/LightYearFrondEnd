@@ -107,16 +107,16 @@ m_e_onBeforeUnmount()
 
 <style lang="css" scoped>
 /* 大小變換 */
-.large-nav {
+.large-nav {/*正常使用*/
     transform: translateX(0%) scale(1);
-    transition:transform 0.8s ease-in-out;
+    transition:transform 0.8s ease-in-out,border-radius ease-in-out 1s;
 }
-.small-nav {
-    /* scale: 1; */
+.small-nav {/*地圖用*/
     top:0%; 
     left:0%;
-    transform: translateY(-23%) scale(0.4);
-    transition:transform 0.8s ease-in-out;
+    border-radius: 30px;
+    transform: translateY(-23%) scale(0.5) ;
+    transition:transform ease-in-out 1s,border-radius ease-in-out 1s;
 }
 /* 縮放end */
 </style>
