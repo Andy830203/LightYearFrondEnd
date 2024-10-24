@@ -106,28 +106,34 @@ m_e_onBeforeUnmount()
 </template>
 <style lang="css" scoped>
 /* 縮放st */
-/*放大*/
+/*放大st*/
 .large-nav {/*放大樣式*/
     border-radius: 0px;
     transform: translateX(0%) scale(1);
     transition:transform 0.8s ease-in-out  ,border-radius 1s ease-in-out ;
 }
-/*放大i 標籤用*/
-.large-nav i {
+.large-nav i {/*放大i 標籤用*/
     opacity: 1;
     font-size: 1rem;
     transition:font-size ease-in-out .5s;
 }
-.large-nav span {
+.large-nav span {/*放大span 標籤用*/
     opacity: 1;
     transition: opacity 0.5s ease-in-out;               
 }
-/*放大nav-item 標籤用 */
-.large-nav .nav-item {
+.large-nav .nav-item {/*放大nav-item 標籤用 */
     transform:translateX(0%);
     transition: transform .5s ease-in-out ;
 }
-/*縮小*/
+/*放大end*/
+/*放大hover st*/
+.nav-item:hover {/*放大nav-item 標籤用 */
+    color: aqua;
+    transform: scale(1.5);
+    transition:transform .2s ease-in-out;
+}
+/*放大hover end*/
+/*縮小st*/
 .small-nav {/*縮小樣式*/
     top:0%; 
     left:0%;
@@ -140,17 +146,19 @@ m_e_onBeforeUnmount()
     font-size: 3rem;
     transition:font-size ease-in-out .5s;
 }
-.small-nav .nav-item {/*縮小nav-item 標籤用 */
-    transform:translateX(50%);
-    transition: transform .5s ease-in-out;
-}
+
 .small-nav span {/* 縮小span用 */
     opacity: 0; 
     transition: opacity 0.5s ease-in-out;
+}
+.small-nav .nav-item {/*縮小nav-item 標籤用 */
+    transform:translateX(50%);
+    transition: transform .5s ease-in-out;
 }
 .small-nav #map_nav i{
     font-size: 3rem !important;
     transition: font-size .5s ease-in-out ;
 }
+/*縮小end*/
 /* 縮放end */
 </style>
