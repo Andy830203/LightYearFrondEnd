@@ -99,9 +99,7 @@ const router = createRouter({
 // 使用全局afterEach守衛，路由切換後恢復組件的狀態
 router.afterEach((to, from) => {
   if (to.path !== '/location') {
-    // 當離開 /location 路由時恢復 A 組件的顯示
     state.isDisabled = false;
-    console.log("離開後" + state.isDisabled);
   }
 });
 export default router

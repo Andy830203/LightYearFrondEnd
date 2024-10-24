@@ -1,5 +1,20 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue';
-
+        var mapStyle = [
+            {
+                "featureType": "all", // 作用於所有地圖元素
+                "elementType": "labels", // 隱藏所有標籤
+                "stylers": [
+                    { "visibility": "off" }
+                ]
+            },
+            {
+                "featureType": "poi", // 隱藏地標 (Points of Interest)
+                "elementType": "all",
+                "stylers": [
+                    { "visibility": "off" }
+                ]
+            }
+        ];
 export const mapHeight = ref('500px');//地圖預設值
 //地圖初始化
 export function map_init() {

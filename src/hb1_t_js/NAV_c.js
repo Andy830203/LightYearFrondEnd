@@ -4,14 +4,12 @@ const scale = ref(1); // 全局 scale 狀態
 const navbar = ref(null);
 const nav_item_dis = ref(true);
 export function m_e_move() {// 滑鼠移入事件：變大
-        console.log("滑鼠進入了");
         scale.value = 1; // large
 }
 export function m_e_leave() {// 滑鼠移出事件：變小
-        console.log("滑鼠離開了");
         if (state.isDisabled) {
             scale.value = 0.1; // small
-            nav_item_dis = false;
+            nav_item_dis.value = false;
         }
         else{
             scale.value = 1;
