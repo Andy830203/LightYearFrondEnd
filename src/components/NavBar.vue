@@ -108,54 +108,49 @@ m_e_onBeforeUnmount()
 /* 縮放st */
 /*放大*/
 .large-nav {/*放大樣式*/
+    border-radius: 0px;
     transform: translateX(0%) scale(1);
-    transition:transform 0.8s ease-in-out,border-radius ease-in-out 1s;
+    transition:transform 0.8s ease-in-out  ,border-radius 1s ease-in-out ;
 }
-.large-nav i {/*放大i 標籤用*/
+/*放大i 標籤用*/
+.large-nav i {
     opacity: 1;
-    transition: opacity 0.5s ease-in-out,font-size ease-in-out .5s;
+    font-size: 1rem;
+    transition:font-size ease-in-out .5s;
 }
-.large-nav span {/*放大span 標籤用 */
+.large-nav span {
     opacity: 1;
     transition: opacity 0.5s ease-in-out;               
 }
-.large-nav .nav-item {/*放大nav-item 標籤用 */
+/*放大nav-item 標籤用 */
+.large-nav .nav-item {
     transform:translateX(0%);
-    transition: transform ease-in-out .5s;
+    transition: transform .5s ease-in-out ;
 }
-/* .large-nav .navbar-nav i:hover{
-    color:blue;
-    font-size: 1.5rem !important;
-    transition: font-size ease-in-out .5s,color ease-in-out .5s;
-} */
-/* .large-nav .navbar-nav:hover{
-    color:blue;
-    font-size: 1.3rem !important;
-    transition: font-size ease-in-out .5s,color ease-in-out .5s;
-} */
 /*縮小*/
 .small-nav {/*縮小樣式*/
     top:0%; 
     left:0%;
     border-radius: 30px;
-    transform: translateY(-23%) scale(0.5) ;
+    transform: translateY(-23%) scale(0.6) ;
     transition:transform ease-in-out 1s,border-radius ease-in-out 1s;
 }
 .small-nav i {/*縮小i 標籤用*/
     opacity: 1; 
     font-size: 3rem;
-    transition: font-size ease-in-out .5s;
+    transition:font-size ease-in-out .5s;
 }
 .small-nav .nav-item {/*縮小nav-item 標籤用 */
     transform:translateX(50%);
-    transition: transform ease-in-out .5s;
+    transition: transform .5s ease-in-out;
 }
 .small-nav span {/* 縮小span用 */
     opacity: 0; 
+    transition: opacity 0.5s ease-in-out;
 }
 .small-nav #map_nav i{
     font-size: 3rem !important;
-    transition: font-size ease-in-out .5s;
+    transition: font-size .5s ease-in-out ;
 }
 /* 縮放end */
 </style>
