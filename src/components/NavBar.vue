@@ -7,7 +7,7 @@ m_e_onBeforeUnmount()
 </script>
 
 <template>
-<!-- 原有的 -->
+    <!-- 原有的 -->
     <!-- <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow"> -->
     <!-- 更改的 -->
     <!-- <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow bg-warning.bg-gradient" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass"> -->
@@ -82,9 +82,15 @@ m_e_onBeforeUnmount()
                             <span>活動</span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><RouterLink class="dropdown-item" :to="{name: 'eventStart'}">發起活動</RouterLink></li>
-                            <li><RouterLink class="dropdown-item" :to="{name: 'eventSignUp'}">報名活動</RouterLink></li>
-                            <li><RouterLink class="dropdown-item" :to="{name: 'eventTrack'}">追蹤活動</RouterLink></li>
+                            <li>
+                                <RouterLink class="dropdown-item" :to="{ name: 'eventStart' }">發起活動</RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink class="dropdown-item" :to="{ name: 'eventSignUp' }">報名活動</RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink class="dropdown-item" :to="{ name: 'eventTrack' }">追蹤活動</RouterLink>
+                            </li>
                         </ul>
                     </li>
                 </ul>
