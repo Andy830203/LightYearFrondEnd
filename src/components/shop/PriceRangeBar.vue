@@ -25,5 +25,4 @@ const price = ref(0);
 </template>
 
 <style scoped>
-/* 根據需要自訂樣式 */
 </style>
