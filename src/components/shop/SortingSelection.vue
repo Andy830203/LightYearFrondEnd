@@ -13,7 +13,7 @@ const handleSortChange = () => {
 
 <template>
     <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-        <label for="sortOptions">Default Sorting:</label>
+        <label for="sortOptions">排序:</label>
         <select
             id="sortOptions"
             v-model="selectedSort"

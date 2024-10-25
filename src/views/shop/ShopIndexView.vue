@@ -7,15 +7,13 @@
     import PagingComponent from '@/components/shop/PagingComponent.vue';
     import { ref, watchEffect } from 'vue';
     const BASE_URL = import.meta.env.VITE_API_BASEURL
-    const API_URL = `${BASE_URL}/shop`
+    const API_URL = `${BASE_URL}/Products/search`
 
-    // 定義價格範圍的值
     const terms = ref({
         "keyword": "",
         "categoryId": 0,
         "sortBy": "Id",
         "page": 1,
-        "pageSize": 9,
     })
 
     //API 回傳結果
@@ -28,7 +26,8 @@
         const response = await fetch(API_URL, {
             method: 'POST',
             body: JSON.stringify(terms.value),
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors'  // 啟用 CORS 模式
         })
         const datas = await response.json()
         result.value.totalPages = datas.totalPages
@@ -78,12 +77,13 @@
                                 <!-- 商品 card -->
                                 <ProductCard 
                                     v-for="product in result.products" 
-                                    :productId="product.productId"
-                                    :productName="product.productName"
-                                    :productCategory="product.category"
-                                    :productImage="product.productImage"
-                                    :productDescription="product.productDescription"
-                                    :productPrice="product.productPrice"
+                                    :productId="product.id"
+                                    :productName="product.name"
+                                    :productCategoryID="product.category"
+                                    :productCategoryName="product.categoryName"
+                                    :productImage="product.mainImageUrl"
+                                    :productDescription="product.description"
+                                    :productPrice="product.price"
                                 />
                             </div>
                             <div class="col-12">

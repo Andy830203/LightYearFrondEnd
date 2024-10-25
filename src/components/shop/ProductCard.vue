@@ -1,24 +1,36 @@
 <script setup>
+    const IMG_URL = import.meta.env.VITE_API_IMGURL
     const props = defineProps({
         productId: Number,
         productName: String,
         productImage: String,
-        productCategory: String,
+        productCategoryID: Number,
+        productCategoryName: String,
         productDescription: String,
         productPrice: Number
     });
     const desciption50 = function(description) { 
-        description.length <= 50 ? description : description.substring(0, 50) + '...';
+        // 檢查 description 是否存在
+        if (!description) {
+            return '';  // 如果 description 為 null 或 undefined，返回空字符串
+        }
+        return description.length <= 50 ? description : description.substring(0, 50) + '...';
     };
+    const imgurlProcess = function(urlFromDB) {
+        if (!urlFromDB) {
+            return '';  // 如果 description 為 null 或 undefined，返回空字符串
+        }
+        return IMG_URL + urlFromDB;
+    }
 </script>
 
 <template>
     <div class="col-md-6 col-lg-6 col-xl-4">
         <div class="rounded position-relative product-item">
             <div class="product-img">
-                <img :src="productImage" :alt="productName" class="img-fluid w-100 rounded-top" alt="">
+                <img :src="imgurlProcess(productImage)" :alt="productName" class="img-fluid w-100 rounded-top" alt="">
             </div>
-            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ productCategory }}</div>
+            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ productCategoryName }}</div>
             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                 <h4>{{productName}}</h4>
                 <p>{{desciption50(productDescription)}}</p>
