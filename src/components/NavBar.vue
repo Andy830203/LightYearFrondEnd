@@ -14,7 +14,7 @@ m_e_onBeforeUnmount()
         <div class="container-fluid">
             <!-- <a class="navbar-brand" href="/">食益光年</a> -->
             <!-- logo圖路徑之後用ref路徑指向一個變數，下面佔位子的導覽列也是 -->
-            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo圖0.png"></a>
+            <a class="navbar-brand" href="/"><img src="../assets/images/members/logo去背22.png"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -89,7 +89,7 @@ m_e_onBeforeUnmount()
                 <!-- <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     class="me-1 text-black"> -->
                     <RouterLink to="/login" class="me-1 text-black">
-                        <i class="bi bi-person-fill fs-3 text-primary"></i>
+                        <i class="bi bi-person-fill fs-3 text-primary"></i>                      
                     </RouterLink>
                 <!-- </a> -->
                 <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
