@@ -65,7 +65,7 @@
                   id="birthday"
                   type="date"
                   class="form-control"
-                  required
+                  disabled
                 />
               </div>
               <!-- 電話 -->
@@ -99,7 +99,7 @@
                   v-model="gender"
                   id="gender"
                   class="form-select"
-                  required
+                  disabled
                 >
                   <option value="">請選擇性別</option>
                   <option value="male">男</option>
@@ -116,7 +116,7 @@
                   type="email"
                   class="form-control"
                   placeholder="請輸入Email"
-                  required
+                  disabled
                 />
               </div>
               <!-- 更新按鈕 -->
@@ -220,7 +220,7 @@ onMounted(() => {
 <style scoped>
 .container {
   margin-top: 5rem;
-  background: url('@/assets/images/members/背景圖片.png'); /*設置背景圖片*/
+  background: url('@/assets/images/members/背景.png'); /*設置背景圖片*/
   /* background-color: #D1E9E9	; */
   background-size: cover; /* 背景圖片覆蓋整個區域 */
   background-position: center; /* 背景圖片居中 */
