@@ -1,5 +1,8 @@
 <script setup>
-    
+import CarouselComponent from '@/components/event/CarouselComponent.vue';
+import PlacesComponent from '@/components/event/PlacesComponent.vue';
+
+
 </script>
 
 <template>
