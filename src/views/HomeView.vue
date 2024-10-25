@@ -8,8 +8,7 @@ import PlacesComponent from '@/components/event/PlacesComponent.vue';
 <template>
     <div>
         <h2>Home Page</h2>
-        <CarouselComponent></CarouselComponent>
-        <PlacesComponent></PlacesComponent>
+
     </div>
 </template>
 
