@@ -13,20 +13,17 @@ m_e_onBeforeUnmount()
     <!-- <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow bg-warning.bg-gradient" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass"> -->
     <nav class="navbar navbar-expand-lg fixed-top navbar-light shadow bg-warning bg-gradient border border-5 border-warning" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass">
         <div class="container-fluid">
-            <!-- <a class="navbar-brand" href="/">食益光年</a> -->
             <!-- logo圖路徑之後用ref路徑指向一個變數，下面佔位子的導覽列也是 -->
             <div class="navbar-brand" style="position: absolute; z-index: 999; top: 10%;">
                 <a class="navbar-brand" href="/"><img src="../assets/images/members/logo去背22.png"></a>
             </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            <button class="navbar-toggler mx-auto" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-            <div class="collapse navbar-collapse mx-auto">
-                <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-text-top"> -->
-                <ul class="navbar-nav mb-2 mb-lg-0 justify-content-center mx-auto">
+            <div class="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-lg-0 justify-content-center mx-auto sm-mx-auto">
                     <li class="nav-item mx-3">
                             <router-link to="/location" class="nav-link">
                                 <i class="bi bi-globe-americas"></i>
@@ -53,10 +50,10 @@ m_e_onBeforeUnmount()
                             </a>
                     </li>
                     <!--會員-->
-                    <li class="nav-item dropdown mx-3">
+                    <li class="nav-item dropdown lg-mx-auto md-mx-auto">
                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                        <i style="color: black;" class="bi bi-person map_icon"></i> 
+                        <i class="bi bi-person map_icon"></i> 
                         <span>會員專區</span>
                          </a>
                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -78,7 +75,7 @@ m_e_onBeforeUnmount()
                         </li>
                      </ul>                    
                     </li>   
-                    <li class="nav-item dropdown mx-3">
+                    <li class="nav-item dropdown lg-mx-auto md-mx-auto">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-calendar-event"></i>
@@ -91,13 +88,13 @@ m_e_onBeforeUnmount()
                         </ul>
                     </li>
                 </ul>
-                <div class="d-flex" id="map_nav"><!--會員-->                     
-                            <RouterLink to="/login" class="me-1 text-black">
-                                <i class="bi bi-person-fill fs-3 text-primary"></i>
+                <div id="map_nav"><!--會員-->                     
+                            <RouterLink to="/login">
+                                <i class="bi bi-person-fill"></i>
                             </RouterLink>
                         <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                            aria-controls="offcanvasExample" class="me-1 text-black"><i
-                                class="bi bi-cart-fill fs-3 text-primary"></i></a>
+                            aria-controls="offcanvasExample">
+                            <i class="bi bi-cart-fill"></i></a>
                 </div>
             </div>
         </div>
@@ -105,6 +102,12 @@ m_e_onBeforeUnmount()
     <!-- header end -->
 </template>
 <style lang="css" scoped>
+i,span,#map_nav{
+    color: black;
+}
+#map_nav{
+    font-size: 1.5rem;
+}
 /* 縮放st */
 /*放大st*/
 .large-nav {/*放大樣式*/
@@ -112,23 +115,25 @@ m_e_onBeforeUnmount()
     transform: translateX(0%) scale(1);
     transition:transform 0.8s ease-in-out  ,border-radius 1s ease-in-out ;
 }
-.large-nav i {/*放大i 標籤用*/
+/*放大i 標籤用*/
+.large-nav i {
     opacity: 1;
-    font-size: 1rem;
     transition:font-size ease-in-out .5s;
 }
-.large-nav span {/*放大span 標籤用*/
+/*放大span 標籤用*/
+/* .large-nav span {
     opacity: 1;
     transition: opacity 0.5s ease-in-out;               
-}
+} */
 .large-nav .nav-item {/*放大nav-item 標籤用 */
+    font-size: large;
+    opacity: 1;
     transform:translateX(0%);
-    transition: transform .5s ease-in-out ;
+    transition: transform .5s ease-in-out,opacity 0.5s ease-in-out;
 }
 /*放大end*/
 /*放大hover st*/
-.nav-item:hover {/*放大nav-item 標籤用 */
-    color: aqua;
+.large-nav .nav-item:hover,.large-nav #map_nav i:hover{/*放大nav-item 標籤用 */
     transform: scale(1.5);
     transition:transform .2s ease-in-out;
 }
@@ -156,7 +161,7 @@ m_e_onBeforeUnmount()
     transition: transform .5s ease-in-out;
 }
 .small-nav #map_nav i{
-    font-size: 3rem !important;
+    font-size: 3rem;
     transition: font-size .5s ease-in-out ;
 }
 /*縮小end*/
