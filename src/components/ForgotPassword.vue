@@ -2,7 +2,7 @@
   <div class="form d-flex justify-content-center align-items-center vh-100">
     <div class="p-4 shadow form-container">
       <div class="title text-center">忘記密碼</div>
-      <p class="text-center" style="color: aliceblue;">請輸入您的 Email 地址，我們將發送一個重設密碼的鏈接給您。</p>
+      <p class="text-center" style="color:orangered;">請輸入您的 Email 地址，我們將發送一個重設密碼的鏈接給您。</p>
       <form @submit.prevent="resetPassword" class="form-vertical text-center">
         <input
           v-model="email"
@@ -61,12 +61,12 @@ const resetPassword = async () => {
 
 .form-container {
   --input-focus: #ffcc00; /* 金色 */
-  --font-color: #ffffff; /* 白色 */
-  --font-color-sub: #dddddd; /* 淺灰色 */
-  --bg-color: #1f1f1f; /* 深色背景 */
+  --font-color: #000000; /* 白色 */
+  --font-color-sub: #003060; /* 淺灰色 */
+  --bg-color: #FFDCB9; /* 深色背景 */
   --main-color: #ff6f00; /* 橘色 */
   padding: 20px;
-  background: linear-gradient(135deg, #3a3a3a, #1f1f1f); /* 漸變背景 */
+  background: linear-gradient(135deg, #FFFFAA, #FFFF37); /* 漸變背景 */
   border-radius: 15px; /* 調整邊角 */
   border: 2px solid var(--main-color);
   box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.5); /* 更深的陰影 */
