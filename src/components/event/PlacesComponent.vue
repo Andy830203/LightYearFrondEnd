@@ -58,10 +58,10 @@ const enableDragAndDrop = (tableBody, elementName) => {
                 console.log(item.key)
                 const nowIndex = item.querySelector('.nowIndex')
                 nowIndex.innerText = `${index}`
-                return { 'key': item.$refs.key, 'index': Number(nowIndex.innerText) }
+                return { 'key': item.dataset.key, 'index': Number(nowIndex.innerText) }
             })
             console.log(nowIndexPairs)
-
+            newListOrder.value = JSON.parse(JSON.stringify(nowIndexPairs))
         }
         draggedRow.style.opacity = '1'; // 拖放結束時恢復透明度
     });
@@ -75,23 +75,10 @@ const enableDragAndDrop = (tableBody, elementName) => {
 }
 
 // functions
-const initList = (data, array) => {
-    if (data.order) {
-        array = [...data.order]
-    }
-}
 
 const updateOrder = (data) => {
-
+    // send new order
 }
-
-const getNowList = computed(() => {
-    if (enableDragable) {
-
-    } else {
-
-    }
-})
 
 const initDrag = () => {
     let dragItem = 'li'
@@ -113,8 +100,9 @@ const initDrag = () => {
             </li>
         </draggableComponent> -->
         <ul v-if="enableDragable" class="DragableOn">
-            <li :draggable="enableDragable" v-for="item in demo" :key="item.id"> {{ item.order }}-{{ item.locName }}
-                [<span class="nowIndex"></span>]
+            <li :draggable="enableDragable" v-for="item in demo" :key="item.id" :data-key="item.id"> {{ item.order }}-{{
+                item.locName }}
+                [<span class="nowIndex"></span>] <!-- <span class="hiddenKey">{{ item.id }}</span> -->
             </li>
         </ul>
 
@@ -123,7 +111,7 @@ const initDrag = () => {
             </li>
         </ul>
 
-        <button class="btn btn-primary"> 更改 </button>
+        <button class="btn btn-primary" @click="updateOrder(newListOrder)"> 更改 </button>
     </div>
 </template>
 
@@ -136,5 +124,9 @@ ul.DragableOn li {
     background-color: #000;
     color: #fff;
     border: 1px solid aliceblue;
+}
+
+.hiddenKey {
+    display: none;
 }
 </style>

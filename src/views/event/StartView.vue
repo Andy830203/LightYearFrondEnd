@@ -2,6 +2,7 @@
 import CarouselComponent from '@/components/event/CarouselComponent.vue'
 import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldComponent.vue'
 import InputFieldComponent from '@/components/event/InputFieldComponent.vue'
+import PlacesComponent from '@/components/event/PlacesComponent.vue';
 import { ref } from 'vue'
 
 const getData = ref({
@@ -99,8 +100,8 @@ const onSubmit = () => {
                             <!-- 活動地點 -->
                             <label for="eveLoc" class="mb-2 form-label">活動地點</label>
                             <!-- table of locations -->
-                            <div class="mt-0 holdplace">
-
+                            <div class="mt-0">
+                                <PlacesComponent></PlacesComponent>
                             </div>
 
                             <!-- 活動描述 -->
