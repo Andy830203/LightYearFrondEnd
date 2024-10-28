@@ -14,7 +14,7 @@ m_e_onBeforeUnmount()
     <nav class="navbar navbar-expand-lg fixed-top navbar-light shadow bg-warning bg-gradient border border-5 border-warning" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass">
         <div class="container-fluid">
             <!-- logo圖路徑之後用ref路徑指向一個變數，下面佔位子的導覽列也是 -->
-            <div class="navbar-brand" style="position: absolute; z-index: 999; top: 10%;">
+            <div class="navbar-brand map_img" style="position: absolute; z-index: 999; top: 10%;">
                 <a class="navbar-brand" href="/"><img src="../assets/images/members/logo去背22.png"></a>
             </div>
             <button class="navbar-toggler mx-auto" type="button" data-bs-toggle="collapse"
@@ -94,13 +94,21 @@ m_e_onBeforeUnmount()
                         </ul>
                     </li>
                 </ul>
-                <div id="map_nav"><!--會員-->                     
-                            <RouterLink to="/login">
+                <div id="map_nav"><!--會員-->
+                            <!-- <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="bi bi-person-fill"></i>
+                            </button>              -->
+                            <RouterLink to="/login"  data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <i class="bi bi-person-fill"></i>
                             </RouterLink>
                         <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
                             aria-controls="offcanvasExample">
                             <i class="bi bi-cart-fill"></i></a>
+                            <!-- Scrollable modal -->
+                    <!-- Button trigger modal -->
+                    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Launch demo modal
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -137,11 +145,21 @@ i,span,#map_nav{
     transform:translateX(0%);
     transition: transform .5s ease-in-out,opacity 0.5s ease-in-out;
 }
+.map_img:hover{
+    transform: scale(1.05);
+    transition:transform .2s ease-in-out;
+}
 /*放大end*/
 /*放大hover st*/
 .large-nav .nav-item:hover,.large-nav #map_nav i:hover{/*放大nav-item 標籤用 */
     transform: scale(1.5);
     transition:transform .2s ease-in-out;
+}
+.nav-link:hover i,.nav-link:hover span,#map_nav:hover i{
+    color:aqua;
+    font-weight: bold;
+    transform: scale(1.5);
+    transition:transform .5s ease-in-out;
 }
 /*放大hover end*/
 /*縮小st*/
