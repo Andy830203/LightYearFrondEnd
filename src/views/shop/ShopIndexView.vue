@@ -55,11 +55,14 @@
         terms.value.page = 1;
     };
 
-    // const CategoryHandler = function() {}
+    const handleCategorySelected = (categoryId) => {
+    terms.value.categoryId = categoryId;
+    terms.value.page = 1; // Reset to the first page
+};
 </script>
 
 <template>
-    <div class="container-fluid product py-5">
+    <div class="container-fluid product">
         <div class="container py-5">
             <h1 class="mb-4">愛心商城</h1>
             <div class="row g-4">
@@ -67,7 +70,7 @@
                     <div class="row g-4">
                         <div class="col-xl-3">
                             <!-- 搜尋 -->
-                            <SearchBar></SearchBar>
+                            <SearchBar @searchPerformed="searchHandler"></SearchBar>
                         </div>
                         <div class="col-6"></div>
                         <div class="col-xl-3">
@@ -79,9 +82,9 @@
                         <div class="col-lg-3">
                             <div class="row g-4">
                                 <!-- 類別選取 -->
-                                 <CategoryFilter></CategoryFilter>
+                                <CategoryFilter @categorySelected="handleCategorySelected" />
                                 <!-- 篩選器 -->
-                                 <PriceRangeBar></PriceRangeBar>
+                                <PriceRangeBar></PriceRangeBar>
                             </div>
                             
                         </div>

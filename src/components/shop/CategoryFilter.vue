@@ -1,27 +1,36 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+const emit = defineEmits();
+const categories = ref([]);
+const BASE_URL = import.meta.env.VITE_API_BASEURL
+// 從API獲取分類
+// Fetch categories on mount
+onMounted(async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/ProductCategories`);
+        categories.value = await response.json();
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+    }
+});
 
-// 模擬從 API 或資料庫獲取的分類數據
-const categories = ref([
-    { name: 'Apples', icon: 'fas fa-apple-alt', count: 3 },
-    { name: 'Oranges', icon: 'fas fa-apple-alt', count: 5 },
-    { name: 'Strawberries', icon: 'fas fa-apple-alt', count: 2 },
-    { name: 'Bananas', icon: 'fas fa-apple-alt', count: 8 },
-    { name: 'Pumpkins', icon: 'fas fa-apple-alt', count: 5 }
-]);
+// Emit category selection to parent
+const selectCategory = function(categoryId) {
+    emit('categorySelected', categoryId); // Send selected category ID to parent component
+};
 </script>
 
 <template>
     <div class="col-lg-12">
         <div class="mb-3">
-            <h4>Categories</h4>
+            <h4>商品分類</h4>
             <ul class="list-unstyled product-categorie">
                 <li v-for="(category, index) in categories" :key="index">
                     <div class="d-flex justify-content-between product-name">
-                        <a href="#">
-                            <i :class="category.icon + ' me-2'"></i>{{ category.name }}
+                        <a href="#" @click.prevent="selectCategory(category.id)">
+                            {{ category.name }}
                         </a>
-                        <span>({{ category.count }})</span>
+                        <span>({{ category.amount }})</span>
                     </div>
                 </li>
             </ul>
