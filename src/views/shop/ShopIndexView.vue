@@ -30,9 +30,9 @@
                 headers: { 'Content-Type': 'application/json' },
                 mode: 'cors'  // 啟用 CORS 模式
             })
-            const datas = await response.json()
-            result.value.totalPages = datas.totalPages
-            result.value.products = datas.productsResult
+            const datas = await response.json();
+            result.value.totalPages = datas.totalPages;
+            result.value.products = datas.productsResult;
         }
         catch (error) {
             console.error('Error fetching sorted products:', error);
@@ -41,11 +41,11 @@
     })
 
     const pagingHandler = function(page) {
-        terms.value.page = page
+        terms.value.page = page;
     }
 
     const searchHandler = function(keyword) {
-        terms.value.keyword = keyword
+        terms.value.keyword = keyword;
     }
 
     // 監聽排序變更
@@ -64,7 +64,7 @@
 <template>
     <div class="container-fluid product">
         <div class="container py-5">
-            <h1 class="mb-4">愛心商城</h1>
+            <!-- <h1 class="mb-4">愛心商城</h1> -->
             <div class="row g-4">
                 <div class="col-lg-12">
                     <div class="row g-4">
@@ -102,7 +102,7 @@
                                     :productPrice="product.price"
                                 />
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 mt-3">
                                 <!-- 分頁功能區域 -->
                                 <PagingComponent @goPaging="pagingHandler" :totalPages="result.totalPages" :thePage="terms.page"></PagingComponent>
                             </div>

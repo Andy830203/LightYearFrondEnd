@@ -17,8 +17,8 @@
         return description.length <= 50 ? description : description.substring(0, 50) + '...';
     };
     const imgurlProcess = function(urlFromDB) {
-        if (!urlFromDB) {
-            return '';  // 如果 description 為 null 或 undefined，返回空字符串
+        if (!urlFromDB || urlFromDB == 'NoPicture') {
+            return IMG_URL + "/images/non-found.jpg";  // 找不到圖片
         }
         return IMG_URL + urlFromDB;
     }

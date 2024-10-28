@@ -9,7 +9,9 @@
     const clickHandler = page=>{
         //alert('click' + page)
         //觸發父組件的事件，並傳遞資料給它
-        emit('goPaging', page)
+        if (page) {
+        emit('goPaging', page);
+    }
     }
 
     const pageNumbers = computed(() => {
@@ -70,7 +72,7 @@
 
     <nav aria-label="Page navigation">
         <ul class="pagination pagination-sm">
-            <li v-for="(page, idx) in pageNumbers" :key="idx" class="page-item" :class="{ 'disabled': page.text === '...' }">
+            <li v-for="(page, idx) in pageNumbers" :key="idx" class="page-item m-1" :class="{ 'disabled': page.text === '...', 'active': page.page === thePage }">
                 <a class="page-link" href="#" @click.prevent="clickHandler(page.page)" v-if="page.text !== '...'">
                 {{ page.text }}
                 </a>
