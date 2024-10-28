@@ -1,20 +1,21 @@
 <script setup>
 import { ref, watch } from 'vue';
 
-// Define the maxPrice prop from the parent
 const props = defineProps({
     maxPrice: {
         type: Number,
-        default: 500 // Default maximum
+        required: true
     }
 });
 
-// Set the initial price to the maxPrice
+const emit = defineEmits(['priceChanged']);
+
+// 初始化價格選擇條值為最大值
 const price = ref(props.maxPrice);
 
-// Watch for changes in maxPrice and set price to max when maxPrice updates
-watch(() => props.maxPrice, (newMaxPrice) => {
-    price.value = newMaxPrice;
+// 監聽價格選擇條值變化
+watch(price, (newPrice) => {
+    emit('priceChanged', newPrice); // 當價格變化時發出事件
 });
 </script>
 
@@ -25,16 +26,11 @@ watch(() => props.maxPrice, (newMaxPrice) => {
             <input
                 type="range"
                 class="form-range w-100"
-                id="rangeInput"
-                name="rangeInput"
                 min="0"
                 :max="maxPrice"
                 v-model="price"
             />
-            <output id="amount" name="amount">{{ price }}</output>
+            <output>{{ price }}</output>
         </div>
     </div>
 </template>
-
-<style scoped>
-</style>
