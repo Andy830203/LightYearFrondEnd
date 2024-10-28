@@ -107,14 +107,16 @@ export function map_init() {
             return response.json();
           })
           .then(jsondata => {
-            // console.log(jsondata.features[0].properties.COUNTY);//要顯示名稱
+            console.log(jsondata.features[0].properties.COUNTY);//要顯示名稱
             const concenter = 'src/hb1_t_js/map_jsonfile/contrycenter.json';
             fetch(concenter).then(c_res=>{
               return c_res.json();
             })
             .then(c_c=>{//c_c是contrycenter裡的資料
+              //console.log("c_c城市名:"+c_c);
               const test = jsondata.features[0].properties.COUNTY;//要顯示名稱
-              console.log("經度:"+c_c[test][0]["lng"]);
+              //console.log("geojson城市名:"+test)
+              //console.log("經度:"+c_c[test][0]["lng"]);
             })
           })
         //擷取json資料end
