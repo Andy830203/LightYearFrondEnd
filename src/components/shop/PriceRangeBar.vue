@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch} from 'vue';
 
 const props = defineProps({
     maxPrice: {
@@ -11,7 +11,7 @@ const props = defineProps({
 const emit = defineEmits(['priceChanged']);
 
 // 初始化價格選擇條值為最大值
-const price = ref(props.maxPrice);
+const price = ref(0);
 
 // 監聽價格選擇條值變化
 watch(price, (newPrice) => {
@@ -22,7 +22,8 @@ watch(price, (newPrice) => {
 <template>
     <div class="col-lg-12">
         <div class="mb-3">
-            <h4 class="mb-2">Price</h4>
+            <output>{{ price }}</output>
+            <h6 class="mb-2">元以上的商品</h6>
             <input
                 type="range"
                 class="form-range w-100"
@@ -30,7 +31,7 @@ watch(price, (newPrice) => {
                 :max="maxPrice"
                 v-model="price"
             />
-            <output>{{ price }}</output>
+            
         </div>
     </div>
 </template>

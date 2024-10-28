@@ -49,7 +49,7 @@ onMounted(async () => {
     const response = await fetch(`${BASE_URL}/Products/maxPrice`);
     const data = await response.json();
     maxPrice.value = data.maxPrice;
-    terms.value.priceThreshold = maxPrice.value;
+    terms.value.priceThreshold = 0;
     await fetchProducts();
 });
 
