@@ -30,7 +30,7 @@
             <div class="product-img">
                 <img :src="imgurlProcess(productImage)" :alt="productName" class="img-fluid w-100 rounded-top" alt="">
             </div>
-            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ productCategoryName }}</div>
+            <div class="text-white bg-info px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ productCategoryName }}</div>
             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                 <h4>{{productName}}</h4>
                 <p>{{desciption50(productDescription)}}</p>
@@ -44,5 +44,9 @@
 </template>
 
 <style lang="css" scoped>
-    
+    .product-img img {
+        height: 220px; /* Set a fixed height */
+        object-fit: cover; /* Maintain aspect ratio */
+        width: 100%; /* Full width for consistency */
+    }
 </style>

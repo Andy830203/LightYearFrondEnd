@@ -1,8 +1,21 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
-// 定義價格範圍的值
-const price = ref(0);
+// Define the maxPrice prop from the parent
+const props = defineProps({
+    maxPrice: {
+        type: Number,
+        default: 500 // Default maximum
+    }
+});
+
+// Set the initial price to the maxPrice
+const price = ref(props.maxPrice);
+
+// Watch for changes in maxPrice and set price to max when maxPrice updates
+watch(() => props.maxPrice, (newMaxPrice) => {
+    price.value = newMaxPrice;
+});
 </script>
 
 <template>
@@ -15,10 +28,9 @@ const price = ref(0);
                 id="rangeInput"
                 name="rangeInput"
                 min="0"
-                max="500"
+                :max="maxPrice"
                 v-model="price"
             />
-            <!-- :max="maxPrice"動態調整max -->
             <output id="amount" name="amount">{{ price }}</output>
         </div>
     </div>
