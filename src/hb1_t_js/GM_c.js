@@ -1,40 +1,9 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 //地圖所需元件St(靜態)
-const mapStyle = [
+const zoom8_mapStyle = [
   {
     "featureType": "administrative",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#ffeb3b"
-      },
-      {
-        "saturation": -5
-      },
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "labels",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape",
+    "elementType": "geometry",
     "stylers": [
       {
         "visibility": "off"
@@ -43,7 +12,59 @@ const mapStyle = [
   },
   {
     "featureType": "poi",
-    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  }
+];
+const zoom12_mapstyle = [
+  {
+    "featureType": "administrative",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.icon",
     "stylers": [
       {
         "visibility": "off"
@@ -79,16 +100,16 @@ export function map_init() {
         const map = new google.maps.Map(document.getElementById("map"), {//佈署地圖
           zoom: 8.2,//地圖縮放倍率
           center: { lat: 23.6978, lng: 120.9605 },//台灣正中心
-          //前金區緯經度lat: 22.6273, lng: 120.3014
-          styles: mapStyle,
+          styles: zoom8_mapStyle,//不顯示任何label
           disableDefaultUI: true,//停用ui
           //以下設定縮放限制
-          minZoom: 9,
-          maxZoom: 10,
-          restriction: {
+          scrollwheel: false, // 禁用滾輪縮放
+          disableDoubleClickZoom: true, // 禁用雙擊縮放
+          zoomControl: false, // 禁用縮放控制按鈕
+          restriction: {//設定平移範圍
             latLngBounds: {
-              north: 26,
-              south: 21,
+              north: 27,
+              south: 20,
               east: 123,
               west: 119,
             },
@@ -112,15 +133,12 @@ export function map_init() {
               })
                 .then(c_c => {//c_c是contrycenter裡的資料
                   const c_c_ctname = jsondata.features[0].properties.COUNTY;//要顯示名稱
-                  // 設定地名與數值
-                  const c_center = { lat: 23.6978, lng: 120.9605 };
-                  const someValue = 1; // 假設數值隨機產生
-                  //console.log("geojson城市名:"+test)
-                  console.log("城市名:" + c_c_ctname + "," + "經度:" + c_c[c_c_ctname][0]["lng"] + "." + "緯度:" + c_c[c_c_ctname][0]["lat"]);
+                  // console.log("城市名:" + c_c_ctname + "," + "經度:" + c_c[c_c_ctname][0]["lng"] + "." + "緯度:" + c_c[c_c_ctname][0]["lat"]);
                 })
             })
           //擷取json資料end
           filenum++;
+          console.log(map.zoom)
         })
       //邊框樣式設定
       map.data.setStyle({
@@ -142,9 +160,29 @@ export function map_init() {
       map.data.addListener('click', function (event) {
         const feature_COUNTY_ID = event.feature.Fg.COUNTY_ID;//取得geojson裡COUNTY_ID
         const feature_cityname = event.feature.Fg.COUNTY;//取得geojson裡COUNTY_ID
-        alert("縣市id:" + feature_COUNTY_ID + "\n" + "縣市名:" + feature_cityname);
-        map.setZoom(14)
+        //alert("縣市id:" + feature_COUNTY_ID + "\n" + "縣市名:" + feature_cityname + "\n" + "目前zoom:" + map.zoom);
+        const map_zoom_v = map.getZoom();//有響應
+        if (map_zoom_v < 12) {//進入區域模式
+          removeGeoJson();//移除樣式
+          map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`);
+          map.setZoom(12);
+          console.log("進入區域檢視");
+        } else if (map_zoom_v === 12) {//區域模式/縣市模式
+          map.setZoom(16);
+          console.log("進入檢視活動模式");
+        } else if (map_zoom_v > 12) {//檢視活動模式
+          console.log("檢視活動模式");
+        }
       });
+
+      // 移除 GeoJSON 資料
+      function removeGeoJson() {
+        map.data.forEach(function (feature) {
+          map.data.remove(feature)
+        })
+      }
+      
+      // zoom_changed當地圖縮放等級的屬性變更後，會引發此事件
     };
     updateMapHeight(); // 初次掛載時設置高度
     window.addEventListener('resize', updateMapHeight); // 監聽視窗大小變化
