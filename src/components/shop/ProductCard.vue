@@ -33,10 +33,10 @@
             <div class="text-white bg-info px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ productCategoryName }}</div>
             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                 <h4>{{productName}}</h4>
-                <p>{{desciption50(productDescription)}}</p>
+                <p>{{productDescription !== null ? desciption50(productDescription): "無商品描述"}}</p>
                 <div class="d-flex justify-content-between flex-lg-wrap">
-                    <p class="text-dark fs-5 fw-bold mb-0">{{productPrice}}</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>加入購物車</a>
+                    <p class="text-dark fs-5 fw-bold mb-0">{{ productPrice !== null ? productPrice : "未標示價格" }}</p>
+                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>查看詳細</a>
                 </div>
             </div>
         </div>
