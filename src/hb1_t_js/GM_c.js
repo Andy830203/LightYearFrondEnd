@@ -168,7 +168,20 @@ export function map_init() {
           map.setZoom(12);
           console.log("進入區域檢視");
         } else if (map_zoom_v === 12) {//區域模式/縣市模式
-          map.setZoom(16);
+          removeGeoJson();//移除樣式
+          console.log(event.feature.Fg.TOWNNAME);//取得點擊區名稱
+          map.data.setStyle((feature) => {
+            const townName = feature.getProperty("TOWNNAME"); // 取得 "TOWNNAME" 屬性
+            if (townName === event.feature.Fg.TOWNNAME) { // 只顯示指定的區域（小港區）
+              return {
+                visible: true,
+                fillColor: "blue",
+                strokeWeight: 1
+              };
+            }
+            return { visible: false }; // 隱藏其他區域
+          });
+          //map.setZoom(16);
           console.log("進入檢視活動模式");
         } else if (map_zoom_v > 12) {//檢視活動模式
           console.log("檢視活動模式");
