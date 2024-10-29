@@ -28,7 +28,7 @@ const result = ref({
 const maxPrice = ref(0);
 
 const fetchProducts = async () => {
-    console.log("request")
+    // console.log("request")
     try {
         const response = await fetch(API_URL, {
             method: 'POST',

@@ -43,9 +43,10 @@ const router = createRouter({
     },
     {
       //http://localhost:5173/itemDetails
-      path: '/itemDetails',
+      path: '/itemDetails/:id',
       component: ItemView,
       name: 'itemDetails',
+      props: true,  // 允許使用路由參數作為組件的 props
     },
     {
       // http://localhost:5173/start
