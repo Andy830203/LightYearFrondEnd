@@ -1,8 +1,15 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, computed} from 'vue';
 import { useRoute } from 'vue-router';
+import { useMemberStore } from '@/stores/Member';
+import Swal from 'sweetalert2';
 
 const IMG_URL = import.meta.env.VITE_API_IMGURL
+const BASE_URL = import.meta.env.VITE_API_BASEURL;
+
+// Use member store to track login status
+const memberStore = useMemberStore();
+const isLoggedIn = computed(() => memberStore.isLoggedIn);
 
 // 使用 props 接收 id
 const props = defineProps({
@@ -10,11 +17,11 @@ const props = defineProps({
 });
 
 const productId = props.id;
-const route = useRoute();
+// const route = useRoute();
 // const productId = route.params.id; // 從路由獲取商品 ID
 // console.log(productId);
 const productDetails = ref(null);
-const BASE_URL = import.meta.env.VITE_API_BASEURL;
+
 
 // For quantity control
 const quantity = ref(0);
@@ -32,6 +39,50 @@ const fetchProductDetails = async function() {
   } 
   catch (error) {
     console.error('Error fetching product details:', error);
+  }
+};
+
+// Add to cart function
+const addToCart = async () => {
+  if (!isLoggedIn.value) {
+    // Show login prompt if not logged in
+    await Swal.fire({
+      icon: 'info',
+      title: '請先登入',
+      text: '您需要登入後才能將商品加入購物車。',
+    });
+    return;
+  }
+
+  // Prepare cart item data
+  const cartItemData = {
+    BuyerId: memberStore.member.id,
+    PId: productId,
+    Quantity: quantity.value,
+  };
+
+  // Send request to add item to cart
+  try {
+    const response = await fetch(`${BASE_URL}/cartItems/AddToCart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cartItemData),
+      mode: 'cors'
+    });
+    if (!response.ok) throw new Error('Failed to add item to cart');
+
+    await Swal.fire({
+      icon: 'success',
+      title: '商品已加入購物車！',
+      text: `已將 ${productDetails.value.name} 加入您的購物車。`,
+    });
+  } catch (error) {
+    console.error('Error adding item to cart:', error);
+    await Swal.fire({
+      icon: 'error',
+      title: '錯誤',
+      text: '加入購物車時發生問題，請稍後再試。',
+    });
   }
 };
 
@@ -125,8 +176,11 @@ onMounted(fetchProductDetails);
                                     </button>
                                 </div>
                             </div>
-                            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
-                            </a>
+                            <div>
+                                <button @click="addToCart" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
