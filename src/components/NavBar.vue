@@ -44,10 +44,10 @@ m_e_onBeforeUnmount()
                             </a>
                     </li>
                     <li class="nav-item mx-3">
-                        <a class="nav-link" href="./form.html">
-                            <i class="bi bi-shop-window"></i>
-                            <span>商城</span>
-                            </a>
+                        <router-link to="/shop" class="nav-link">
+                                <i class="bi bi-shop-window"></i>
+                                <span>愛心商城</span>
+                        </router-link>
                     </li>
                     <!--會員-->
                     <li class="nav-item dropdown lg-mx-auto md-mx-auto">
