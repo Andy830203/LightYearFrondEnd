@@ -1,283 +1,366 @@
+
+複製程式碼
 <template>
-  <div class="form d-flex justify-content-center align-items-center vh-100">
-    <div class="p-4 shadow form-container">
-      <button class="close-button" @click="closeLogin">&times;</button>
-      <div class="title text-center">Welcome,<br><span>sign up to continue</span></div>
-      <form @submit.prevent="login" class="form-vertical">
-        <input 
-          v-model="username" 
-          name="username" 
-          placeholder="帳號" 
-          type="text" 
-          class="input mb-3" 
-          required
-        />
-        <input 
-          v-model="password" 
-          name="password" 
-          placeholder="密碼" 
-          type="password" 
-          class="input mb-3" 
-          required
-        />
-        <button type="submit" class="button-confirm mt-3">Let’s go →</button>
-        <div class="text-center mt-3">
-          <router-link to="/forgotpassword" class="text-decoration-none">忘記密碼</router-link>
+  <div id="auth-container">
+    <div class="main">
+      <!-- 隱藏的 checkbox，作為切換註冊和登入表單的觸發器 -->
+      <input type="checkbox" id="chk" aria-hidden="true" />
+      <input type="checkbox" id="forgot-pwd" aria-hidden="true" />
+
+      <!-- 註冊表單 -->
+      <div class="signup" v-if="!isLoggedIn">
+        <form @submit.prevent="register">
+          <label>註冊</label>
+          <input type="text" v-model="registerUsername" placeholder="用戶姓名" required />
+          <input type="email" v-model="registerEmail" placeholder="電子郵件" required />
+          <input type="password" v-model="registerPassword" placeholder="密碼" required />
+          <input type="password" v-model="registerConfirmPassword" placeholder="確認密碼" required />
+          <button type="submit">註冊</button>
+        </form>
+      </div>
+
+      <!-- 登入表單 -->
+      <div class="login" v-if="!isLoggedIn">
+        <form @submit.prevent="login">
+          <label for="chk" aria-hidden="true">登入</label>
+          <input type="email" v-model="loginEmail" placeholder="電子郵件" required />
+          <input type="password" v-model="loginPassword" placeholder="密碼" required />
+          <button type="submit">登入</button>
+        </form>
+
+        <!-- 第三方登入按鈕 -->
+        <div class="third-party-login">
+          <button @click="facebookLogin" class="auth-button">
+            <i class="fab fa-facebook"></i>
+          </button>
+          <button @click="googleLogin" class="auth-button">
+            <i class="fab fa-google"></i>
+          </button>
         </div>
-        <div class="text-center mt-2">
-          <router-link to="/register" class="text-decoration-none">還沒有帳號？註冊</router-link>
-        </div>
-      </form>
-      <hr class="my-4">
-      <div class="login-with">
-        <div @click="facebookLogin" class="button-log">
-          <i class="fa-brands fa-facebook"></i>
-        </div>
-        <div @click="googleLogin" class="button-log">
-          <i class="fa-brands fa-google"></i>
-        </div>
+        <!-- <label for="forgot-pwd" class="forgot-password">忘記密碼？</label> -->
+      </div>
+
+      <!-- 忘記密碼表單 -->
+      <div class="forgot-password-container" v-if="!isLoggedIn">
+        <form @submit.prevent="resetPassword">
+          <label for="forgot-pwd" aria-hidden="true">忘記密碼</label>
+          <input type="email" v-model="resetEmail" placeholder="輸入註冊電子郵件" required />
+          <button type="submit">送出重設請求</button>
+        </form>
+      </div>
+
+      <!-- 已登入狀態顯示登出按鈕 -->
+      <div v-else>
+        <p>已登入，歡迎使用！</p>
+        <button @click="logout">登出</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router'; // 假設你要使用路由導向
+import { ref, computed, onMounted } from 'vue';
+import Swal from 'sweetalert2';
+import { useMemberStore } from '@/stores/Member';
 
-// 定義 reactive 變數
-const username = ref(''); // 帳號
-const password = ref('');
+const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
-// 定義方法
-const closeLogin = () => {
-  emit('close'); // 使用 emit 來通知父組件
-};
+const loginEmail = ref('');
+const loginPassword = ref('');
+const registerUsername = ref('');
+const registerEmail = ref('');
+const registerPassword = ref('');
+const registerConfirmPassword = ref('');
+const resetEmail = ref('');
 
-// 登入方法
-const login = async () => {
+// 取得 member store 實例
+const memberStore = useMemberStore();
+const isLoggedIn = computed(() => memberStore.isLoggedIn); // 判斷是否已登入
+
+// 登入功能
+async function login() {
   try {
-    const response = await fetch('/api/login', {
+    const response = await fetch(`${BASE_URL}/Members/Login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
-        username: username.value, // 帳號
-        password: password.value
-      })
+        email: loginEmail.value,
+        password: loginPassword.value
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors'
     });
+
+    // 檢查回應狀態碼，如果不是 200，則拋出錯誤
+    if (!response.ok) {
+      throw new Error('登入失敗，請檢查帳號密碼');
+    }
 
     const result = await response.json();
+    console.log("登入成功", result);
 
-    if (result.success) {
-      alert('登入成功');
-    } else {
-      alert('登入失敗，請稍後再試');
-    }
-  } catch (error) {
-    console.error('登入失敗', error);
-  }
-};
+    // 更新到 member store 並存入 localStorage
+    memberStore.member = { id: result.id, name: result.name};
+    localStorage.setItem('member', JSON.stringify({ id: result.id }));
 
-// Facebook 登入
-const facebookLogin = () => {
-  FB.login(response => {
-    if (response.authResponse) {
-      FB.api('/me', { fields: 'name,email' }, async (userInfo) => {
-        try {
-          const response = await fetch('/api/login/facebook', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: userInfo.email,
-              name: userInfo.name,
-              facebookId: response.authResponse.userID
-            })
-          });
-
-          const result = await response.json();
-
-          if (result.success) {
-            alert('登入成功');
-          } else {
-            alert('登入失敗，請稍後再試');
-          }
-        } catch (error) {
-          console.error('Facebook 登入失敗', error);
-        }
-      });
-    } else {
-      alert('登入被取消');
-    }
-  }, { scope: 'email' });
-};
-
-// Google 登入
-const googleLogin = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider)
-    .then(async (result) => {
-      const user = result.user;
-      try {
-        const response = await fetch('/api/login/google', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: user.email,
-            name: user.displayName,
-            googleId: user.uid
-          })
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          alert('登入成功');
-        } else {
-          alert('登入失敗，請稍後再試');
-        }
-      } catch (error) {
-        console.error('Google 登入失敗', error);
-      }
-    })
-    .catch((error) => {
-      console.error('Google 登入失敗', error);
+    // 使用 SweetAlert 顯示成功提示
+    await Swal.fire({
+      icon: 'success',
+      title: '登入成功',
+      text: '歡迎回來！'
     });
-};
+
+    // 導向到 MemberInFo 頁面
+    window.location.href = "/MemberInFo";
+
+  } catch (error) {
+    console.error("登入發生錯誤", error);
+    
+    // 使用 SweetAlert 顯示錯誤提示
+    await Swal.fire({
+      icon: 'error',
+      title: '錯誤',
+      text: error.message
+    });
+  }
+}
+
+// 登出功能
+function logout() {
+  memberStore.member = null;  // 清除 Pinia 狀態
+  localStorage.removeItem('member');  // 清除 localStorage 中的 member
+  window.location.reload();  // 重整頁面以更新顯示
+}
+
+
+
+async function register() {
+  
+  //確認密碼變數
+  const password = registerPassword.value;
+
+  // 密碼正則驗證條件（至少 8 個字元，包含至少一個大寫字母和一個數字）
+  const passwordPattern = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;;
+
+// 驗證密碼格式
+if (!passwordPattern.test(password)) {
+  alert('密碼至少要包含 8 個字元，並且包含字母和數字');
+  return;
+}
+
+  //
+  if(registerPassword.value !== registerConfirmPassword.value) {
+    alert('密碼不一致，請再次確認!!')
+    return; //停止後請求
+  }
+
+  // 註冊邏輯
+  try {
+    const response = await fetch(`${BASE_URL}/Members/Register`, {
+      method: 'POST',
+      body: JSON.stringify({
+        Name: registerUsername.value,
+        Email: registerEmail.value,
+        Password: registerPassword.value,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors'
+    });
+
+    if (response.ok) 
+    {
+      alert('註冊成功');
+    }
+    else
+    {
+      alert('註冊失敗')
+    }   
+  } catch (error) 
+  {
+    console.error("註冊時發生錯誤", error);    
+  }
+}
+
+async function resetPassword() {
+  // 重設密碼邏輯
+}
+
+function facebookLogin() {
+  // Facebook 登入邏輯
+}
+
+function googleLogin() {
+  // Google 登入邏輯
+}
 </script>
 
-
 <style scoped>
-.form {
+/* 設置背景和基本樣式 */
+body {
+  margin: 0;
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* 確保整個視窗的高度 */
+  min-height: 100vh;
+  font-family: 'Jost', sans-serif;
+  background: linear-gradient(to bottom, #ff7e29, #ffde00);
 }
 
-.form-container {
-  --input-focus: #ffcc00; /* 金色 */
-  --font-color: #000000	; /* 白色 */
-  --font-color-sub: #003060	; /* 淺灰色 */
-  --bg-color: #FFDCB9; /* 深色背景 */
-  --main-color: #000000; /* 橘色 */
-  padding: 20px;
-  background: linear-gradient(135deg, #FFD306, #C6A300); /* 漸變背景 */
-  border-radius: 15px; /* 調整邊角 */
-  border: 2px solid var(--main-color);
-  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.5); /* 更深的陰影 */
-  width: 350px; /* 調整寬度 */
-  position: relative; /* 相對定位以便放置關閉按鈕 */
-}
-
-.close-button {
-  position: absolute; /* 絕對定位 */
-  top: 10px; /* 距上邊距 */
-  right: 10px; /* 距右邊距 */
-  background: transparent; /* 背景透明 */
-  border: none; /* 無邊框 */
-  color: var(--font-color); /* 字體顏色 */
-  font-size: 20px; /* 字體大小 */
-  cursor: pointer; /* 指針效果 */
-}
-
-.close-button:hover {
-  color: var(--input-focus); /* 滑鼠懸停變色 */
-}
-
-.title {
-  color: var(--font-color);
-  font-weight: 900;
-  font-size: 24px;
-  margin-bottom: 25px;
-}
-
-.title span {
-  color: var(--font-color-sub);
-  font-weight: 600;
-  font-size: 18px;
-}
-
-.form-vertical {
+#auth-container {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.input {
-  width: 100%; /* 全寬 */
-  height: 40px;
-  border-radius: 5px;
-  border: 2px solid var(--main-color);
-  background-color: var(--bg-color);
-  box-shadow: 4px 4px var(--main-color);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--font-color);
-  padding: 5px 10px;
-  outline: none;
-}
-
-.input::placeholder {
-  color: var(--font-color-sub);
-  opacity: 0.8;
-}
-
-.input:focus {
-  border: 2px solid var(--input-focus);
-}
-
-.login-with {
-  display: flex;
-  gap: 20px;
   justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
-.button-log {
+.main {
+  width: 380px;
+  height: 595px;
+  background-color: #ff9f1a;
+  border-radius: 10px;
+  box-shadow: 5px 20px 50px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+#chk, #forgot-pwd {
+  display: none;
+}
+
+/* 註冊表單樣式 */
+.signup {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+label {
+  color: #fff;
+  font-size: 2.3em;
+  justify-content: center;
+  display: flex;
+  margin: 50px;
+  font-weight: bold;
   cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+
+input {
+  width: 60%;
+  background: #fff;
+  display: flex;
+  margin: 20px auto;
+  padding: 12px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+}
+
+input:active,
+input:focus {
+  border: 2px solid #ff7e29;
+}
+
+button {
+  width: 60%;
+  height: 40px;
+  margin: 10px auto;
+  display: block;
+  color: #fff;
+  background: #ff7e29;
+  font-size: 1em;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  transition: 0.1s ease-in;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: transparent;
+  border: 3px solid #ff7e29;
+  box-shadow: 0 0 10px #ffde00, 0 10px 15px #ffde00;
+}
+
+/* 登入表單樣式 */
+.login {
+  height: 460px;
+  background: #ffcc00;
+  border-radius: 60% / 10%;
+  transform: translateY(-220px);
+  transition: 0.8s ease-in-out;
+}
+
+.login label {
+  color: #000;
+  transform: scale(0.6);
+}
+/* 控制上下邏輯 st */
+#chk:checked ~ .login {/* login往上至可視 */
+  transform: translateY(-550px);
+}
+#chk:checked ~ .forgot-password-container{/* forgot-password-container按鈕往上至可視 */
+  transform: translateY(-700px);
+}
+#forgot-pwd:checked ~ .forgot-password-container {/* forgot-password-container往上至可視 */
+  transform: translateY(-1050px);
+}
+#forgot-pwd:checked ~ .login label {
+  transform: scale(0.6);
+}
+
+#chk:checked ~ .signup label {
+  transform: scale(0.6);
+}
+/* 控制上下邏輯 end */
+/* 忘記密碼連結樣式 */
+.forgot-password {
+  display: block;
+  text-align: center;
+  margin-top: 10px; /* 可以增加此處的 margin-top 來增加空間 */
+  color: #000;
+  cursor: pointer;
+  text-decoration: underline;
+  position: relative; /* 添加此行 */
+  z-index: 1; /* 添加此行，確保它在其他元素之上 */
+}
+
+/* 忘記密碼表單樣式 */
+.forgot-password-container {
+  height: 460px;
+  background: #ffde00;
+  border-radius: 60% / 10%;
+  /* transform: translateY(-60px); */
+  transform: translateY(-145%);
+  transition: transform .8s ease-in-out;
+}
+.forgot-password-container label {
+  color: #000;
+  transform: scale(0.6);
+}
+/* 第三方登入按鈕 */
+.third-party-login {
+  display: flex;  
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.auth-button {
   width: 40px;
   height: 40px;
-  border-radius: 100%;
-  border: 2px solid var(--main-color);
-  background-color: var(--bg-color);
-  box-shadow: 4px 4px var(--main-color);
-  color: var(--font-color);
-  font-size: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.button-log:active, .button-confirm:active {
-  box-shadow: 0px 0px var(--main-color);
-  transform: translate(3px, 3px);
-}
-
-.button-confirm {
-  margin: 20px auto 0 auto;
-  width: 120px;
-  height: 40px;
-  border-radius: 5px;
-  border: 2px solid var(--main-color);
-  background-color: var(--bg-color);
-  box-shadow: 4px 4px var(--main-color);
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--font-color);
+  background: transparent;
+  border: none;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.text-decoration-none {
-  color: var(--font-color-sub);
-  text-decoration: none;
+.auth-button:hover {
+  transform: scale(1.1);
 }
 
-.text-decoration-none:hover {
-  color: var(--input-focus);
+.auth-button i {
+  font-size: 24px;
+  color: #fff;
 }
 </style>
