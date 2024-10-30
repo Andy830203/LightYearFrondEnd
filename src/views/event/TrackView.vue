@@ -5,6 +5,9 @@
 <template>
     <div>
         <!-- [v] list or [x] table -->
+        <ul>
+            <li></li>
+        </ul>
     </div>
 </template>
 
