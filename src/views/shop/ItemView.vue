@@ -135,30 +135,31 @@ onMounted(fetchProductDetails);
     </div>
 </template>
 
-<style lang="css" scoped>
+<style scoped>
 .quantity {
   display: flex;
-  align-items: center; /* 垂直對齊 */
+  align-items: center;
 }
 
 .quantity-input {
-  width: 70px; /* 設定 input 寬度 */
+  width: 70px;
 }
 
 .btn-minus,
 .btn-plus {
   display: flex;
-  align-items: center; /* 確保圖標垂直居中 */
-  justify-content: center; /* 確保圖標水平居中 */
+  align-items: center;
+  justify-content: center;
   width: 30px;
   height: 30px;
-  margin: 5px; /* 移除按鈕預設外邊距，保持水平排列 */
+  margin: 5px;
 }
+
 .carousel-indicators [data-bs-target] {
-  background-color: #ddd; /* 非選中圓點顏色 */
+  background-color: #ddd;
 }
 
 .carousel-indicators .active {
-  background-color: #007bff; /* 選中圓點顏色 */
+  background-color: #007bff;
 }
 </style>
