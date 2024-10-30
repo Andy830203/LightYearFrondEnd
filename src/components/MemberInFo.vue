@@ -30,20 +30,63 @@
   </template>
   
   <script setup>
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 
-// 使用 reactive 定義會員資料物件
+const BASE_URL = import.meta.env.VITE_API_BASEURL;
+
 const member = reactive({
-  name: 'John Doe',
+  name: '',
   nickname: '',
-  email: 'john.doe@example.com',
-  birthday: '1990-01-01', // 替換為會員的生日
-  level: 30,
-  exp: 25.11, // 假設經驗值為 70%
-  point: 250,
-  photoUrl: 'src/assets/images/members/初心者.jpg' // 替換為會員的照片URL
+  email: '',
+  birthday: '',
+  level: 0,
+  exp: 0,
+  point: 0,
+  photoUrl: ''
+});
+
+async function MemberInFo() {
+  // 從 localStorage 中取得 member 並解析為物件
+  const memberData = JSON.parse(localStorage.getItem('member'));
+  const userID = memberData ? memberData.id : null; // 確認是否成功取得 id
+
+  if (!userID) {
+    console.error("無法取得使用者 ID");
+    return;
+  }
+  try {
+    const response = await fetch(`${BASE_URL}/Members/InFo/${userID}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors',
+    });
+      console.log(response);
+
+    if (!response.ok) {
+      throw new Error('查詢失敗，請重新載入');
+      
+    console.log(result);
+    }
+
+    const result = await response.json();
+    member.name = result.membername;
+    member.nickname = result.membernickname;
+    member.email = result.memberemail;
+    member.birthday = result.memberbirth;
+    // member.level = result.level;
+    member.exp = result.memberexp;
+    member.point = result.memberpoint;
+    // member.photoUrl = result.photoUrl;
+    console.log(result);
+  } catch (error) {
+    console.error("登入發生錯誤", error); 
+  }
+}
+onMounted(() => {
+  MemberInFo(); // 組件掛載時調用 API
 });
 </script>
+
 
   
   <style scoped>

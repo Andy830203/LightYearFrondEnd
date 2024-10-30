@@ -4,6 +4,26 @@ import { m_e_move,m_e_leave,navClass,m_e_onBeforeUnmount} from '@/hb1_t_js/NAV_c
 import { state } from '@/global_value'; // 從外部文件引入狀態
 m_e_onBeforeUnmount()
 /* 縮放end */
+
+import { computed } from 'vue';
+import { useMemberStore } from '../stores/Member';
+
+const memberStore = useMemberStore();
+
+// 判斷是否已登入
+const isLoggedIn = computed(() => memberStore.isLoggedIn);
+
+// 顯示會員名稱，如果未登入則為空
+const memberName = computed(() => {
+  return memberStore.member && memberStore.member.name ? memberStore.member.name : '';
+});
+
+// 登出功能
+function logout() {
+  memberStore.member = null; // 清除 Pinia 狀態
+  localStorage.removeItem('member'); // 清除 localStorage 中的 member
+  window.location.reload(); // 重整頁面以更新顯示
+}
 </script>
 
 <template>
@@ -61,7 +81,7 @@ m_e_onBeforeUnmount()
                             <a class="dropdown-item" href="/MemberInFo">
                             <i class="bi bi-info-circle"></i> 
                             <span>會員資訊</span>
-                            </a>
+                            </a>                  
                         </li>
                         <li>
                             <a class="dropdown-item" href="/MemberSettingView">
@@ -94,21 +114,27 @@ m_e_onBeforeUnmount()
                         </ul>
                     </li>
                 </ul>
-                <div id="map_nav"><!--會員-->
-                            <!-- <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <i class="bi bi-person-fill"></i>
-                            </button>              -->
-                            <RouterLink to="/login"  data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <i class="bi bi-person-fill"></i>
-                            </RouterLink>
-                        <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                            aria-controls="offcanvasExample">
-                            <i class="bi bi-cart-fill"></i></a>
-                            <!-- Scrollable modal -->
-                    <!-- Button trigger modal -->
-                    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Launch demo modal
-                    </button> -->
+                <div id="map_nav">
+                <!-- 根據登入狀態顯示會員圖示或歡迎訊息 -->
+                        <div id="map_nav" class="nav-container">
+                        <!-- 未登入狀態顯示登入圖示 -->
+                                <RouterLink v-if="!isLoggedIn" to="/login" class="auth-icon">
+                                     <i class="bi bi-person-fill" title="登入"></i>
+                                </RouterLink>
+
+                <!-- 已登入狀態顯示會員訊息與登出圖示 -->
+                        <div v-else class="user-info">
+                         <span class="welcome-text">歡迎 <span class="username">{{ memberName }}</span>！</span>
+                        <button @click="logout" class="logout-icon" title="登出">
+                        <i class="bi bi-box-arrow-right"></i>
+                        </button>
+                    </div>
+
+                <!-- 購物車圖示 -->
+                        <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="cart-icon">
+                        <i class="bi bi-cart-fill" title="購物車"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -190,4 +216,45 @@ i,span,#map_nav{
 }
 /*縮小end*/
 /* 縮放end */
+
+/*右上icon*/
+.nav-container {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* 控制元素之間的間距 */
+}
+
+.auth-icon,
+.cart-icon {
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* 控制歡迎文字與登出圖示之間的間距 */
+}
+
+.welcome-text {
+  font-size: 1rem;
+}
+
+.username {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.logout-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-icon i {
+  font-size: 1.2rem;
+  color: 	#000000;
+}
+
 </style>
