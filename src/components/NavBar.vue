@@ -1,6 +1,6 @@
 <script setup>
 /* 縮放st */
-import { m_e_move,m_e_leave,navClass,m_e_onBeforeUnmount} from '@/hb1_t_js/NAV_c'//nav樣式更改
+import { m_e_move, m_e_leave, navClass, m_e_onBeforeUnmount } from '@/hb1_t_js/NAV_c'//nav樣式更改
 import { state } from '@/global_value'; // 從外部文件引入狀態
 m_e_onBeforeUnmount()
 /* 縮放end */
@@ -31,7 +31,8 @@ function logout() {
     <!-- <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow"> -->
     <!-- 更改的 -->
     <!-- <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow bg-warning.bg-gradient" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass"> -->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-light shadow bg-warning bg-gradient border border-5 border-warning" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light shadow bg-warning bg-gradient border border-5 border-warning"
+        id="navbar_e1" @mouseenter="m_e_move" @mouseleave="m_e_leave" :class="navClass">
         <div class="container-fluid">
             <!-- logo圖路徑之後用ref路徑指向一個變數，下面佔位子的導覽列也是 -->
             <div class="navbar-brand map_img" style="position: absolute; z-index: 999; top: 10%;">
@@ -45,23 +46,23 @@ function logout() {
             <div class="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-lg-0 justify-content-center mx-auto sm-mx-auto">
                     <li class="nav-item mx-3">
-                            <router-link to="/location" class="nav-link">
-                                <i class="bi bi-globe-americas"></i>
-                                <span>地圖</span>
-                            </router-link>
+                        <router-link to="/location" class="nav-link">
+                            <i class="bi bi-globe-americas"></i>
+                            <span>地圖</span>
+                        </router-link>
                     </li>
                     <li class="nav-item mx-3">
 
                         <a class="nav-link" href="./faq.html">
-                        <i class="bi bi-question-circle"></i>
-                        <span>常見問題</span>
+                            <i class="bi bi-question-circle"></i>
+                            <span>常見問題</span>
                         </a>
                     </li>
                     <li class="nav-item mx-3">
                         <a class="nav-link" href="./form.html">
                             <i class="bi bi-megaphone"></i>
                             <span>聯絡我們</span>
-                            </a>
+                        </a>
                     </li>
                     <li class="nav-item mx-3">
                         <router-link to="/shop" class="nav-link">
@@ -71,7 +72,7 @@ function logout() {
                     </li>
                     <!--會員-->
                     <li class="nav-item dropdown lg-mx-auto md-mx-auto">
-                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person map_icon"></i> 
                         <span>會員專區</span>
@@ -142,34 +143,47 @@ function logout() {
     <!-- header end -->
 </template>
 <style lang="css" scoped>
-i,span,#map_nav{
+i,
+span,
+#map_nav {
     color: black;
 }
-#map_nav{
+
+.nav-link:hover i,
+.nav-link:hover span {
+    color: grey;
+}
+
+#map_nav {
     font-size: 1.5rem;
 }
+
 /* 縮放st */
 /*放大st*/
-.large-nav {/*放大樣式*/
+.large-nav {
+    /*放大樣式*/
     border-radius: 0px;
     transform: translateX(0%) scale(1);
-    transition:transform 0.8s ease-in-out  ,border-radius 1s ease-in-out ;
+    transition: transform 0.8s ease-in-out, border-radius 1s ease-in-out;
 }
+
 /*放大i 標籤用*/
 .large-nav i {
     opacity: 1;
-    transition:font-size ease-in-out .5s;
+    transition: font-size ease-in-out .5s;
 }
+
 /*放大span 標籤用*/
 /* .large-nav span {
     opacity: 1;
     transition: opacity 0.5s ease-in-out;               
 } */
-.large-nav .nav-item {/*放大nav-item 標籤用 */
+.large-nav .nav-item {
+    /*放大nav-item 標籤用 */
     font-size: large;
     opacity: 1;
-    transform:translateX(0%);
-    transition: transform .5s ease-in-out,opacity 0.5s ease-in-out;
+    transform: translateX(0%);
+    transition: transform .5s ease-in-out, opacity 0.5s ease-in-out;
 }
 .map_img:hover{
     transform: scale(1.05);
@@ -177,9 +191,11 @@ i,span,#map_nav{
 }
 /*放大end*/
 /*放大hover st*/
-.large-nav .nav-item:hover,.large-nav #map_nav i:hover{/*放大nav-item 標籤用 */
+.large-nav .nav-item:hover,
+.large-nav #map_nav i:hover {
+    /*放大nav-item 標籤用 */
     transform: scale(1.5);
-    transition:transform .2s ease-in-out;
+    transition: transform .2s ease-in-out;
 }
 .nav-link:hover i,.nav-link:hover span,#map_nav:hover i{
     color:aqua;
@@ -189,31 +205,39 @@ i,span,#map_nav{
 }
 /*放大hover end*/
 /*縮小st*/
-.small-nav {/*縮小樣式*/
-    top:0%; 
-    left:0%;
+.small-nav {
+    /*縮小樣式*/
+    top: 0%;
+    left: 0%;
     border-radius: 30px;
-    transform: translateY(-23%) scale(0.6) ;
-    transition:transform ease-in-out 1s,border-radius ease-in-out 1s;
-}
-.small-nav i {/*縮小i 標籤用*/
-    opacity: 1; 
-    font-size: 3rem;
-    transition:font-size ease-in-out .5s;
+    transform: translateY(-23%) scale(0.6);
+    transition: transform ease-in-out 1s, border-radius ease-in-out 1s;
 }
 
-.small-nav span {/* 縮小span用 */
-    opacity: 0; 
+.small-nav i {
+    /*縮小i 標籤用*/
+    opacity: 1;
+    font-size: 3rem;
+    transition: font-size ease-in-out .5s;
+}
+
+.small-nav span {
+    /* 縮小span用 */
+    opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-.small-nav .nav-item {/*縮小nav-item 標籤用 */
-    transform:translateX(50%);
+
+.small-nav .nav-item {
+    /*縮小nav-item 標籤用 */
+    transform: translateX(50%);
     transition: transform .5s ease-in-out;
 }
-.small-nav #map_nav i{
+
+.small-nav #map_nav i {
     font-size: 3rem;
-    transition: font-size .5s ease-in-out ;
+    transition: font-size .5s ease-in-out;
 }
+
 /*縮小end*/
 /* 縮放end */
 
