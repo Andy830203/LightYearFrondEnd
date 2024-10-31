@@ -15,7 +15,7 @@ import ForgotPassword from '@/components/ForgotPassword.vue'
 import MemberInFo from '@/components/MemberInFo.vue'
 import MemberSettingView from '@/views/MemberSettingView.vue'
 import MemberFavorite from '@/components/MemberFavorite.vue'
-
+import Cart from '@/views/Cart.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -42,10 +42,17 @@ const router = createRouter({
       name: 'shop',
     },
     {
-      //http://localhost:5173/itemDetails
+      //http://localhost:5173/itemDetails/5
       path: '/itemDetails/:id',
       component: ItemView,
       name: 'itemDetails',
+      props: true,  // 允許使用路由參數作為組件的 props
+    },
+    {
+      //http://localhost:5173/cart/5
+      path: '/cart/:id',
+      component: Cart,
+      name: 'cart',
       props: true,  // 允許使用路由參數作為組件的 props
     },
     {
