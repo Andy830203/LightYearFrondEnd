@@ -19,6 +19,8 @@ const memberId = props.id;
 
 // Setup reactive variables and methods
 const cartItems = ref([]); // Holds the cart items
+const instockCurr = ref({}); // Holds current stock information for each item
+const stockLimitReached = ref({}); // 儲存每個商品的提示訊息狀態
 
 // Function to fetch cart items
 const fetchCartItems = async () => {
@@ -34,9 +36,6 @@ const fetchCartItems = async () => {
   }
 };
 onMounted(fetchCartItems);
-
-// Holds current stock information for each item
-const instockCurr = ref({});
 
 // Fetches instock value for a specific product and stores it in instockCurr
 const currItemResponse = async (productId) => {
@@ -63,6 +62,15 @@ onMounted(async () => {
 // 更新購物車項目數量的 API
 const updateCartItemQuantity = async (item) => {
   try {
+    // 檢查庫存上限
+    const maxStock = instockCurr.value[item.pId];
+    if (item.quantity > maxStock) {
+      item.quantity = maxStock;
+      stockLimitReached.value[item.pId] = true;
+    } else {
+      stockLimitReached.value[item.pId] = false;
+    }
+
     const response = await fetch(`${BASE_URL}/CartItems/UpdateCartItem`, {
       method: 'PUT',
       headers: {
@@ -83,6 +91,14 @@ const updateCartItemQuantity = async (item) => {
   }
 };
 
+// Validates quantity to be at least 1 and then updates cart item
+const validateAndUpdateQuantity = (item) => {
+  if (item.quantity < 1) {
+    item.quantity = 1;
+  }
+  updateCartItemQuantity(item);
+};
+
 // Function to calculate subtotal
 const subtotal = computed(() => {
   return cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -96,14 +112,18 @@ const incrementQuantity = async (item) => {
   const maxStock = instockCurr.value[item.pId];
   if (item.quantity < maxStock) {
     item.quantity++;
-    await updateCartItemQuantity(item); 
+    stockLimitReached.value[item.pId] = false;
+    await updateCartItemQuantity(item);
+  } else {
+    stockLimitReached.value[item.pId] = true;
   }
 };
 
 const decrementQuantity = async (item) => {
   if (item.quantity > 1) {
     item.quantity--;
-    await updateCartItemQuantity(item); 
+    stockLimitReached.value[item.pId] = false;
+    await updateCartItemQuantity(item);
   }
 };
 
@@ -137,6 +157,7 @@ const proceedToCheckout = () => {
 <template>
 <!-- Cart Page Start -->
 <div class="container-fluid">
+  
     <div class="container">
         <!-- Cart Table -->
         <div class="table-responsive">
@@ -167,12 +188,13 @@ const proceedToCheckout = () => {
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0" v-model.number="item.quantity">
+                                <input type="text" class="form-control form-control-sm text-center border-0" v-model.number="item.quantity" @blur="validateAndUpdateQuantity(item)">
                                 <div class="input-group-btn">
                                     <button @click="incrementQuantity(item)" class="btn btn-sm btn-plus rounded-circle bg-light border">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
+                                <span v-if="stockLimitReached[item.pId]" class="text-danger small">已達庫存量上限</span>
                             </div>
                         </td>
                         <td><p class="mb-0 mt-4">NT$ {{ (item.productPrice * item.quantity) }} </p></td>
