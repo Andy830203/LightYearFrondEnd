@@ -1,25 +1,39 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
+
+// props
+const props = defineProps(['enableAddLocation'])
+
+// emit
+const emit = defineEmits(['addLocation'])
+
+const addLocHander = () => {
+    // alert('hi')
+    emit('addLocation')
+}
+
+const updateHander = () => {
+
+}
+// v-model
+const inputList = defineModel()
 
 const demoList = [
-    { 'id': '0', 'locName': 'Location A', 'order': '1' },
-    { 'id': '1', 'locName': 'Location A', 'order': '2' },
-    { 'id': '2', 'locName': 'Location A', 'order': '3' },
-    { 'id': '3', 'locName': 'Location A', 'order': '4' },
-    { 'id': '4', 'locName': 'Location A', 'order': '5' },
-    { 'id': '5', 'locName': 'Location A', 'order': '6' },
-    { 'id': '6', 'locName': 'Location A', 'order': '7' },
-    { 'id': '7', 'locName': 'Location A', 'order': '8' },
-    { 'id': '8', 'locName': 'Location A', 'order': '9' },
-    { 'id': '9', 'locName': 'Location A', 'order': '10' },
+    { 'id': '0', 'locName': 'Location A1', 'order': '1' },
+    { 'id': '1', 'locName': 'Location A2', 'order': '2' },
+    { 'id': '2', 'locName': 'Location A3', 'order': '3' },
+    { 'id': '3', 'locName': 'Location A4', 'order': '4' },
+    { 'id': '4', 'locName': 'Location A5', 'order': '5' },
+    { 'id': '5', 'locName': 'Location A6', 'order': '6' },
+    { 'id': '6', 'locName': 'Location A7', 'order': '7' },
+    { 'id': '7', 'locName': 'Location A8', 'order': '8' },
+    { 'id': '8', 'locName': 'Location A9', 'order': '9' },
+    { 'id': '9', 'locName': 'Location A10', 'order': '10' },
 ]
 
 const enableDragable = ref(false)
-const demo = ref(demoList)
+const targetList = ref(demoList)
 const newListOrder = ref([])
-
-const model = defineModel()
-//props
 
 //drag
 //參考GPT
@@ -78,8 +92,24 @@ const enableDragAndDrop = (tableBody, elementName) => {
 
 // functions
 
-const updateOrder = (data) => {
+const CouldAddLocation = () => {
+    if (props.enableAddLocation !== undefined) {
+        return props.enableAddLocation
+    } else {
+        return false
+    }
+}
+
+const updateOrder = async () => {
     // send new order
+    let kvPair = newListOrder.value
+    kvPair.forEach(pair => {
+        console.log(`${pair.key}, ${pair.index}`)
+        const target = targetList.value.find(x => x.id === pair.key)
+        target.order = pair.index + 1
+    })
+    alert(JSON.stringify(kvPair))
+    await nextTick()
 }
 
 const initDrag = () => {
@@ -90,37 +120,50 @@ const initDrag = () => {
             // buildIndice(tableBody, dragItem, 'nowIndex')
         });
     }
+    // alert(JSON.stringify(newListOrder.value))
+}
+
+const onChange = () => {
+    targetList.value.sort((a, b) => a.order - b.order)
+    console.log(targetList.value)
+    initDrag()
 }
 </script>
 <!-- from: https://devdevout.com/css/css-list-styles -->
 <template>
     <div>
-        <input type="checkbox" v-model="enableDragable" @change="initDrag">開啟拖放
+        <!-- <h5>{{ title }}</h5> -->
+        <input type="checkbox" v-model="enableDragable" @change="onChange">開啟拖放
         <div class="list">
             <ul v-if="enableDragable" class="DragableOn">
-                <li :draggable="enableDragable" v-for="item in demo" :key="item.id" :data-key="item.id">
+                <li :draggable="enableDragable" v-for="item in targetList" :key="item.id" :data-key="item.id">
                     <span class="tspan tspan-padding">{{ item.order }}-{{ item.locName }} [<span
                             class="nowIndex"></span>]</span>
                 </li>
             </ul>
             <ul v-else class="DragableOff">
-                <li :draggable="enableDragable" v-for="item in demo" :key="item.id">
+                <li :draggable="enableDragable" v-for="item in targetList" :key="item.id">
                     <span class="tspan tspan-padding">{{ item.order }}-{{ item.locName }}</span>
                 </li>
             </ul>
         </div>
-        <button class="btn btn-primary" @click="updateOrder(newListOrder)"> 更改 </button>
+        <div class="row d-flex justify-content-end">
+            <div class="col-6 d-flex justify-content-end">
+                <button class="btn btn-primary me-3" @click="updateOrder(newListOrder)"> 更改 </button>
+                <button v-if="CouldAddLocation()" class="btn btn-primary" @click="addLocHander()"> 新增地點 </button>
+            </div>
+        </div>
     </div>
 </template>
 
 <style lang="css" scoped>
-ul.DragableOn {
-    /* border: 1px solid salmon; */
-}
+/* ul.DragableOn {
+    border: 1px solid salmon;
+} */
 
 ul.DragableOn li {
     background-color: #000;
-    color: #fff;
+    /* color: #fff; */
     /* border: 1px solid aliceblue; */
 }
 
@@ -164,8 +207,6 @@ ul.DragableOff li {
 
 .list ul li span.tspan {
     position: relative;
-    /* padding: 8px;
-    padding-left: 12px; */
     display: inline-block;
     z-index: 1;
     transition: 0.5s;

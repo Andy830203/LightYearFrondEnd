@@ -19,7 +19,7 @@ const eventsData = ref({
     "organizer": "string",
     "fee": 0,
     "capacity": 0,
-    "description": "string",
+    "description": "",
     "priority": 0,
     "categoryId": 0,
     "category": "string"
@@ -83,9 +83,14 @@ const onSubmit = () => {
     //     method: 'POST'
     // })
     // let rtValue = localStorage.getItem('name')
-    console.log(startData.value)
+    // console.log(startData.value)
     // console.log(rtValue)
     localStorage.clear()
+}
+
+const addLoc = () => {
+    alert('addLocation');
+    console.log('123');
 }
 
 loadCategories()
@@ -126,7 +131,8 @@ loadCategories()
                                     <!-- <option value="">type 1</option>
                                     <option value="">type 2</option>
                                     <option value="">type 3</option> -->
-                                    <option v-for="type in categories" :value="type" :key="type"> {{ type }}
+                                    <option v-for="cate in categories" :value="cate.categoryId"
+                                        :key="cate.categoryName"> {{ cate.categoryName }}
                                     </option>
 
                                 </select>
@@ -153,13 +159,14 @@ loadCategories()
                             <label for="eveLoc" class="mb-2 form-label">活動地點</label>
                             <!-- table of locations -->
                             <div class="mt-0">
-                                <PlacesComponent></PlacesComponent>
+                                <!-- 需要從零加入地點 -->
+                                <PlacesComponent :enableAddLocation="true" @addLocation="addLoc" />
                             </div>
 
                             <!-- 活動描述 -->
                             <label for="eveDesc" class="mb-2 form-label">活動描述</label>
-                            <textarea class="form-control mt-0 mb-5" name="description" id="eveDesc" cols="30"
-                                rows="10"></textarea>
+                            <textarea class="form-control mt-0 mb-5" name="description" id="eveDesc" cols="30" rows="10"
+                                v-model="eventsData.description" placeholder="請輸入內容"></textarea>
                         </div>
                     </div>
                     <div class="col-12 col-lg-5 offset-lg-1">
@@ -178,16 +185,14 @@ loadCategories()
                             <input type="date" name="" id="eveStartDay" class="form-control">
                             <label for="eveStartTime" class="mb-2 form-label">活動開始時間</label>
                             <input type="time" name="" id="eveStartTime" class="form-control"> -->
-                            <InputFieldComponent Type="date" Id="eveStartDay" Label="活動開始日期"></InputFieldComponent>
-                            <InputFieldComponent Type="time" Id="eveStartTime" Label="活動開始時間" v-model="startData">
-                            </InputFieldComponent>
-                            <InputFieldComponent Type="date" Id="eveEndDay" Label="活動結束日期"></InputFieldComponent>
-                            <InputFieldComponent Type="time" Id="eveEndTime" Label="活動結束時間"></InputFieldComponent>
+                            <InputFieldComponent Type="date" Id="eveStartDay" Label="活動開始日期" />
+                            <InputFieldComponent Type="time" Id="eveStartTime" Label="活動開始時間" v-model="startData" />
+                            <InputFieldComponent Type="date" Id="eveEndDay" Label="活動結束日期" />
+                            <InputFieldComponent Type="time" Id="eveEndTime" Label="活動結束時間" />
 
                             <!-- 最大活動人數 -->
                             <ColumnInputFieldComponent Type="number" Id="eveCap" Label="最大活動人數" Indent="false"
-                                LabelCol="4" InputCol="7" class="mt-5">
-                            </ColumnInputFieldComponent>
+                                LabelCol="4" InputCol="7" class="mt-5" />
                             <!-- <InputFieldComponent Type="number" Id="eveCap" Label="最大活動人數"></InputFieldComponent> -->
                         </div>
                     </div>
