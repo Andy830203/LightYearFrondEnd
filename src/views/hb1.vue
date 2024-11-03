@@ -10,10 +10,10 @@ FT_set()//設置footer是否顯示
 
 <template>
     <div id="map"></div>
-    <div id="nav-bar">
+    <div id="nav-bar" >
         <input id="nav-toggle" type="checkbox"/>
         <div id="nav-header">
-          <p id="nav-title">C<i class="fab fa-codepen"></i>DEPEN</p>
+          <p id="nav-title"></p>
           <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
           <hr/>
         </div>
@@ -24,7 +24,6 @@ FT_set()//設置footer是否顯示
         <input id="nav-footer-toggle" type="checkbox"/>
       </div>
 </template>
-<!-- <style src="src/hb1_t_js/sidebar.css" scoped></style> -->
 <style>
     #map {
         height: v-bind(mapHeight); /* 綁定動態的 mapHeight */

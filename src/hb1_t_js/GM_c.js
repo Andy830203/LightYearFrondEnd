@@ -189,7 +189,6 @@ export function map_init() {
           })
         //擷取json資料end
         filenum++;
-        console.log(map.zoom)
       })
       //邊框樣式設定
       map.data.setStyle({
