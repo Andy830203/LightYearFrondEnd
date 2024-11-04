@@ -2,7 +2,7 @@
 import { computed, nextTick, onMounted, ref } from 'vue';
 
 // props
-const props = defineProps(['enableAddLocation'])
+const props = defineProps(['enableAddLocation', 'LocationData'])
 
 // emit
 const emit = defineEmits(['addLocation'])
@@ -100,7 +100,7 @@ const CouldAddLocation = () => {
     }
 }
 
-const updateOrder = async () => {
+const updateOrder = () => {
     // send new order
     let kvPair = newListOrder.value
     kvPair.forEach(pair => {
@@ -109,7 +109,8 @@ const updateOrder = async () => {
         target.order = pair.index + 1
     })
     alert(JSON.stringify(kvPair))
-    await nextTick()
+    // await nextTick()
+    props.enableAddLocation = false
 }
 
 const initDrag = () => {
@@ -150,7 +151,28 @@ const onChange = () => {
         <div class="row d-flex justify-content-end">
             <div class="col-6 d-flex justify-content-end">
                 <button class="btn btn-primary me-3" @click="updateOrder(newListOrder)"> 更改 </button>
-                <button v-if="CouldAddLocation()" class="btn btn-primary" @click="addLocHander()"> 新增地點 </button>
+                <button v-if="CouldAddLocation()" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalLocattions" @click="addLocHander()"> 新增地點 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vertically centered scrollable modal -->
+    <div class="modal fade" id="modalLocattions" tabindex="-1" aria-labelledby="modalLocattionsLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLocattionsLabel">地點列表</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    添加地點列表
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">添加地點</button>
+                </div>
             </div>
         </div>
     </div>

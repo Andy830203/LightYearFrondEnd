@@ -3,10 +3,11 @@ import CarouselComponent from '@/components/event/CarouselComponent.vue'
 import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldComponent.vue'
 import InputFieldComponent from '@/components/event/InputFieldComponent.vue'
 import PlacesComponent from '@/components/event/PlacesComponent.vue';
+import MapComponent from '@/components/MapComponent.vue';
 import { ref } from 'vue'
 
 
-localStorage.setItem('name', 'ted')
+// localStorage.setItem('name', 'ted')
 
 // 資料設定
 const BASE_URL = import.meta.env.VITE_API_BASEURL
@@ -30,7 +31,20 @@ const categories = ref({
     'categoryName': ''
 })
 
-eventsData.value.organizer = localStorage.getItem('name')
+eventsData.value.organizer = JSON.parse(localStorage.getItem('member')).name
+
+const getLoc = [{
+    'id': 1,
+    'name': 'Loc1',
+    'addr': 'abcdefg'
+},
+{
+    'id': 2,
+    'name': 'Loc2',
+    'addr': 'abcdefg1'
+}]
+
+const LocationData = ref(getLoc)
 
 const getData = ref({
     'eveTypes': [
@@ -67,33 +81,26 @@ const loadCategories = async () => {
 }
 
 const loadLocations = async () => {
+    //要改URL
     const response = await fetch(CATEGORY_URL, {
         method: 'GET',
     })
     const datas = await response.json()
     console.log(datas)
-    categories.value = datas
+    LocationData.value = datas
 }
 
 const onSubmit = () => {
-    // alert('123')
-    // console.log('123')
-    // fetch('127.0.0.1', {
-    //     body: '123321',
-    //     method: 'POST'
-    // })
-    // let rtValue = localStorage.getItem('name')
-    // console.log(startData.value)
-    // console.log(rtValue)
-    localStorage.clear()
+    // 123
 }
 
 const addLoc = () => {
-    alert('addLocation');
+    // alert('addLocation');
     console.log('123');
 }
 
 loadCategories()
+loadLocations()
 </script>
 
 <template>
@@ -160,7 +167,8 @@ loadCategories()
                             <!-- table of locations -->
                             <div class="mt-0">
                                 <!-- 需要從零加入地點 -->
-                                <PlacesComponent :enableAddLocation="true" @addLocation="addLoc" />
+                                <PlacesComponent :enableAddLocation="true" @addLocation="addLoc"
+                                    :locationData="LocationData" />
                             </div>
 
                             <!-- 活動描述 -->
@@ -204,6 +212,7 @@ loadCategories()
                 <i class="bi bi-plus-circle-fill"></i>
             </button>
         </form>
+        <!-- <MapComponent /> -->
     </div>
 
 </template>
