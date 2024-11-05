@@ -16,9 +16,16 @@ import MemberInFo from '@/components/MemberInFo.vue'
 import MemberSettingView from '@/views/MemberSettingView.vue'
 import MemberFavorite from '@/components/MemberFavorite.vue'
 
+
+import map_api from '@/views/shop/map_api.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      //http://localhost:5173/location
+      path: '/map_api',
+      component: map_api,
+    },
     {
       //http://localhost:5173/
       path: '/',
@@ -35,6 +42,7 @@ const router = createRouter({
         //console.log("進入" + state.isDisabled);//debug用
       },
     },
+
     {
       //http://localhost:5173/shop
       path: '/shop',
