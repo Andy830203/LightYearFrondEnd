@@ -177,8 +177,8 @@ onMounted(fetchProductDetails);
                                 </div>
                             </div>
                             <div>
-                                <button @click="addToCart" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                <button @click="addToCart" class="btn btn-outline-primary border border-secondary rounded-pill px-4 py-2 mb-4">
+                                    <i class="fa fa-shopping-bag me-2"></i> Add to cart
                                 </button>
                             </div>
                         </div>

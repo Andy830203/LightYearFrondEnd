@@ -101,7 +101,8 @@ const validateAndUpdateQuantity = (item) => {
 
 // Function to calculate subtotal
 const subtotal = computed(() => {
-  return cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0);
+  const total = cartItems.value.reduce((total, item) => total + item.productPrice * item.quantity, 0);
+  return new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD',  minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(total);
 });
 
 // Methods for quantity management
@@ -148,16 +149,71 @@ const removeItem = async (itemId) => {
   }
 };
 
-const proceedToCheckout = () => {
+const base_param = ref({
+  MerchantID: "3002607",
+  MerchantTradeNo: '',
+  MerchantTradeDate: '',
+  PaymentType: 'aio',
+  TotalAmount: 0,
+  TradeDesc: 'ecpay test',
+  ItemName: "金流交易",
+  ReturnURL: "http://localhost:5173/",
+  ChoosePayment: 'ALL',
+  EncryptType: 1,
+  ClientBackURL: 'http://localhost:5173/', // Optional field
+  CheckMacValue: ''  // Will be generated on the backend and assigned here
+});
+const sendCheck = {
+
+}
+const proceedToCheckout = async function() {
   // Handle checkout logic (e.g., navigate to checkout page)
-  console.log('Proceeding to checkout...');
-};
+  try {
+    // 構建 sendCheck 物件
+    const sendCheck = {
+      buyer: memberId,
+      orderItems: cartItems.value.map(item => ({
+        pId: item.pId,
+        quantity: item.quantity
+      })),
+      totalPrice: cartItems.value.reduce((total, item) => total + item.productPrice * item.quantity, 0),
+      orderTime: new Date().toISOString() 
+    };
+    console.log(sendCheck);
+    const response = await fetch(`${BASE_URL}/Orders/ToECpay`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors',
+      body: JSON.stringify(sendCheck)
+    });
+    if (response.ok) {
+      // 後端回應成功，解析回應中的訂單號和檢查碼等 ECPay 所需參數
+      const result = await response.json();
+      base_param.value = {
+    ...base_param.value,
+    MerchantTradeNo: result.MerchantTradeNo,
+    MerchantTradeDate: result.MerchantTradeDate,
+    TotalAmount: result.TotalAmount,
+    ItemName: result.ItemName,
+    CheckMacValue: result.CheckMacValue
+  };
+      console.log(base_param.value);
+       // 從後端生成的 CheckMacValue
+      console.log(document.getElementById("paymentForm"));
+      // 提交表單
+      // document.getElementById("paymentForm").submit();
+    } else {
+      console.error("Failed to proceed with checkout");
+    }
+  } catch (error) {
+    console.error("Error proceeding to checkout:", error);
+  }
+}
 </script>
 
 <template>
 <!-- Cart Page Start -->
 <div class="container-fluid">
-  
     <div class="container">
         <!-- Cart Table -->
         <div class="table-responsive">
@@ -169,7 +225,7 @@ const proceedToCheckout = () => {
                         <th scope="col">價格</th>
                         <th scope="col">數量</th>
                         <th scope="col">金額</th>
-                        <th scope="col">操作</th>
+                        <th scope="col">刪除項目</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -211,29 +267,36 @@ const proceedToCheckout = () => {
         <!-- Cart Total -->
         <div class="row g-4 justify-content-end">
             <div class="col-8"></div>
-            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                <div class="bg-light rounded">
+              <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+                <div class="bg-light border border-secondary rounded p-4">
                     <div class="p-4">
-                        <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
-                        <div class="d-flex justify-content-between mb-4">
-                            <h5 class="mb-0 me-4">Subtotal:</h5>
-                            <p class="mb-0">{{ subtotal.toFixed(2) }} $</p>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-0 me-4">Shipping</h5>
-                            <p class="mb-0">Flat rate: 3.00 $</p>
-                        </div>
+                        <h5 class="display-6 mb-4">購物車 <span class="fw-normal">總計</span></h5>
                     </div>
                     <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                         <h5 class="mb-0 ps-4 me-4">Total</h5>
-                        <p class="mb-0 pe-4">{{ (subtotal + shipping).toFixed(2) }} $</p>
+                        <p class="mb-0 pe-4">NT$ {{ (subtotal) }} </p>
                     </div>
-                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" @click="proceedToCheckout">Proceed Checkout</button>
+                    <button class="btn btn-outline-primary border-secondary rounded-pill px-4 py-3  text-uppercase mb-4 ms-4" @click="proceedToCheckout">成立訂單</button>
                 </div>
-            </div>
+              </div>
         </div>
     </div>
 </div>
+<form id="paymentForm" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="POST" style="">
+  <input name="MerchantID" v-bind:value="base_param.MerchantID" />
+  <input name="MerchantTradeNo" v-bind:value="base_param.MerchantTradeNo" />
+  <input name="MerchantTradeDate" v-bind:value="base_param.MerchantTradeDate" />
+  <input name="PaymentType" v-bind:value="base_param.PaymentType" />
+  <input name="TotalAmount" v-bind:value="base_param.TotalAmount" />
+  <input name="TradeDesc" v-bind:value="base_param.TradeDesc" />
+  <input name="ItemName" v-bind:value="base_param.ItemName" />
+  <input name="ReturnURL" v-bind:value="base_param.ReturnURL" />
+  <input name="ChoosePayment" v-bind:value="base_param.ChoosePayment" />
+  <input name="EncryptType" v-bind:value="base_param.EncryptType" />
+  <input name="ClientBackURL" v-bind:value="base_param.ClientBackURL" />
+  <input name="CheckMacValue" v-bind:value="base_param.CheckMacValue" />
+  <button type="submit">Submit</button>
+</form>
   <!-- Cart Page End -->
 </template>
 
