@@ -1,141 +1,10 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue';
+import {zoom8_mapstyle,zoom12_mapstyle,zoom16_mapstyle} from '@/hb1_t_js/map_jsonfile/地圖樣式/zoomset.js';
 //地圖所需元件St(靜態)
-const zoom8_mapStyle = [
-  {
-    "featureType": "administrative",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  }
-];
-const zoom12_mapstyle = [
-  {
-    "featureType": "administrative",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  }
-];
-const zoom14_mapstyle = [
-  {
-    "featureType": "administrative.land_parcel",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative.neighborhood",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  }
-];
 //Json路徑(靜態)
 const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_City', 'Hsinchu_County', 'Hualien_County', 'Kaohsiung', 'Keelung_City', 'Miaoli_County', 'nantou_county', 'New_Taipei_City', 'Pingtung_County', 'Taichung_City', 'tainan', 'Taipei_City', 'Taitung_County', 'Taoyuan_County', 'Yilan_County', 'Yunlin_County'];//可以依據檔案數量進行修改
 //地圖所需元件end
 export const mapHeight = ref('500px');//地圖預設值
-
 //地圖初始化
 export function map_init() {
   const updateMapHeight = () => {// 函式來調整地圖高度
@@ -151,7 +20,7 @@ export function map_init() {
       const map = new google.maps.Map(document.getElementById("map"), {//佈署地圖
         zoom: 8.2,//地圖縮放倍率
         center: { lat: 23.6978, lng: 120.9605 },//台灣正中心
-        styles: zoom12_mapstyle,//不顯示任何label
+        styles: zoom8_mapstyle,//不顯示任何label
         disableDefaultUI: true,//停用ui
         //以下設定縮放限制
         scrollwheel: false, // 禁用滾輪縮放
@@ -216,14 +85,21 @@ export function map_init() {
           const feature_cityname = event.feature.Fg.COUNTY;//取得geojson裡COUNTY_ID
           removeGeoJson();//移除樣式
           map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`);
+          map.setOptions({ styles: zoom12_mapstyle });//更改地圖樣式zoom12
           map.setZoom(12);
+          //跳轉至縣市中心
+          fetch('src/hb1_t_js/map_jsonfile/台灣縣市中心/contrycenter.json')
+          .then(res=>{return res.json();})
+          .then(c_cen=>{
+            map.setCenter({ lat: parseFloat(c_cen[feature_cityname][0]["lat"]), lng: parseFloat(c_cen[feature_cityname][0]["lng"]) });
+          })
           console.log("進入區域檢視");
         } else if (map_zoom_v === 12) {//區域模式/縣市模式
           //已經進來了，目前在台灣區域邊界內
           const feature_cityname = event.feature.Fg.COUNTYNAME;//取得geojson裡COUNTYNAME
           removeGeoJson();//移除樣式
           map.data.setStyle({});//清空style設定COUNTYNAME
-          map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`, null, function() {
+          map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`, null, function () {
             // 設定樣式，只渲染與 featureTownName 相符的區域
             map.data.setStyle((feature) => {
               return feature.getProperty('TOWNNAME') === event.feature.Fg.TOWNNAME
@@ -231,20 +107,21 @@ export function map_init() {
                 : { visible: false }; // 其他區域不顯示
             });
           });
+          map.setCenter({ lat: event.feature.Fg.CENTER.coordinates[1], lng: event.feature.Fg.CENTER.coordinates[0] });
+          map.setOptions({ styles: zoom16_mapstyle });//更改地圖樣式zoom16
           map.setZoom(16);
           console.log("進入檢視活動模式");
         } else if (map_zoom_v > 12) {//檢視活動模式
+          
           console.log("檢視活動模式");
         }
       });
-
       // 移除 GeoJSON 資料
       function removeGeoJson() {
         map.data.forEach(function (feature) {
           map.data.remove(feature)
         })
       }
-
       // zoom_changed當地圖縮放等級的屬性變更後，會引發此事件
     };
     updateMapHeight(); // 初次掛載時設置高度
