@@ -160,7 +160,7 @@ const base_param = ref({
   ReturnURL: "http://localhost:5173/",
   ChoosePayment: 'ALL',
   EncryptType: 1,
-  ClientBackURL: 'http://localhost:5173/', // Optional field
+  ClientBackURL: 'http://localhost:5173/shop', // Optional field
   CheckMacValue: ''  // Will be generated on the backend and assigned here
 });
 const sendCheck = {
@@ -200,8 +200,10 @@ const proceedToCheckout = async function() {
       console.log(base_param.value);
        // 從後端生成的 CheckMacValue
       console.log(document.getElementById("paymentForm"));
-      // 提交表單
-      // document.getElementById("paymentForm").submit();
+      // 延遲提交表單
+      setTimeout(() => {
+        document.getElementById("paymentForm").submit();
+      }, 150); // 100ms 延遲
     } else {
       console.error("Failed to proceed with checkout");
     }
@@ -282,7 +284,7 @@ const proceedToCheckout = async function() {
         </div>
     </div>
 </div>
-<form id="paymentForm" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="POST" style="">
+<form id="paymentForm" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="POST" style="display: none">
   <input name="MerchantID" v-bind:value="base_param.MerchantID" />
   <input name="MerchantTradeNo" v-bind:value="base_param.MerchantTradeNo" />
   <input name="MerchantTradeDate" v-bind:value="base_param.MerchantTradeDate" />
