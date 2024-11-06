@@ -1,5 +1,6 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 import {zoom8_mapstyle,zoom12_mapstyle,zoom16_mapstyle} from '@/hb1_t_js/map_jsonfile/地圖樣式/zoomset.js';
+import { triggerCloudAnimation } from '@/hb1_t_js/map_load_c.js'
 //地圖所需元件St(靜態)
 //Json路徑(靜態)
 const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_City', 'Hsinchu_County', 'Hualien_County', 'Kaohsiung', 'Keelung_City', 'Miaoli_County', 'nantou_county', 'New_Taipei_City', 'Pingtung_County', 'Taichung_City', 'tainan', 'Taipei_City', 'Taitung_County', 'Taoyuan_County', 'Yilan_County', 'Yunlin_County'];//可以依據檔案數量進行修改
@@ -82,6 +83,7 @@ export function map_init() {
         //alert("縣市id:" + feature_COUNTY_ID + "\n" + "縣市名:" + feature_cityname + "\n" + "目前zoom:" + map.zoom);
         const map_zoom_v = map.getZoom();//有響應
         if (map_zoom_v < 12) {//進入區域模式
+          triggerCloudAnimation();//載入動畫效果
           const feature_cityname = event.feature.Fg.COUNTY;//取得geojson裡COUNTY_ID
           removeGeoJson();//移除樣式
           map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`);
@@ -95,6 +97,7 @@ export function map_init() {
           })
           console.log("進入區域檢視");
         } else if (map_zoom_v === 12) {//區域模式/縣市模式
+          triggerCloudAnimation();//載入動畫效果
           //已經進來了，目前在台灣區域邊界內
           const feature_cityname = event.feature.Fg.COUNTYNAME;//取得geojson裡COUNTYNAME
           removeGeoJson();//移除樣式
@@ -112,7 +115,7 @@ export function map_init() {
           map.setZoom(16);
           console.log("進入檢視活動模式");
         } else if (map_zoom_v > 12) {//檢視活動模式
-          
+          triggerCloudAnimation();//載入動畫效果
           console.log("檢視活動模式");
         }
       });

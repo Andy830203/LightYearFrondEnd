@@ -1,0 +1,64 @@
+/* 覆蓋層的基本樣式 */
+.cloud-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none; /* 預設隱藏 */
+    z-index: 1000;
+}
+.cloud-container {
+    position: relative;
+    width: 100vw;
+    height: 100vw;
+    overflow: hidden; /* 防止圖片超出範圍 */
+    animation: bg_w 1.5s ease-in-out alternate 2;
+}
+/* 雲朵樣式 */
+.cloud {
+    position: absolute;
+    top: 50%;
+    width: 500px; /* 可根據需求調整大小 */
+    transform: translateY(-30%);
+}
+
+/* 左側雲朵 */
+.cloud-left {
+    animation: moveLeft 1.5s forwards ease-in-out;
+}
+/* 右側雲朵 */
+.cloud-right {
+    animation: moveRight 1.5s forwards ease-in-out;
+}
+
+/* 左移動動畫 */
+@keyframes moveLeft {
+    0% {
+        transform: translate(0, -50%);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-100vw, -50%);
+        opacity: 0;
+    }
+}
+
+/* 右移動動畫 */
+@keyframes moveRight {
+    0% {
+        transform: translate(0, -50%);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(100vw, -50%);
+        opacity: 0;
+    }
+}
+@keyframes bg_w {
+    0% {
+    }
+    100% {
+        background-color:white;
+    }
+}
