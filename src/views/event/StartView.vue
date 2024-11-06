@@ -44,6 +44,12 @@ const getLoc = [{
     'addr': 'abcdefg1'
 }]
 
+const columns = [
+    { data: 'id', title: 'ID' },
+    { data: 'name', title: '名稱' },
+    { data: 'addr', title: '地址' },
+];
+
 const LocationData = ref(getLoc)
 
 const getData = ref({
@@ -100,7 +106,7 @@ const addLoc = () => {
 }
 
 loadCategories()
-loadLocations()
+// loadLocations()
 </script>
 
 <template>
@@ -168,7 +174,7 @@ loadLocations()
                             <div class="mt-0">
                                 <!-- 需要從零加入地點 -->
                                 <PlacesComponent :enableAddLocation="true" @addLocation="addLoc"
-                                    :locationData="LocationData" />
+                                    :locationData="LocationData" :columns="columns" />
                             </div>
 
                             <!-- 活動描述 -->
@@ -200,7 +206,7 @@ loadLocations()
 
                             <!-- 最大活動人數 -->
                             <ColumnInputFieldComponent Type="number" Id="eveCap" Label="最大活動人數" Indent="false"
-                                LabelCol="4" InputCol="7" class="mt-5" />
+                                LabelCol="4" InputCol="7" class="mt-5" v-model="eventsData.capacity" />
                             <!-- <InputFieldComponent Type="number" Id="eveCap" Label="最大活動人數"></InputFieldComponent> -->
                         </div>
                     </div>

@@ -1,8 +1,20 @@
 <script setup>
 import { computed, nextTick, onMounted, ref } from 'vue';
+//DataTable setting
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
+import 'datatables.net-select-dt';
+import 'datatables.net-responsive-dt';
+
+DataTable.use(DataTablesCore);
+
+const options = {
+    responsive: true,
+    select: true,
+}
 
 // props
-const props = defineProps(['enableAddLocation', 'LocationData'])
+const props = defineProps(['enableAddLocation', 'locationData', 'columns'])
 
 // emit
 const emit = defineEmits(['addLocation'])
@@ -155,23 +167,26 @@ const onChange = () => {
                     data-bs-target="#modalLocattions" @click="addLocHander()"> 新增地點 </button>
             </div>
         </div>
-    </div>
 
-    <!-- Vertically centered scrollable modal -->
-    <div class="modal fade" id="modalLocattions" tabindex="-1" aria-labelledby="modalLocattionsLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLocattionsLabel">地點列表</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    添加地點列表
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">添加地點</button>
+        <!-- Vertically centered scrollable modal -->
+        <div class="modal fade" id="modalLocattions" tabindex="-1" aria-labelledby="modalLocattionsLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" id="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalLocattionsLabel">地點列表</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <DataTable :data="props.locationData" :columns="props.columns" class="display"
+                            :options="options">
+                            <thead class="table-primary"></thead>
+                        </DataTable>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">添加地點</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -218,7 +233,7 @@ ul.DragableOff li {
     color: #fce4ec;
     list-style: none;
     margin: 4px 0;
-    border-left: 2px solid #f50057;
+    border-left: 2px solid #ffce3a;
     transition: 0.5s;
     cursor: pointer;
 }
@@ -248,7 +263,7 @@ ul.DragableOff li {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #f50057;
+    background: #ffce3a;
     transform: scaleX(0);
     transform-origin: left;
     transition: 0.5s;
