@@ -4,12 +4,15 @@ map_init();//地圖初始化
 </script>
 
 <template>
-    <div id="map">
+    <div>
+        <!-- <div> -->
+        <div id="map"></div>
     </div>
 </template>
 <style scoped>
 #map {
-    height: 500px;
+    height: 250px;
+    /* bottom: 0; */
     /* 綁定動態的 mapHeight */
 }
 </style>

@@ -102,7 +102,7 @@ const onSubmit = () => {
 
 const addLoc = () => {
     // alert('addLocation');
-    console.log('123');
+    // console.log('123');
 }
 
 loadCategories()
