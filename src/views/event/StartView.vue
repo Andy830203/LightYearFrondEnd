@@ -6,6 +6,7 @@ import InputFieldComponent from '@/components/event/InputFieldComponent.vue'
 import PlacesComponent from '@/components/event/PlacesComponent.vue';
 import MapComponent from '@/components/MapComponent.vue';
 import { ref } from 'vue'
+import ItemView from '../shop/ItemView.vue';
 
 
 // localStorage.setItem('name', 'ted')
@@ -105,22 +106,27 @@ const onSubmit = () => {
 
 const addLoc = (table) => {
     //https://datatables.net/forums/discussion/76468/how-to-get-selected-row-while-using-vue3-without-jquery
-    // console.log(table)
-    // console.log(table.dt)
     const tb = table.dt
-
     const datas = tb.rows('.selected').data()
-    console.log(datas)
-    console.log(datas.length)
+
+    let rtList = null
     if (datas.length > 1) {
         const list = Object.values(datas)
-        const rtList = list.slice(0, datas.length)
+        rtList = list.slice(0, datas.length)
         console.log(rtList)
 
     } else {
-        console.log(datas[0])
+        rtList = datas[0]
+        console.log(rtList)
     }
+    appendTargetList(rtList)
+}
 
+const appendTargetList = (list) => {
+    list.forEach(Item => {
+        //要按資料更改
+
+    });
 }
 
 loadCategories()
