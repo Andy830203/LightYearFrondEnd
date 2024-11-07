@@ -37,11 +37,11 @@ function toggleDrawer() {
     </div>
     <div class="cloud-overlay" id="cloudOverlay">
       <div class="cloud-container">
-        <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:20%;left: 50%;">
-        <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:30%;left: 60%;">
-        <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:50%;left: 55%;">
-        <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:70%;left: 60%;">
-        <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:80%;left: 50%;">
+        <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:20%;left: 50%;">
+        <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:30%;left: 60%;">
+        <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:50%;left: 55%;">
+        <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:70%;left: 60%;">
+        <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:80%;left: 50%;">
         <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:20%;right: 50%;">
         <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:30%;right: 60%;">
         <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:50%;right: 55%;">
@@ -52,6 +52,6 @@ function toggleDrawer() {
 </template>
 <style>
     #map {
-        height: v-bind(mapHeight); /* 綁定動態的 mapHeight */
+        height: v-bind(mapHeight);/*js讀目前視窗高度，使用100vw，gm沒辦法正常顯示，似乎只吃px?*/
     }
 </style>
