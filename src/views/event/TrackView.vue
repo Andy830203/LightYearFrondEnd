@@ -7,6 +7,8 @@ const API_URL = BASE_URL + '/Events'
 
 const eventsData = ref(null)
 
+const chooseId = ref('') // ID
+
 const loadEvents = async () => {
     const response = await fetch(API_URL, {
         method: 'GET',
@@ -25,7 +27,7 @@ loadEvents()
                 <!-- 列表部分 -->
                 <h4>活動列表</h4>
                 <ul>
-                    <li v-for="e in eventsData">
+                    <li v-for="e in eventsData" :key="e.id" :value="e.id" @click="chooseId = e.id">
                         {{ e.id }}-{{ e.name }}
                     </li>
                 </ul>

@@ -55,6 +55,13 @@ const router = createRouter({
       name: 'eventStart'
     },
     {
+      // http://localhost:5173/signup/5
+      path: '/signup/:id',
+      component: SignUpView,
+      name: 'eventSignUpWithId',
+      props: true
+    },
+    {
       // http://localhost:5173/signup
       path: '/signup',
       component: SignUpView,
