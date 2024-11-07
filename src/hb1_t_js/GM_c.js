@@ -18,6 +18,7 @@ export function map_init() {
     script.crossOrigin = "anonymous";
     document.head.appendChild(script);
     script.onload = () => { //初始化GoogleMap
+      let mouseListener_over, mouseListener_out, mouseListener_click;
       const map = new google.maps.Map(document.getElementById("map"), {//佈署地圖
         zoom: 8.2,//地圖縮放倍率
         center: { lat: 23.6978, lng: 120.9605 },//台灣正中心
@@ -68,16 +69,16 @@ export function map_init() {
       //參考網址
       //https://developers.google.cn/maps/documentation/javascript/datalayer?hl=zh-tw
       //當滑鼠進入時
-      map.data.addListener('mouseover', function (event) {
+      mouseListener_over = map.data.addListener('mouseover', function (event) {
         map.data.revertStyle();
         map.data.overrideStyle(event.feature, { fillColor: "#193300", strokeWeight: 2 });
       });
       //當滑鼠離開時
-      map.data.addListener('mouseout', function (event) {
+      mouseListener_out =  map.data.addListener('mouseout', function (event) {
         map.data.revertStyle();
       });
       //當滑鼠點擊時
-      map.data.addListener('click', function (event) {
+      mouseListener_click =  map.data.addListener('click', function (event) {
         //const feature_COUNTY_ID = event.feature.Fg.COUNTY_ID;//取得geojson裡COUNTY_ID
         //const feature_cityname = event.feature.Fg.COUNTY;//取得geojson裡COUNTY_ID
         //alert("縣市id:" + feature_COUNTY_ID + "\n" + "縣市名:" + feature_cityname + "\n" + "目前zoom:" + map.zoom);
@@ -95,8 +96,7 @@ export function map_init() {
           .then(c_cen=>{
             map.setCenter({ lat: parseFloat(c_cen[feature_cityname][0]["lat"]), lng: parseFloat(c_cen[feature_cityname][0]["lng"]) });
           })
-          console.log("進入區域檢視");
-        } else if (map_zoom_v === 12) {//區域模式/縣市模式
+        } else if (map_zoom_v === 12) {//進入檢視活動模式
           triggerCloudAnimation();//載入動畫效果
           //已經進來了，目前在台灣區域邊界內
           const feature_cityname = event.feature.Fg.COUNTYNAME;//取得geojson裡COUNTYNAME
@@ -113,12 +113,18 @@ export function map_init() {
           map.setCenter({ lat: event.feature.Fg.CENTER.coordinates[1], lng: event.feature.Fg.CENTER.coordinates[0] });
           map.setOptions({ styles: zoom16_mapstyle });//更改地圖樣式zoom16
           map.setZoom(16);
-          console.log("進入檢視活動模式");
+          //移除所有事件
+          google.maps.event.removeListener(mouseListener_over);
+          google.maps.event.removeListener(mouseListener_out);
+          google.maps.event.removeListener(mouseListener_click);
         } else if (map_zoom_v > 12) {//檢視活動模式
           triggerCloudAnimation();//載入動畫效果
-          console.log("檢視活動模式");
         }
       });
+      //取得經緯度
+      function map_get_loc(){
+        fetch("")
+      }
       // 移除 GeoJSON 資料
       function removeGeoJson() {
         map.data.forEach(function (feature) {

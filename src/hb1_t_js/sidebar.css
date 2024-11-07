@@ -1,6 +1,6 @@
 :root {
   --background: #fafd47;
-  --navbar-width: 256px;
+  --navbar-width: 180px;
   --navbar-width-min: 80px;
   --navbar-dark-primary: #f0ac2e;
   --navbar-dark-secondary: #ebc682;
@@ -18,7 +18,6 @@
     opacity: 1;
   }
 }
-
 #left-drawer {
   position: fixed; /* 設為固定定位 */
   top: 0;
