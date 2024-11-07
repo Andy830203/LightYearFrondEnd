@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100vw;
     display: none;
     z-index: 1000;
 }
@@ -14,15 +14,13 @@
     width: 100vw;
     height: 100vw;
     overflow: hidden;
-    animation: bg_w 1.5s ease-in-out alternate 2;
-    /*alternate類似呼吸燈的效果*/
+    animation: bg_w 3s ease-in-out;
 }
 
 /* 雲朵樣式 */
 .cloud {
     position: absolute;
     width: 500px;
-    transform: translateY(-30%);
 }
 
 /* 左側雲朵 */
@@ -38,12 +36,12 @@
 /* 左移動動畫 */
 @keyframes moveLeft {
     0% {
-        transform: translate(0, -50%);
+        transform: translate(0, 0);
         opacity: 1;
     }
 
     100% {
-        transform: translate(-100vw, -50%);
+        transform: translate(-100vw, 0);
         opacity: 0;
     }
 }
@@ -51,20 +49,24 @@
 /* 右移動動畫 */
 @keyframes moveRight {
     0% {
-        transform: translate(0, -50%);
+        transform: translate(0, 0);
         opacity: 1;
     }
 
     100% {
-        transform: translate(100vw, -50%);
+        transform: translate(100vw, 0);
         opacity: 0;
     }
 }
 
 @keyframes bg_w {
-    0% {}
-
-    100% {
+    0% {
+        background-color:rgba(255, 255, 255, 0);
+    }
+    5% {
         background-color: white;
+    }
+    100% {
+        background-color: rgba(255, 255, 255, 0);
     }
 }
