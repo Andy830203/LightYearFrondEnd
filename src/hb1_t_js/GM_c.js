@@ -124,6 +124,18 @@ export function map_init() {
           triggerCloudAnimation();//載入動畫效果
         }
       });
+      function first_loc_mark() {//讀取表格並建立marker
+        const doc_loc = document.getElementById("locationTable");
+        for (i = 1; i < doc_loc.rows.length; i++) {
+            const lat_t = parseFloat(doc_loc.rows[i].cells[1].textContent);//經度
+            const lng_t = parseFloat(doc_loc.rows[i].cells[2].textContent);//緯度
+            let marker_t = new google.maps.Marker({
+                position: { lat: lat_t, lng: lng_t },
+                map: map,
+                title: 'Unknown Location',
+            });
+        }
+    }
       //取得經緯度
       async function map_get_loc(){
         await fetch(map_loc_url+"/Locations/Location_maploc")
@@ -132,9 +144,15 @@ export function map_init() {
         })
         .then(loc_data=>{
           loc_data.forEach(location => {
-            console.log("name:", location.name);
-            console.log("Longitude:", location.longitude);
-            console.log("Latitude:", location.latitude);
+            const lat_t = parseFloat(location.longitude);//經度
+            const lng_t = parseFloat(location.latitude);//緯度
+            let marker_t = new google.maps.Marker({
+                position: { lat: lat_t, lng: lng_t },
+                map: map,
+                title: location.name
+            });
+            //地點資訊
+            console.log("address",location.address)
           });
         })
       }

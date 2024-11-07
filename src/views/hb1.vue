@@ -25,7 +25,9 @@ function toggleDrawer() {
           <hr/>
         </div>
         <div id="nav-content">
-          <div class="nav-button" @click="toggleDrawer"><i class="fas fa-palette"></i><span>Your Work</span></div>
+          <div class="nav-button" @click="toggleDrawer"><i class="bi bi-house"></i><span>1</span></div>
+          <div id="nav-content-highlight"></div>
+          <div class="nav-button" @click="toggleDrawer"><i class="bi bi-house"></i><span>2</span></div>
           <div id="nav-content-highlight"></div>
         </div>
       <input id="nav-footer-toggle" type="checkbox"/>
