@@ -100,14 +100,17 @@ export function map_init() {
         } else if (map_zoom_v === 12) {//進入檢視活動模式
           triggerCloudAnimation();//載入動畫效果
           //已經進來了，目前在台灣區域邊界內
-          const feature_cityname = event.feature.Fg.COUNTYNAME;//取得geojson裡COUNTYNAME
+          const feature_cityname = event.feature.Fg.COUNTYNAME;//取得geojson裡COUNTYNAME(縣市)
+          const feature_townname = event.feature.Fg.TOWNNAME;//取得geojson裡TOWNNAME(區)
+          const feature_filter = feature_cityname + feature_townname;
+          console.log(feature_filter);
           removeGeoJson();//移除樣式
           map.data.setStyle({});//清空style設定COUNTYNAME
           map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`, null, function () {
             // 設定樣式，只渲染與 featureTownName 相符的區域
             map.data.setStyle((feature) => {
               return feature.getProperty('TOWNNAME') === event.feature.Fg.TOWNNAME
-                ? { strokeWeight: 0.5, fillColor: 'green' } // 符合條件的區域樣式 strokeColor: '#FF0000'
+                ? { strokeWeight: 0.5, fillColor: 'green' } // 符合條件的區域樣式
                 : { visible: false }; // 其他區域不顯示
             });
           });
@@ -118,26 +121,16 @@ export function map_init() {
           google.maps.event.removeListener(mouseListener_over);
           google.maps.event.removeListener(mouseListener_out);
           google.maps.event.removeListener(mouseListener_click);
-          map_get_loc();
+
+          map_get_loc(feature_filter);//取得經緯度並建立標籤
         } 
         else if (map_zoom_v > 12) {//檢視活動模式
           triggerCloudAnimation();//載入動畫效果
         }
       });
-      function first_loc_mark() {//讀取表格並建立marker
-        const doc_loc = document.getElementById("locationTable");
-        for (i = 1; i < doc_loc.rows.length; i++) {
-            const lat_t = parseFloat(doc_loc.rows[i].cells[1].textContent);//經度
-            const lng_t = parseFloat(doc_loc.rows[i].cells[2].textContent);//緯度
-            let marker_t = new google.maps.Marker({
-                position: { lat: lat_t, lng: lng_t },
-                map: map,
-                title: 'Unknown Location',
-            });
-        }
-    }
-      //取得經緯度
-      async function map_get_loc(){
+      //取得經緯度並建立標籤
+      async function map_get_loc(loc){
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
         await fetch(map_loc_url+"/Locations/Location_maploc")
         .then(res=>{
           return res.json();
@@ -149,10 +142,14 @@ export function map_init() {
             let marker_t = new google.maps.Marker({
                 position: { lat: lat_t, lng: lng_t },
                 map: map,
-                title: location.name
+                title: location.name,
+                icon: {
+                  url: "src/hb1_t_js/map_even_icon/愛心餐.png",
+                  scaledSize: new google.maps.Size(40, 40),
+                },
             });
             //地點資訊
-            console.log("address",location.address)
+            //console.log("address",location.address)
           });
         })
       }
