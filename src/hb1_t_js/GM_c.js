@@ -12,6 +12,7 @@ export function map_init() {
     mapHeight.value = `${window.innerHeight}px`;
   };
   onMounted(() => {
+    const map_loc_url = import.meta.env.VITE_API_BASEURL;
     const script = document.createElement('script');
     script.src = `http://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_API_GM_API}`;//使用.env儲存api，env 512=14130
     script.async = true;
@@ -117,13 +118,25 @@ export function map_init() {
           google.maps.event.removeListener(mouseListener_over);
           google.maps.event.removeListener(mouseListener_out);
           google.maps.event.removeListener(mouseListener_click);
-        } else if (map_zoom_v > 12) {//檢視活動模式
+          map_get_loc();
+        } 
+        else if (map_zoom_v > 12) {//檢視活動模式
           triggerCloudAnimation();//載入動畫效果
         }
       });
       //取得經緯度
-      function map_get_loc(){
-        fetch("")
+      async function map_get_loc(){
+        await fetch(map_loc_url+"/Locations/Location_maploc")
+        .then(res=>{
+          return res.json();
+        })
+        .then(loc_data=>{
+          loc_data.forEach(location => {
+            console.log("name:", location.name);
+            console.log("Longitude:", location.longitude);
+            console.log("Latitude:", location.latitude);
+          });
+        })
       }
       // 移除 GeoJSON 資料
       function removeGeoJson() {
