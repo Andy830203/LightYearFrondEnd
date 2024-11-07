@@ -1,6 +1,7 @@
 <script setup>
 import CarouselComponent from '@/components/event/CarouselComponent.vue'
 import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldComponent.vue'
+import EventPeriods from '@/components/event/EventPeriods.vue';
 import InputFieldComponent from '@/components/event/InputFieldComponent.vue'
 import PlacesComponent from '@/components/event/PlacesComponent.vue';
 import MapComponent from '@/components/MapComponent.vue';
@@ -33,16 +34,18 @@ const categories = ref({
 
 eventsData.value.organizer = JSON.parse(localStorage.getItem('member')).name
 
-const getLoc = [{
-    'id': 1,
-    'name': 'Loc1',
-    'addr': 'abcdefg'
-},
-{
-    'id': 2,
-    'name': 'Loc2',
-    'addr': 'abcdefg1'
-}]
+const getLoc = [
+    {
+        'id': 1,
+        'name': 'Loc1',
+        'addr': 'abcdefg'
+    },
+    {
+        'id': 2,
+        'name': 'Loc2',
+        'addr': 'abcdefg1'
+    },
+]
 
 const columns = [
     { data: 'id', title: 'ID' },
@@ -100,9 +103,24 @@ const onSubmit = () => {
     // 123
 }
 
-const addLoc = () => {
-    // alert('addLocation');
-    // console.log('123');
+const addLoc = (table) => {
+    //https://datatables.net/forums/discussion/76468/how-to-get-selected-row-while-using-vue3-without-jquery
+    // console.log(table)
+    // console.log(table.dt)
+    const tb = table.dt
+
+    const datas = tb.rows('.selected').data()
+    console.log(datas)
+    console.log(datas.length)
+    if (datas.length > 1) {
+        const list = Object.values(datas)
+        const rtList = list.slice(0, datas.length)
+        console.log(rtList)
+
+    } else {
+        console.log(datas[0])
+    }
+
 }
 
 loadCategories()
@@ -195,14 +213,11 @@ loadCategories()
                             <input type="file" name="Photo" id="evePhoto" class="form-control">
 
                             <!-- 活動時間 -->
-                            <!-- <label for="eveStartDay" class="mb-2 form-label">活動開始日期</label>
-                            <input type="date" name="" id="eveStartDay" class="form-control">
-                            <label for="eveStartTime" class="mb-2 form-label">活動開始時間</label>
-                            <input type="time" name="" id="eveStartTime" class="form-control"> -->
-                            <InputFieldComponent Type="date" Id="eveStartDay" Label="活動開始日期" />
+                            <EventPeriods />
+                            <!-- <InputFieldComponent Type="date" Id="eveStartDay" Label="活動開始日期" />
                             <InputFieldComponent Type="time" Id="eveStartTime" Label="活動開始時間" v-model="startData" />
                             <InputFieldComponent Type="date" Id="eveEndDay" Label="活動結束日期" />
-                            <InputFieldComponent Type="time" Id="eveEndTime" Label="活動結束時間" />
+                            <InputFieldComponent Type="time" Id="eveEndTime" Label="活動結束時間" /> -->
 
                             <!-- 最大活動人數 -->
                             <ColumnInputFieldComponent Type="number" Id="eveCap" Label="最大活動人數" Indent="false"
