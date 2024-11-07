@@ -5,6 +5,7 @@ import { map_init, mapHeight } from '@/hb1_t_js/GM_c.js';
 import { FT_set } from '@/hb1_t_js/FT_c.js';
 import '@/hb1_t_js/sidebar.css';//側邊攔樣式
 import '@/hb1_t_js/mp_load_styles.css';//loading樣式
+import '@/hb1_t_js/GM_F_c.css';//footer樣式
 map_init();//地圖初始化
 FT_set()//設置footer是否顯示
 import { ref } from 'vue';
@@ -14,7 +15,6 @@ function toggleDrawer() {
   showDrawer.value = !showDrawer.value;
 }
 </script>
-
 <template>
     <div id="map"></div>
     <div id="nav-bar" >
@@ -56,6 +56,28 @@ function toggleDrawer() {
 
       </div>
     </div>
+      <div class="container GM_F_div">
+        <div>
+          <img src="@/hb1_t_js/map_even_icon/公益活動.png" alt="公益活動">
+          <p>1</p>
+        </div>
+        <div>
+          <img src="@/hb1_t_js/map_even_icon/志工.png" alt="志工">
+          <p>2</p>
+        </div>
+        <div>
+          <img src="@/hb1_t_js/map_even_icon/剩食分享.png" alt="剩食分享">
+          <p>3</p>
+        </div>
+        <div>
+          <img src="@/hb1_t_js/map_even_icon/愛心餐.png" alt="愛心餐">
+          <p>4</p>
+        </div>
+          
+          
+          
+          
+      </div>
 </template>
 <style>
     #map {

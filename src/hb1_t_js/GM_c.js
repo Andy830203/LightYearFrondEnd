@@ -130,7 +130,6 @@ export function map_init() {
       });
       //取得經緯度並建立標籤
       async function map_get_loc(loc){
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
         await fetch(map_loc_url+"/Locations/Location_maploc")
         .then(res=>{
           return res.json();
