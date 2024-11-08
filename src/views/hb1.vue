@@ -1,6 +1,8 @@
 <script setup>
 //@/hb1_t_js/GM_c.js，地圖專用js
 import { map_init, mapHeight } from '@/hb1_t_js/GM_c.js';
+//footbar組件
+import ft_gm from  '@/hb1_t_js/footbar.vue';
 //@/hb1_t_js/FT_c.js，footer專用js
 import { FT_set } from '@/hb1_t_js/FT_c.js';
 import '@/hb1_t_js/sidebar.css';//側邊攔樣式
@@ -56,28 +58,7 @@ function toggleDrawer() {
 
       </div>
     </div>
-      <div class="container GM_F_div">
-        <div>
-          <img src="@/hb1_t_js/map_even_icon/公益活動.png" alt="公益活動">
-          <p>1</p>
-        </div>
-        <div>
-          <img src="@/hb1_t_js/map_even_icon/志工.png" alt="志工">
-          <p>2</p>
-        </div>
-        <div>
-          <img src="@/hb1_t_js/map_even_icon/剩食分享.png" alt="剩食分享">
-          <p>3</p>
-        </div>
-        <div>
-          <img src="@/hb1_t_js/map_even_icon/愛心餐.png" alt="愛心餐">
-          <p>4</p>
-        </div>
-          
-          
-          
-          
-      </div>
+  <ft_gm></ft_gm>
 </template>
 <style>
     #map {
