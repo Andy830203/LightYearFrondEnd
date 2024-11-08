@@ -1,5 +1,3 @@
-
-複製程式碼
 <template>
   <div id="auth-container">
     <div class="main">
@@ -95,13 +93,33 @@ async function login() {
       throw new Error('登入失敗，請檢查帳號密碼');
     }
 
+    
+
     const result = await response.json();
-    console.log("登入成功", result);
 
     // 更新到 member store 並存入 localStorage
-    memberStore.member = { id: result.id, name: result.name};
+    memberStore.member = { id: result.id, name: result.name };
     localStorage.setItem('member', JSON.stringify({ id: result.id }));
+    
+    // 檢查是否需要重設密碼
+    if (result.status === "ForceChangePassword") {
+      // 使用 SweetAlert 顯示訊息並重導向到強制更改密碼頁面
+      await Swal.fire({
+        icon: 'warning',
+        title: '需要更改密碼',
+        text: '您需要重設您的密碼',
+        confirmButtonText: '前往重設密碼'
+      });
 
+      // 導向到重設密碼頁面
+      window.location.href = result.redirectUrl;
+      return; // 結束函式，避免後續的登入成功處理邏輯
+    }
+
+    // 如果不需要重設密碼，則繼續進行登入成功的處理
+    console.log("登入成功", result);
+
+    
     // 使用 SweetAlert 顯示成功提示
     await Swal.fire({
       icon: 'success',
@@ -114,7 +132,7 @@ async function login() {
 
   } catch (error) {
     console.error("登入發生錯誤", error);
-    
+
     // 使用 SweetAlert 顯示錯誤提示
     await Swal.fire({
       icon: 'error',
@@ -168,7 +186,7 @@ if (!passwordPattern.test(password)) {
 
     if (response.ok) 
     {
-      alert('註冊成功');
+      alert('快速註冊成功，請盡快至設定更新個人資訊喔');
     }
     else
     {
@@ -182,10 +200,90 @@ if (!passwordPattern.test(password)) {
 
 async function resetPassword() {
   // 重設密碼邏輯
+  try {
+    const response = await fetch(`${BASE_URL}/Members/ForgotPassword`, {
+      method: 'POST',
+      body: JSON.stringify({
+        Email: resetEmail.value,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors'
+    });
+
+    if (response.ok) 
+    {
+      alert('請求成功');
+    }
+    else
+    {
+      alert('失敗')
+    }   
+  } catch (error) 
+  {
+    console.error("請求時發生錯誤", error);    
+  }
 }
 
 function facebookLogin() {
   // Facebook 登入邏輯
+  function facebookLogin() {
+  FB.login(
+    async (response) => {
+      if (response.authResponse) {
+        try {
+          const { accessToken, userID } = response.authResponse;
+
+          // 使用 accessToken 呼叫 Facebook API 獲取使用者資訊
+          FB.api('/me', { fields: 'name, email' }, async (userInfo) => {
+            console.log('Facebook 使用者資訊:', userInfo);
+
+            // 透過 API 將 Facebook 使用者資訊發送到後端進行登入/註冊
+            const res = await fetch(`${BASE_URL}/Members/FacebookLogin`, {
+              method: 'POST',
+              body: JSON.stringify({
+                facebookId: userID,
+                name: userInfo.name,
+                email: userInfo.email,
+                accessToken: accessToken
+              }),
+              headers: { 'Content-Type': 'application/json' },
+              mode: 'cors'
+            });
+
+            if (res.ok) {
+              const result = await res.json();
+
+              // 更新 member store 並存入 localStorage
+              memberStore.member = { id: result.id, name: result.name };
+              localStorage.setItem('member', JSON.stringify({ id: result.id }));
+
+              await Swal.fire({
+                icon: 'success',
+                title: '登入成功',
+                text: '歡迎回來！'
+              });
+
+              // 導向到 MemberInFo 頁面
+              window.location.href = "/MemberInFo";
+            } else {
+              throw new Error('Facebook 登入失敗');
+            }
+          });
+        } catch (error) {
+          console.error('Facebook 登入發生錯誤:', error);
+          await Swal.fire({
+            icon: 'error',
+            title: '錯誤',
+            text: '登入失敗，請稍後再試'
+          });
+        }
+      } else {
+        console.log('使用者取消了登入');
+      }
+    },
+    { scope: 'public_profile,email' }
+  );
+}
 }
 
 function googleLogin() {

@@ -46,6 +46,12 @@ function logout() {
             <div class="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-lg-0 justify-content-center mx-auto sm-mx-auto">
                     <li class="nav-item mx-3">
+                        <router-link to="/map_api" class="nav-link">
+                            <i class="bi bi-globe-americas"></i>
+                            <span>地圖api</span>
+                        </router-link>
+                    </li>
+                    <li class="nav-item mx-3">
                         <router-link to="/location" class="nav-link">
                             <i class="bi bi-globe-americas"></i>
                             <span>地圖</span>
@@ -84,14 +90,19 @@ function logout() {
                             <span>會員資訊</span>
                             </a>                  
                         </li>
-                        <li>
+                        <!-- <li>
                             <a class="dropdown-item" href="/MemberSettingView">
                                 <i class="fa-solid fa-gear"></i> 設定
                             </a>
-                        </li>
+                        </li> -->
                         <li>
                             <a class="dropdown-item" href="/MemberFavorite">
-                                <i class="fa-solid fa-heart"></i> 我的收藏
+                            <i class="fa-solid fa-heart"></i> <span>我的收藏</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/OrderHistory">
+                            <i class="fa-solid fa-clipboard-list"></i> <span>我的歷史訂單</span>  
                             </a>
                         </li>
                      </ul>                    
