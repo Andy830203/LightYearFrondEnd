@@ -1,5 +1,5 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue';
-import {zoom8_mapstyle,zoom12_mapstyle,zoom16_mapstyle} from '@/hb1_t_js/map_jsonfile/地圖樣式/zoomset.js';
+import { zoom8_mapstyle, zoom12_mapstyle, zoom16_mapstyle } from '@/hb1_t_js/map_jsonfile/地圖樣式/zoomset.js';
 import { triggerCloudAnimation } from '@/hb1_t_js/map_load_c.js'
 //地圖所需元件St(靜態)
 //Json路徑(靜態)
@@ -75,11 +75,11 @@ export function map_init() {
         map.data.overrideStyle(event.feature, { fillColor: "#193300", strokeWeight: 2 });
       });
       //當滑鼠離開時
-      mouseListener_out =  map.data.addListener('mouseout', function (event) {
+      mouseListener_out = map.data.addListener('mouseout', function (event) {
         map.data.revertStyle();
       });
       //當滑鼠點擊時
-      mouseListener_click =  map.data.addListener('click', function (event) {
+      mouseListener_click = map.data.addListener('click', function (event) {
         //const feature_COUNTY_ID = event.feature.Fg.COUNTY_ID;//取得geojson裡COUNTY_ID
         //const feature_cityname = event.feature.Fg.COUNTY;//取得geojson裡COUNTY_ID
         //alert("縣市id:" + feature_COUNTY_ID + "\n" + "縣市名:" + feature_cityname + "\n" + "目前zoom:" + map.zoom);
@@ -93,10 +93,10 @@ export function map_init() {
           map.setZoom(12);
           //跳轉至縣市中心
           fetch('src/hb1_t_js/map_jsonfile/台灣縣市中心/contrycenter.json')
-          .then(res=>{return res.json();})
-          .then(c_cen=>{
-            map.setCenter({ lat: parseFloat(c_cen[feature_cityname][0]["lat"]), lng: parseFloat(c_cen[feature_cityname][0]["lng"]) });
-          })
+            .then(res => { return res.json(); })
+            .then(c_cen => {
+              map.setCenter({ lat: parseFloat(c_cen[feature_cityname][0]["lat"]), lng: parseFloat(c_cen[feature_cityname][0]["lng"]) });
+            })
         } else if (map_zoom_v === 12) {//進入檢視活動模式
           triggerCloudAnimation();//載入動畫效果
           //已經進來了，目前在台灣區域邊界內
@@ -123,22 +123,22 @@ export function map_init() {
           google.maps.event.removeListener(mouseListener_click);
 
           map_get_loc(feature_filter);//取得經緯度並建立標籤
-        } 
+        }
         else if (map_zoom_v > 12) {//檢視活動模式
           triggerCloudAnimation();//載入動畫效果
         }
       });
       //取得經緯度並建立標籤
-      async function map_get_loc(loc){
-        await fetch(map_loc_url+"/Locations/Location_maploc")
-        .then(res=>{
-          return res.json();
-        })
-        .then(loc_data=>{
-          loc_data.forEach(location => {
-            const lat_t = parseFloat(location.longitude);//經度
-            const lng_t = parseFloat(location.latitude);//緯度
-            let marker_t = new google.maps.Marker({
+      async function map_get_loc(loc) {
+        await fetch(map_loc_url + "/Locations/Location_maploc")
+          .then(res => {
+            return res.json();
+          })
+          .then(loc_data => {
+            loc_data.forEach(location => {
+              const lat_t = parseFloat(location.longitude);//經度
+              const lng_t = parseFloat(location.latitude);//緯度
+              let marker_t = new google.maps.Marker({
                 position: { lat: lat_t, lng: lng_t },
                 map: map,
                 title: location.name,
@@ -146,11 +146,11 @@ export function map_init() {
                   url: "src/hb1_t_js/map_even_icon/愛心餐.png",
                   scaledSize: new google.maps.Size(40, 40),
                 },
+              });
+              //地點資訊
+              //console.log("address",location.address)
             });
-            //地點資訊
-            //console.log("address",location.address)
-          });
-        })
+          })
       }
       // 移除 GeoJSON 資料
       function removeGeoJson() {

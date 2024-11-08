@@ -7,7 +7,6 @@ import ft_gm from  '@/hb1_t_js/footbar.vue';
 import { FT_set } from '@/hb1_t_js/FT_c.js';
 import '@/hb1_t_js/sidebar.css';//側邊攔樣式
 import '@/hb1_t_js/mp_load_styles.css';//loading樣式
-import '@/hb1_t_js/GM_F_c.css';//footer樣式
 map_init();//地圖初始化
 FT_set()//設置footer是否顯示
 import { ref } from 'vue';
