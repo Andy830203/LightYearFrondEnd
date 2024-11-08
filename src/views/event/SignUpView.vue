@@ -1,8 +1,16 @@
 <script setup>
 import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldComponent.vue';
+import EventDatailComponent from '@/components/event/EventDatailComponent.vue';
 import InputFieldComponent from '@/components/event/InputFieldComponent.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
+const BASE_URL = import.meta.env.VITE_API_BASEURL
+const API_URL = BASE_URL + '/Events'
+
+//props
+const props = defineProps({
+    id: String
+})
 
 let eData = {
     'id': 0,
@@ -16,7 +24,21 @@ let eData = {
     'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id dapibus elit. Morbi quis felis quis neque sagittis luctus vel nec lacus. Suspendisse quis ipsum gravida, ultricies ante vitae, dictum sem. Integer laoreet felis et sollicitudin congue. Nunc et lectus venenatis, mollis massa a, imperdiet ipsum. Curabitur sit amet sem a velit accumsan vehicula. In sed tempus arcu. Cras finibus ac nunc at dapibus. Sed ex augue, condimentum sed finibus eget, fermentum nec tellus.'
 };
 
-const eventData = ref(eData);
+console.log(eData)
+
+const getEvent = async () => {
+    const response = await fetch(`${API_URL}/${props.id}`, {
+        method: 'GET'
+    })
+
+    const json = await response.json()
+
+    return json
+}
+
+// onMounted(() => {
+// })
+const eventData = ref(getEvent());
 
 </script>
 
@@ -58,22 +80,23 @@ const eventData = ref(eData);
                     </ColumnInputFieldComponent>
                 </div>
                 <hr>
-                <h4> 活動描述 </h4>
+                <EventDatailComponent :Id="props.id" :API="API_URL" />
+                <!-- <h4> 活動描述 </h4>
                 <div class="text-start mx-3">
                     {{ eventData.description }}
                 </div>
-                <!-- 活動地點 -->
+                !-- 活動地點 --
                 <div class="col-12">
                     <h4>活動地點</h4>
-                    <!-- 活動地點列表 -->
+                    !-- 活動地點列表 --
                 </div>
-                <!-- 報名費 -->
+                !-- 報名費 --
                 <div class="col-12">
                     <h4>報名費</h4>
                     <p class="mx-3 float-end fs-5">
                         {{ eventData.fee }} 元
                     </p>
-                </div>
+                </div> -->
                 <!-- submit -->
                 <div class="col-12 my-3 d-flex justify-content-end">
                     <button class="btn btn-primary col-2 me-3">送出</button>

@@ -20,6 +20,10 @@ import 'jquery/dist/jquery.min.js';
 import 'animate.css/animate.min.css';
 import 'lightbox2/dist/css/lightbox.min.css';
 import 'lightbox2/dist/js/lightbox.min.js';
+
+import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css'
+
+
 // import 'owl.carousel/dist/assets/owl.carousel.min.css';
 // import 'owl.carousel';
 // import WOW from 'wowjs';
