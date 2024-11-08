@@ -11,7 +11,9 @@
                 "TOWNNAME": "小港區",
                 "TOWNENG": "Xiaogang District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3698, 22.5654]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -5641,7 +5643,9 @@
                 "TOWNNAME": "新興區",
                 "TOWNENG": "Xinxing District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3105, 22.6311]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -6316,7 +6320,9 @@
                 "TOWNNAME": "前金區",
                 "TOWNENG": "Qianjin District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2949, 22.6326]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -6863,7 +6869,9 @@
                 "TOWNNAME": "前鎮區",
                 "TOWNENG": "Qianzhen District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3146, 22.5892]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -9658,7 +9666,9 @@
                 "TOWNNAME": "楠梓區",
                 "TOWNENG": "Nanzi District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3229, 22.7282]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -16045,7 +16055,9 @@
                 "TOWNNAME": "鳳山區",
                 "TOWNENG": "Fengshan District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3542, 22.6306]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -21848,7 +21860,9 @@
                 "TOWNNAME": "大寮區",
                 "TOWNENG": "Daliao District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.4058, 22.6065]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -29595,7 +29609,9 @@
                 "TOWNNAME": "大樹區",
                 "TOWNENG": "Dashu District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.4332, 22.6791]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -38422,7 +38438,9 @@
                 "TOWNNAME": "大社區",
                 "TOWNENG": "Dashe District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3567, 22.7319]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -45145,7 +45163,9 @@
                 "TOWNNAME": "仁武區",
                 "TOWNENG": "Renwu District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3453, 22.6908]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -53552,7 +53572,9 @@
                 "TOWNNAME": "鳥松區",
                 "TOWNENG": "Niaosong District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3744, 22.6627]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -60631,7 +60653,9 @@
                 "TOWNNAME": "岡山區",
                 "TOWNENG": "Gangshan District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2978, 22.7955]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -72782,7 +72806,9 @@
                 "TOWNNAME": "橋頭區",
                 "TOWNENG": "Qiaotou District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3051, 22.7538]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -78849,7 +78875,9 @@
                 "TOWNNAME": "燕巢區",
                 "TOWNENG": "Yanchao District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3604, 22.7883]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -92632,7 +92660,9 @@
                 "TOWNNAME": "田寮區",
                 "TOWNENG": "Tianliao District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3902, 22.8511]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -107935,7 +107965,9 @@
                 "TOWNNAME": "阿蓮區",
                 "TOWNENG": "Alian District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3219, 22.8794]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -114818,7 +114850,9 @@
                 "TOWNNAME": "路竹區",
                 "TOWNENG": "Luzhu District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2654, 22.8549]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -123149,7 +123183,9 @@
                 "TOWNNAME": "湖內區",
                 "TOWNENG": "Hunei District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2369, 22.9038]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -127404,7 +127440,9 @@
                 "TOWNNAME": "旗山區",
                 "TOWNENG": "Qishan District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.4834, 22.8868]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -144599,7 +144637,9 @@
                 "TOWNNAME": "美濃區",
                 "TOWNENG": "Meinong District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.5412, 22.9019]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -155618,7 +155658,9 @@
                 "TOWNNAME": "六龜區",
                 "TOWNENG": "Liugui District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.6665, 23.0519]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -170881,7 +170923,9 @@
                 "TOWNNAME": "甲仙區",
                 "TOWNENG": "Jiaxian District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.5987, 23.0846]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -181612,7 +181656,9 @@
                 "TOWNNAME": "杉林區",
                 "TOWNENG": "Shanlin District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.5676, 22.9863]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -194387,7 +194433,9 @@
                 "TOWNNAME": "內門區",
                 "TOWNENG": "Neimen District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.4691, 22.9537]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -208518,7 +208566,9 @@
                 "TOWNNAME": "茂林區",
                 "TOWNENG": "Maolin District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.6932, 22.9113]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -215281,7 +215331,9 @@
                 "TOWNNAME": "桃源區",
                 "TOWNENG": "Taoyuan District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.7682, 23.1889]}
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -236534,7 +236586,9 @@
                 "TOWNNAME": "那瑪夏區",
                 "TOWNENG": "Namaxia District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.6935, 23.2739]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -244893,7 +244947,9 @@
                 "TOWNNAME": "林園區",
                 "TOWNENG": "Linyuan District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3908, 22.5092]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -247324,7 +247380,9 @@
                 "TOWNNAME": "茄萣區",
                 "TOWNENG": "Qieding District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.1817, 22.8894]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -251527,7 +251585,9 @@
                 "TOWNNAME": "永安區",
                 "TOWNENG": "Yong'an District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2293, 22.8176]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -256962,7 +257022,9 @@
                 "TOWNNAME": "彌陀區",
                 "TOWNENG": "Mituo District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2388, 22.7762]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -261173,7 +261235,9 @@
                 "TOWNNAME": "梓官區",
                 "TOWNENG": "Ziguan District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2681, 22.7544]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -264704,7 +264768,9 @@
                 "TOWNNAME": "苓雅區",
                 "TOWNENG": "Lingya District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3245, 22.6256]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -266615,7 +266681,9 @@
                 "TOWNNAME": "三民區",
                 "TOWNENG": "Sanmin District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.3286, 22.6432]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -270978,7 +271046,9 @@
                 "TOWNNAME": "旗津區",
                 "TOWNENG": "Qijin District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2718, 22.5862]}
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -296055,7 +296125,9 @@
                 "TOWNNAME": "鼓山區",
                 "TOWNENG": "Gushan District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2837, 22.6556]}
             },
             "geometry": {
                 "type": "Polygon",
@@ -300378,7 +300450,9 @@
                 "TOWNNAME": "左營區",
                 "TOWNENG": "Zuoying District",
                 "COUNTYID": "E",
-                "COUNTYCODE": "64000"
+                "COUNTYCODE": "64000",
+                "CENTER": {
+                    "type": "Point","coordinates": [120.2938, 22.6874]}
             },
             "geometry": {
                 "type": "Polygon",

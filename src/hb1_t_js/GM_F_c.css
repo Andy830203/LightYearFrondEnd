@@ -1,0 +1,21 @@
+.GM_F_div{
+    position: absolute;
+    display: flex;
+    height: 50px;
+    width: 50vw;
+    bottom: 2vw;
+    left: 25vw;
+    border-radius: 16px;
+    margin-bottom: 2px;
+    background-color: #f0ac2e;
+    justify-content: center;  
+    align-items: center;  
+}
+.GM_F_div div{
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.GM_F_div div img{
+    width: 40px;
+    height: 40px;
+}

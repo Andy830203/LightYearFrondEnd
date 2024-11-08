@@ -46,6 +46,12 @@ function logout() {
             <div class="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-lg-0 justify-content-center mx-auto sm-mx-auto">
                     <li class="nav-item mx-3">
+                        <router-link to="/map_api" class="nav-link">
+                            <i class="bi bi-globe-americas"></i>
+                            <span>地圖api</span>
+                        </router-link>
+                    </li>
+                    <li class="nav-item mx-3">
                         <router-link to="/location" class="nav-link">
                             <i class="bi bi-globe-americas"></i>
                             <span>地圖</span>
