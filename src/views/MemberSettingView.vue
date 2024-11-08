@@ -31,7 +31,6 @@
                   type="text"
                   class="form-control"
                   placeholder="請輸入暱稱"
-                  required
                 />
               </div>
               <!-- 姓名 -->
@@ -43,29 +42,16 @@
                   type="text"
                   class="form-control"
                   placeholder="請輸入姓名"
-                  required
                 />
-              </div>
-              <!-- 帳號 (不可修改) -->
-              <div class="mb-3">
-                <label for="username" class="form-label">帳號</label>
-                <input
-                  v-model="username"
-                  id="username"
-                  type="text"
-                  class="form-control"
-                  disabled
-                />
-              </div>
+              </div>             
               <!-- 生日 -->
               <div class="mb-3">
                 <label for="birthday" class="form-label">生日</label>
                 <input
-                  v-model="birthday"
-                  id="birthday"
+                  v-model="birth"
+                  id="birth"
                   type="date"
                   class="form-control"
-                  disabled
                 />
               </div>
               <!-- 電話 -->
@@ -77,7 +63,6 @@
                   type="tel"
                   class="form-control"
                   placeholder="請輸入電話號碼"
-                  required
                 />
               </div>
               <!-- 住址 -->
@@ -89,7 +74,6 @@
                   type="text"
                   class="form-control"
                   placeholder="請輸入住址"
-                  required
                 />
               </div>
               <!-- 性別 -->
@@ -99,12 +83,10 @@
                   v-model="gender"
                   id="gender"
                   class="form-select"
-                  disabled
                 >
-                  <option value="">請選擇性別</option>
-                  <option value="male">男</option>
-                  <option value="female">女</option>
-                  <option value="other">其他</option>
+                  <option value="true">男</option>
+                  <option value="false">女</option>
+                  <!-- <option value="other">其他</option> -->
                 </select>
               </div>
               <!-- Email -->
@@ -130,9 +112,9 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-3 order-1 order-md-2">
+      <!-- <div class="col-12 col-md-3 order-1 order-md-2">
         <MemberInFo></MemberInFo>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -140,81 +122,115 @@
 <script setup>
 import MemberInFo from '@/components/MemberInFo.vue';
 import { ref, onMounted } from 'vue';
-
+const BASE_URL = import.meta.env.VITE_API_BASEURL;
+const IMG_URL = import.meta.env.VITE_API_IMGURL;
 // 定義 reactive 變數
 const name = ref('');
-const username = ref('');
 const nickname = ref(''); // 新增暱稱
-const birthday = ref('');
+const birth = ref('');
 const phone = ref('');
 const address = ref('');
 const gender = ref('');
 const email = ref('');
 const profilePicture = ref(null); // 儲存選取的圖片檔案
 const imagePreview = ref(''); // 預覽圖片的路徑
+const ImgName = ref('');
 
 // 取得會員資料的函式
 const getProfileData = async () => {
   try {
-    const response = await fetch('/api/member-profile');
-    const profile = await response.json();
+    const memberData = JSON.parse(localStorage.getItem('member'));
+    const userID = memberData ? memberData.id : null;
 
+    if (!userID) {
+      console.error("無法取得使用者 ID");
+      return;
+    }
+
+    const response = await fetch(`${BASE_URL}/Members/GetMemberInFo/${userID}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors',
+    });
+
+    if (!response.ok) throw new Error('無法取得會員資料');
+
+    const profile = await response.json();
     name.value = profile.name;
-    username.value = profile.username;
-    nickname.value = profile.nickname; // 取得暱稱
-    birthday.value = profile.birthday;
+    nickname.value = profile.nickname;
+    birth.value = profile.birth ? profile.birth.split('/').join('-') : '';
     phone.value = profile.phone;
     address.value = profile.address;
     gender.value = profile.gender;
+    console.log(gender.value);
     email.value = profile.email;
-    imagePreview.value = profile.profilePictureUrl || ''; // 預覽會員的現有圖片
+    imagePreview.value = profile.ImgName ? IMG_URL + profile.imgName : '';
+    if (profile.birth) {
+  // 將日期格式轉換為 yyyy-MM-dd 格式
+  // const date = new Date(profile.birth);
+  // const formattedDate = date.toISOString().split('T')[0];
+  // birth.value = formattedDate;
+} else {
+  birth.value = '';
+}
   } catch (error) {
+    console.error('無法載入會員資料', error);
     alert('無法載入會員資料');
   }
 };
 
-// 當圖片被選擇時，更新預覽圖和圖片檔案
-const onImageSelected = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    profilePicture.value = file;
-    imagePreview.value = URL.createObjectURL(file); // 生成本地預覽路徑
-  }
-};
-
-// 更新會員資料的函式
 const updateProfile = async () => {
-  const formData = new FormData();
-  formData.append('name', name.value);
-  formData.append('nickname', nickname.value); // 新增暱稱到表單
-  formData.append('birthday', birthday.value);
-  formData.append('phone', phone.value);
-  formData.append('address', address.value);
-  formData.append('gender', gender.value);
-  formData.append('email', email.value);
-  if (profilePicture.value) {
-    formData.append('profilePicture', profilePicture.value); // 新增圖片檔案到表單資料
+  const memberData = JSON.parse(localStorage.getItem('member'));
+  const userID = memberData ? memberData.id : null;
+
+  if (!userID) {
+    alert('無法取得使用者 ID');
+    return;
   }
+
+  const profileData = {
+    id :userID,
+    name: name.value,
+    nickname: nickname.value,
+    birth: birth.value,
+    phone: phone.value,
+    address: address.value,
+    gender: gender.value === "true", // 將性別轉換為布林值
+  };
 
   try {
-    const response = await fetch('/api/member-profile', {
+    const response = await fetch(`${BASE_URL}/Members/${userID}`, {
       method: 'PUT',
-      body: formData,
-      headers: {
-        // 'Content-Type': 'multipart/form-data' 不需要設置，瀏覽器會自動處理
-      },
+      body: JSON.stringify(profileData),
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors',
     });
+
     if (!response.ok) throw new Error('更新失敗');
     alert('資料更新成功');
   } catch (error) {
+    console.error('更新資料時發生錯誤', error);
     alert('資料更新失敗');
   }
+  console.log('更新發送的資料:', profileData);
+
 };
+
+// 處理圖片選擇並更新預覽
+const onImageSelected = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    profilePicture.value = file; // 儲存選取的圖片檔案
+    imagePreview.value = URL.createObjectURL(file); // 更新圖片預覽
+  }
+};
+
 
 // 組件掛載後取得會員資料
 onMounted(() => {
   getProfileData();
 });
+
 </script>
 
 <style scoped>

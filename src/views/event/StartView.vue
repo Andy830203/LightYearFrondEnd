@@ -1,12 +1,15 @@
 <script setup>
 import CarouselComponent from '@/components/event/CarouselComponent.vue'
 import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldComponent.vue'
+import EventPeriods from '@/components/event/EventPeriods.vue';
 import InputFieldComponent from '@/components/event/InputFieldComponent.vue'
 import PlacesComponent from '@/components/event/PlacesComponent.vue';
+import MapComponent from '@/components/MapComponent.vue';
 import { ref } from 'vue'
+import ItemView from '../shop/ItemView.vue';
 
 
-localStorage.setItem('name', 'ted')
+// localStorage.setItem('name', 'ted')
 
 // 資料設定
 const BASE_URL = import.meta.env.VITE_API_BASEURL
@@ -19,7 +22,7 @@ const eventsData = ref({
     "organizer": "string",
     "fee": 0,
     "capacity": 0,
-    "description": "string",
+    "description": "",
     "priority": 0,
     "categoryId": 0,
     "category": "string"
@@ -30,7 +33,28 @@ const categories = ref({
     'categoryName': ''
 })
 
-eventsData.value.organizer = localStorage.getItem('name')
+eventsData.value.organizer = JSON.parse(localStorage.getItem('member')).name
+
+const getLoc = [
+    {
+        'id': 1,
+        'name': 'Loc1',
+        'addr': 'abcdefg'
+    },
+    {
+        'id': 2,
+        'name': 'Loc2',
+        'addr': 'abcdefg1'
+    },
+]
+
+const columns = [
+    { data: 'id', title: 'ID' },
+    { data: 'name', title: '名稱' },
+    { data: 'addr', title: '地址' },
+];
+
+const LocationData = ref(getLoc)
 
 const getData = ref({
     'eveTypes': [
@@ -67,28 +91,46 @@ const loadCategories = async () => {
 }
 
 const loadLocations = async () => {
+    //要改URL
     const response = await fetch(CATEGORY_URL, {
         method: 'GET',
     })
     const datas = await response.json()
     console.log(datas)
-    categories.value = datas
+    LocationData.value = datas
 }
 
 const onSubmit = () => {
-    // alert('123')
-    // console.log('123')
-    // fetch('127.0.0.1', {
-    //     body: '123321',
-    //     method: 'POST'
-    // })
-    // let rtValue = localStorage.getItem('name')
-    console.log(startData.value)
-    // console.log(rtValue)
-    localStorage.clear()
+    // 123
+}
+
+const addLoc = (table) => {
+    //https://datatables.net/forums/discussion/76468/how-to-get-selected-row-while-using-vue3-without-jquery
+    const tb = table.dt
+    const datas = tb.rows('.selected').data()
+
+    let rtList = null
+    if (datas.length > 1) {
+        const list = Object.values(datas)
+        rtList = list.slice(0, datas.length)
+        console.log(rtList)
+
+    } else {
+        rtList = datas[0]
+        console.log(rtList)
+    }
+    appendTargetList(rtList)
+}
+
+const appendTargetList = (list) => {
+    list.forEach(Item => {
+        //要按資料更改
+
+    });
 }
 
 loadCategories()
+// loadLocations()
 </script>
 
 <template>
@@ -126,7 +168,8 @@ loadCategories()
                                     <!-- <option value="">type 1</option>
                                     <option value="">type 2</option>
                                     <option value="">type 3</option> -->
-                                    <option v-for="type in categories" :value="type" :key="type"> {{ type }}
+                                    <option v-for="cate in categories" :value="cate.categoryId"
+                                        :key="cate.categoryName"> {{ cate.categoryName }}
                                     </option>
 
                                 </select>
@@ -153,13 +196,15 @@ loadCategories()
                             <label for="eveLoc" class="mb-2 form-label">活動地點</label>
                             <!-- table of locations -->
                             <div class="mt-0">
-                                <PlacesComponent></PlacesComponent>
+                                <!-- 需要從零加入地點 -->
+                                <PlacesComponent :enableAddLocation="true" @addLocation="addLoc"
+                                    :locationData="LocationData" :columns="columns" />
                             </div>
 
                             <!-- 活動描述 -->
                             <label for="eveDesc" class="mb-2 form-label">活動描述</label>
-                            <textarea class="form-control mt-0 mb-5" name="description" id="eveDesc" cols="30"
-                                rows="10"></textarea>
+                            <textarea class="form-control mt-0 mb-5" name="description" id="eveDesc" cols="30" rows="10"
+                                v-model="eventsData.description" placeholder="請輸入內容"></textarea>
                         </div>
                     </div>
                     <div class="col-12 col-lg-5 offset-lg-1">
@@ -174,20 +219,15 @@ loadCategories()
                             <input type="file" name="Photo" id="evePhoto" class="form-control">
 
                             <!-- 活動時間 -->
-                            <!-- <label for="eveStartDay" class="mb-2 form-label">活動開始日期</label>
-                            <input type="date" name="" id="eveStartDay" class="form-control">
-                            <label for="eveStartTime" class="mb-2 form-label">活動開始時間</label>
-                            <input type="time" name="" id="eveStartTime" class="form-control"> -->
-                            <InputFieldComponent Type="date" Id="eveStartDay" Label="活動開始日期"></InputFieldComponent>
-                            <InputFieldComponent Type="time" Id="eveStartTime" Label="活動開始時間" v-model="startData">
-                            </InputFieldComponent>
-                            <InputFieldComponent Type="date" Id="eveEndDay" Label="活動結束日期"></InputFieldComponent>
-                            <InputFieldComponent Type="time" Id="eveEndTime" Label="活動結束時間"></InputFieldComponent>
+                            <EventPeriods />
+                            <!-- <InputFieldComponent Type="date" Id="eveStartDay" Label="活動開始日期" />
+                            <InputFieldComponent Type="time" Id="eveStartTime" Label="活動開始時間" v-model="startData" />
+                            <InputFieldComponent Type="date" Id="eveEndDay" Label="活動結束日期" />
+                            <InputFieldComponent Type="time" Id="eveEndTime" Label="活動結束時間" /> -->
 
                             <!-- 最大活動人數 -->
                             <ColumnInputFieldComponent Type="number" Id="eveCap" Label="最大活動人數" Indent="false"
-                                LabelCol="4" InputCol="7" class="mt-5">
-                            </ColumnInputFieldComponent>
+                                LabelCol="4" InputCol="7" class="mt-5" v-model="eventsData.capacity" />
                             <!-- <InputFieldComponent Type="number" Id="eveCap" Label="最大活動人數"></InputFieldComponent> -->
                         </div>
                     </div>
@@ -199,6 +239,7 @@ loadCategories()
                 <i class="bi bi-plus-circle-fill"></i>
             </button>
         </form>
+        <!-- <MapComponent /> -->
     </div>
 
 </template>

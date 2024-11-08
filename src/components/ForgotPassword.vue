@@ -109,7 +109,7 @@ const resetPassword = async () => {
   border: 2px solid var(--input-focus);
 }
 
-.button-confirm {
+.button-confirm {  
   margin: 20px auto 0 auto;
   width: 200px; /* 按鈕寬度 */
   height: 40px;

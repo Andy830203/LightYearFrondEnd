@@ -37,8 +37,8 @@
                 <div class="d-flex justify-content-between flex-lg-wrap">
                     <p class="text-dark fs-5 fw-bold mb-0">{{ productPrice !== null ? productPrice : "未標示價格" }}</p>
                         <router-link :to="{ name: 'itemDetails', params: { id: productId }}"
-                        class="btn border border-secondary rounded-pill px-3 text-primary">
-                            <i class="fa fa-shopping-bag me-2 text-primary"></i>查看詳細
+                        class="btn btn-outline-primary border border-secondary rounded-pill px-3">
+                            <i class="fa fa-shopping-bag me-2"></i>查看詳細
                         </router-link>
                 </div>
             </div>
