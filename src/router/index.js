@@ -15,7 +15,11 @@ import ForgotPassword from '@/components/ForgotPassword.vue'
 import MemberInFo from '@/components/MemberInFo.vue'
 import MemberSettingView from '@/views/MemberSettingView.vue'
 import MemberFavorite from '@/components/MemberFavorite.vue'
-
+import MemberInFoView from '@/views/MemberInFoView.vue';
+import EventComment from '@/components/EventComment.vue';
+import ShareButton from '@/components/member/ShareButton.vue';
+import ForceChangePassword from '@/components/ForceChangePassword.vue';
+import OrderHistory from '@/components/OrderHistory.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -101,7 +105,34 @@ const router = createRouter({
       path: '/MemberFavorite',
       component: MemberFavorite,
       name: 'MemberFavorite'
+    },
+    {
+      path: '/MemberInFoView',
+      component: MemberInFoView,
+      name: 'MemberInFoView'
+    },
+    {
+      path: '/ShareButton',
+      component: ShareButton,
+      name: 'ShareButton'
+    },
+    {
+      path: '/ForceChangePassword',
+      component: ForceChangePassword,
+      name: 'ForceChangePassword'
+    },
+    {
+      path: '/OrderHistory',
+      component: OrderHistory,
+      name: 'OrderHistory'
+    },
+
+    {
+      path: '/EventComment',
+      component: EventComment,
+      name: 'EventComment'
     }
+
   ]
 })
 // 使用全局afterEach守衛，路由切換後恢復組件的狀態
