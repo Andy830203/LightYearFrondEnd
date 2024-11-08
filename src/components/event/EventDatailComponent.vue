@@ -5,6 +5,7 @@ import CarouselComponent from './CarouselComponent.vue';
 //props
 const props = defineProps(['Id', 'API'])
 const eData = ref('')
+const signNumber = ref('')
 
 const loadData = async () => {
     const response = await fetch(`${props.API}/${props.Id}`, {
@@ -14,7 +15,12 @@ const loadData = async () => {
     eData.value = await response.json()
 }
 
+const loadSignedNumber = () => {
+    //get sign up
+}
+
 loadData()
+loadSignedNumber()
 </script>
 
 <template>
