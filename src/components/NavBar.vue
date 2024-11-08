@@ -84,14 +84,19 @@ function logout() {
                             <span>會員資訊</span>
                             </a>                  
                         </li>
-                        <li>
+                        <!-- <li>
                             <a class="dropdown-item" href="/MemberSettingView">
                                 <i class="fa-solid fa-gear"></i> 設定
                             </a>
-                        </li>
+                        </li> -->
                         <li>
                             <a class="dropdown-item" href="/MemberFavorite">
-                                <i class="fa-solid fa-heart"></i> 我的收藏
+                            <i class="fa-solid fa-heart"></i> <span>我的收藏</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/OrderHistory">
+                            <i class="fa-solid fa-clipboard-list"></i> <span>我的歷史訂單</span>  
                             </a>
                         </li>
                      </ul>                    
