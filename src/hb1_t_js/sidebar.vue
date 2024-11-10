@@ -5,10 +5,8 @@
 </script>
 <template>
   <div class="container d-flex flex-column flex-shrink-0 p-3 text-white bg-dark nav-data"
-       style="width: 20vw; height: 40vw; position: absolute; right: 2vw; top: 5vw; border-radius: 20px;">
+       style="width: 20vw;position: absolute; right: 2vw; top: 5vw; border-radius: 20px;">
     <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-      <i class="bi bi-caret-left-fill fs-2"></i>
-      <i class="bi bi-text-center fs-2"></i>
       <span class="fs-4">導覽</span>
     </div>
     <hr>

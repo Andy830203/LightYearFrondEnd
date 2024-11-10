@@ -28,7 +28,9 @@ export function init_sidebar(){
             language: {
                 lengthMenu: "前往 _MENU_",
                 info: ""
-            },
+            },    
+            scrollX: true, // 啟用橫向滾動
+            responsive: true,
         });
     });
 }

@@ -1,4 +1,7 @@
 
+:root{
+  --sidebar_body:aqua;
+}
 /* 下拉式樣式 */
 #dt-length-0 {
   width: 200px;
@@ -6,9 +9,13 @@
 }
 /* tbody右樣式 */
 #side_dt tbody tr{
-  background-color: aqua;
+  background-color: var(--sidebar_body);
 }
 /* tbody左樣式 */
 #side_dt tbody tr .sorting_1{
-  background-color: aqua;
+  background-color: var(--sidebar_body);
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  max-width: 150px;  
 }
