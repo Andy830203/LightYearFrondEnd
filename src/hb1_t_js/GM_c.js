@@ -108,7 +108,7 @@ export function map_init() {
           const feature_cityname = event.feature.Fg.COUNTYNAME;//取得geojson裡COUNTYNAME(縣市)
           const feature_townname = event.feature.Fg.TOWNNAME;//取得geojson裡TOWNNAME(區)
           const feature_filter = feature_cityname + feature_townname;
-          console.log(feature_filter);
+          // console.log(feature_filter);
           removeGeoJson();//移除樣式
           map.data.setStyle({});//清空style設定COUNTYNAME
           map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`, null, function () {

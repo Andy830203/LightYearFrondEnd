@@ -1,26 +1,30 @@
 <script setup>
     import '@/hb1_t_js/sidebar.css';//側邊攔樣式
+    import { tableData,init_sidebar } from '@/hb1_t_js/sidebar.js'
+    init_sidebar();
 </script>
-
 <template>
-    <div id="nav-bar" >
-      <input id="nav-toggle" type="checkbox"/>
-        <div id="nav-header">
-          <p id="nav-title"></p>
-          <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
-          <hr/>
-        </div>
-        <div id="nav-content">
-          <div class="nav-button" @click="toggleDrawer"><i class="bi bi-house"></i><span>1</span></div>
-          <div id="nav-content-highlight"></div>
-          <div class="nav-button" @click="toggleDrawer"><i class="bi bi-house"></i><span>2</span></div>
-          <div id="nav-content-highlight"></div>
-        </div>
-      <input id="nav-footer-toggle" type="checkbox"/>
+  <div class="container d-flex flex-column flex-shrink-0 p-3 text-white bg-dark nav-data"
+       style="width: 20vw; height: 40vw; position: absolute; right: 2vw; top: 5vw; border-radius: 20px;">
+    <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <i class="bi bi-caret-left-fill fs-2"></i>
+      <i class="bi bi-text-center fs-2"></i>
+      <span class="fs-4">導覽</span>
     </div>
-    <!-- 左側滑出的窗格區塊 -->
-    <div v-if="showDrawer" id="left-drawer" class="animate-slide-left">
-      <!-- 窗格內容 -->
-      <p>這裡是延伸出來的窗格內容</p>
-    </div>
+    <hr>
+    <table id="side_dt" class="display">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(entry, index) in tableData" :key="index">
+          <td>{{ entry.name }}</td>
+          <td>{{ entry.position }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
