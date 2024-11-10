@@ -8,6 +8,8 @@ m_e_onBeforeUnmount()
 import { computed } from 'vue';
 import { useMemberStore } from '../stores/Member';
 
+import Login from './Login.vue';
+
 const memberStore = useMemberStore();
 
 // 判斷是否已登入
@@ -97,7 +99,12 @@ function logout() {
                         </li> -->
                         <li>
                             <a class="dropdown-item" href="/MemberFavorite">
-                            <i class="fa-solid fa-heart"></i> <span>我的收藏</span>
+                            <i class="fa-solid fa-heart"></i> <span>我的收藏活動</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/MemberActivityList">
+                            <i class="fa-solid fa-clipboard-list"></i> <span>我的評論</span>  
                             </a>
                         </li>
                         <li>
@@ -130,9 +137,7 @@ function logout() {
                 <!-- 根據登入狀態顯示會員圖示或歡迎訊息 -->
                         <div id="map_nav" class="nav-container">
                         <!-- 未登入狀態顯示登入圖示 -->
-                                <RouterLink v-if="!isLoggedIn" to="/login" class="auth-icon">
-                                     <i class="bi bi-person-fill" title="登入"></i>
-                                </RouterLink>
+                        <i v-if="!isLoggedIn" class="bi bi-person-fill" data-bs-toggle="modal" data-bs-target="#exampleModal" title="登入"></i>
 
                 <!-- 已登入狀態顯示會員訊息與登出圖示 -->
                         <div v-else class="user-info">
@@ -152,6 +157,14 @@ function logout() {
         </div>
     </nav>
     <!-- header end -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content no-background"> <!-- 新增自定義 class: no-background -->
+        <Login></Login>
+    </div>
+  </div>
+</div>
+
 </template>
 <style lang="css" scoped>
 i,
@@ -292,4 +305,10 @@ span,
   color: 	#000000;
 }
 
+/* 自定義 class 移除背景 */
+.no-background {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
 </style>

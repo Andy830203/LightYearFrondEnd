@@ -24,6 +24,7 @@ import ShareButton from '@/components/member/ShareButton.vue';
 import ForceChangePassword from '@/components/ForceChangePassword.vue';
 import OrderHistory from '@/components/OrderHistory.vue';
 import Cart from '@/views/Cart.vue';
+import MemberActivityList from '@/views/MemberActivityList.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -150,7 +151,11 @@ const router = createRouter({
       component: OrderHistory,
       name: 'OrderHistory'
     },
-
+    {
+      path: '/MemberActivityList',
+      component: MemberActivityList,
+      name: 'MemberActivityList'
+    },
     {
       path: '/EventComment',
       component: EventComment,
