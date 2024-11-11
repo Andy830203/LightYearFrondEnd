@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="order in sortedOrders" :key="order.id">
+          <tr v-for="order in paginatedOrders" :key="order.id">
             <td>{{ order.id }}</td>
             <td>{{ formatDate(order.orderTime) || 'N/A'  }}</td>
             <td>
@@ -40,21 +40,11 @@
           </tr>
         </tbody>
       </table>
-    </div>
-
-    <!-- 訂單詳情模態框 -->
-    <div v-if="selectedOrderItems && selectedOrderItems.length > 0" class="modal-overlay" @click.self="closeOrderDetails">
-      <div class="modal">
-        <h3>訂單詳情 - 訂單編號: {{ selectedOrderId }}</h3>
-        <ul>
-          <li v-for="item in selectedOrderItems" :key="item.id">
-            <p><strong>商品名稱:</strong> {{ item.productName || 'N/A' }}</p>
-            <p><strong>數量:</strong> {{ item.quantity || 0  }}</p>
-            <p><strong>單價:</strong> {{ item.unitPrice || 'N/A' }}</p>
-            <p><strong>賣家名稱:</strong> {{ item.sellerName || 'N/A' }}</p>
-          </li>
-        </ul>
-        <button class="styled-button" @click="closeOrderDetails">關閉</button>
+      <!-- 分頁按鈕 -->
+      <div class="pagination">
+        <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1">上一頁</button>
+        <span>第 {{ currentPage }} 頁</span>
+        <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">下一頁</button>
       </div>
     </div>
   </div>
@@ -62,6 +52,7 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue';
+import Swal from 'sweetalert2'; 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 export default {
   name: 'OrderHistory',
@@ -72,6 +63,8 @@ export default {
     const selectedOrderId = ref(null);
     const sortKey = ref('id');
     const sortOrder = ref(1);
+    const currentPage = ref(1);
+    const ordersPerPage = 20;
 
     const fetchUserOrders = async () => {
   try {
@@ -110,6 +103,40 @@ const fetchOrderItems = async (orderId) => {
     selectedOrderItems.value = data;
     selectedOrderId.value = orderId;
     console.log('Fetched order items:', data); // 檢查回傳資料
+     // 使用 SweetAlert2 顯示訂單詳情
+     const orderDetailsHtml = `
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead style="background-color: #f0f8ff;">
+          <tr>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 40%;">商品名稱</th>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 20%;">數量</th>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 20%;">單價</th>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 20%;">賣家名稱</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.map(item => `
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px;">${item.productName || 'N/A'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${item.quantity || 0}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${item.unitPrice || 'N/A'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${item.sellerName || 'N/A'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+
+    await Swal.fire({
+      title: `訂單詳情 - 訂單編號: ${orderId}`,
+      html: orderDetailsHtml,
+      confirmButtonText: '關閉',
+      width: '80%',
+      preConfirm: () => {
+        selectedOrderItems.value = [];
+        selectedOrderId.value = null;
+      }
+    });
   } catch (error) {
     console.error('Error fetching order items:', error);
   }
@@ -144,6 +171,22 @@ const fetchOrderItems = async (orderId) => {
         return 0;
       });
     });
+    // 分頁邏輯
+    const totalPages = computed(() => {
+      return Math.ceil(orders.value.length / ordersPerPage);
+    });
+
+    const paginatedOrders = computed(() => {
+      const startIndex = (currentPage.value - 1) * ordersPerPage;
+      const endIndex = startIndex + ordersPerPage;
+      return sortedOrders.value.slice(startIndex, endIndex);
+    });
+
+    // 改變頁面
+    const changePage = (page) => {
+      if (page < 1 || page > totalPages.value) return;
+      currentPage.value = page;
+    };
 
     const printOrderHistory = () => {
       const printContents = document.getElementById('print-section').innerHTML;
@@ -151,11 +194,6 @@ const fetchOrderItems = async (orderId) => {
       document.body.innerHTML = printContents;
       window.print();
       document.body.innerHTML = originalContents;
-    };
-
-    const closeOrderDetails = () => {
-      selectedOrderItems.value = [];
-      selectedOrderId.value = null;
     };
 
     // 取得並格式化日期的函數
@@ -185,8 +223,11 @@ const fetchOrderItems = async (orderId) => {
       fetchOrderItems,
       printOrderHistory,
       sortTable,
-      closeOrderDetails,
-      formatDate
+      formatDate,
+      changePage,
+      currentPage,
+      totalPages,
+      paginatedOrders
     };
   },
 };
@@ -326,4 +367,30 @@ tr:hover {
   margin: 10px 0;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  margin: 0 5px;
+  border: 1px solid #ddd;
+  background-color: #f0f8ff;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  align-self: center;
+  margin: 0 10px;
+  font-size: 16px;
+}
 </style>
