@@ -5,11 +5,11 @@
     display: flex;
     width: 50vw;
     height: 50px;
-    background-color: #f0ac2e;
+    background-color:rgb(255, 193, 7);
     border-radius: 16px;
     justify-content: center;
     align-items: center;
-}
+}   
 
 .item {
     display: flex;

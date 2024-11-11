@@ -19,10 +19,27 @@
       </thead>
       <tbody>
         <tr v-for="(entry, index) in tableData" :key="index">
-          <td>{{ entry.name }}</td>
-          <td>{{ entry.position }}</td>
+          <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">{{ entry.name }}</td>
+          <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">{{ entry.position }}</td>
         </tr>
       </tbody>
     </table>
+
+    <div class="offcanvas custom-offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">活動介紹</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div id="offcanvasContent">
+          活動內文
+        </div>
+        <div class="button-container">
+          <button>我要參加</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
+

@@ -17,7 +17,7 @@ function toggleDrawer() {
 </script>
 <template>
   <div id="map"></div>
-  <sidebar_gm></sidebar_gm>
+  <sidebar_gm v-if="ft_dis_state"></sidebar_gm>
   <div class="cloud-overlay" id="cloudOverlay">
     <div class="cloud-container">
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:0%;left: 55%;">

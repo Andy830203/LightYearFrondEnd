@@ -152,8 +152,6 @@ export function map_init() {
                   scaledSize: new google.maps.Size(40, 40),
                 },
               });
-              //地點資訊
-              //console.log("address",location.address)
             });
           })
       }
