@@ -14,6 +14,7 @@ import ItemView from '../shop/ItemView.vue';
 // 資料設定
 const BASE_URL = import.meta.env.VITE_API_BASEURL
 const API_URL = BASE_URL + '/Events'
+const Periods_URL = `${BASE_URL}/EventPeriods`
 const CATEGORY_URL = API_URL + '/Categories'
 const eventsData = ref({
     "id": 0,
@@ -32,6 +33,8 @@ const categories = ref({
     'categoryId': 0,
     'categoryName': ''
 })
+
+const periods = ref([])
 
 eventsData.value.organizer = JSON.parse(localStorage.getItem('member')).name
 
@@ -100,8 +103,45 @@ const loadLocations = async () => {
     LocationData.value = datas
 }
 
-const onSubmit = () => {
-    // 123
+const onSubmit = async () => {
+    if (periods.value.length === 0) {
+        alert('請輸入時段')
+        return
+    }
+
+    let myHeader = {
+        "Content-Type": "application/json",
+    }
+    const response = await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify(eventsData.value),
+        headers: myHeader
+    })
+
+    if (response.ok()) {
+        //post periods
+        const json = await response.json()
+        const rtObj = JSON.parse(json)
+        const newId = rtObj['Id']
+
+        if (periods.value.length > 0) {
+            periods.value.forEach((p, index) => {
+                p['description'] = `第 ${index + 1} 時段`
+                p['EId'] = newId
+            })
+        }
+
+        const respPeriods = await fetch(Periods_URL, {
+            method: 'POST',
+            body: JSON.stringify(periods.value),
+            headers: myHeader
+        })
+
+        if (respPeriods.ok()) {
+            periods.value = []
+        }
+    }
+    console.log(response.status)
 }
 
 const addLoc = (table) => {
@@ -212,14 +252,14 @@ loadCategories()
                             <!-- 活動照片 -->
                             <label for="evePhoto" class="mb-2 form-label">活動照片</label>
                             <!-- 實作輪播 -->
-                            <div>
+                            <!-- <div>
                                 實作輪播
                                 <CarouselComponent></CarouselComponent>
-                            </div>
+                            </div> -->
                             <input type="file" name="Photo" id="evePhoto" class="form-control">
 
                             <!-- 活動時間 -->
-                            <EventPeriods />
+                            <EventPeriods v-model="periods" />
                             <!-- <InputFieldComponent Type="date" Id="eveStartDay" Label="活動開始日期" />
                             <InputFieldComponent Type="time" Id="eveStartTime" Label="活動開始時間" v-model="startData" />
                             <InputFieldComponent Type="date" Id="eveEndDay" Label="活動結束日期" />

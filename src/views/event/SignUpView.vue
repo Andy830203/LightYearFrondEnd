@@ -5,6 +5,7 @@ import InputFieldComponent from '@/components/event/InputFieldComponent.vue';
 import { onMounted, ref } from 'vue';
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL
+// TODO: 
 const API_URL = BASE_URL + '/Events' //operation with event
 
 //props

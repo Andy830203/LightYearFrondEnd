@@ -268,7 +268,7 @@ ul.DragableOff li {
     color: #fce4ec;
     list-style: none;
     margin: 4px 0;
-    border-left: 2px solid #ffce3a;
+    border-left: 2px solid #b49f8c;
     transition: 0.5s;
     cursor: pointer;
 }
@@ -298,7 +298,7 @@ ul.DragableOff li {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #ffce3a;
+    background: #b49f8c;
     transform: scaleX(0);
     transform-origin: left;
     transition: 0.5s;
