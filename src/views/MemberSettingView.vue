@@ -188,21 +188,51 @@ const updateProfile = async () => {
     return;
   }
 
-  const profileData = {
-    id :userID,
-    name: name.value,
-    nickname: nickname.value,
-    birth: birth.value,
-    phone: phone.value,
-    address: address.value,
-    gender: gender.value === "true", // 將性別轉換為布林值
-  };
+  let imgName = '';
+
+  // 如果選擇了新圖片，先上傳圖片
+  if (profilePicture.value) {
+    const imageData = new FormData();
+    imageData.append("profilePicture", profilePicture.value);
+
+    try {
+      const imageResponse = await fetch(`${BASE_URL}/Members/uploadProfilePicture`, {
+        method: 'POST',
+        body: imageData,
+        mode: 'cors',
+      });
+
+      if (!imageResponse.ok) throw new Error('圖片上傳失敗');
+
+      const imageResult = await imageResponse.json();
+      imgName = imageResult.fileName; // 保存圖片名稱
+    } catch (error) {
+      console.error('圖片上傳錯誤', error);
+      alert('圖片上傳失敗');
+      return; // 如果圖片上傳失敗，停止後續操作
+    }
+  }
+
+  // 準備會員資料更新的表單數據
+  const profileData = new FormData();
+  profileData.append("id", userID);
+  profileData.append("name", name.value);
+  profileData.append("nickname", nickname.value);
+  profileData.append("birth", birth.value);
+  profileData.append("phone", phone.value);
+  profileData.append("address", address.value);
+  profileData.append("gender", gender.value === "true"); // 將性別轉換為布林值
+
+  // 如果有上傳圖片，傳遞圖片名稱
+  if (imgName) {
+    profileData.append("ImgName", imgName);
+  }
+
 
   try {
     const response = await fetch(`${BASE_URL}/Members/${userID}`, {
       method: 'PUT',
-      body: JSON.stringify(profileData),
-      headers: { 'Content-Type': 'application/json' },
+      body: profileData,
       mode: 'cors',
     });
 
@@ -236,7 +266,7 @@ onMounted(() => {
 <style scoped>
 .container {
   margin-top: 5rem;
-  background: url('@/assets/images/members/背景.png'); /*設置背景圖片*/
+  /* background: url('@/assets/images/members/背景.png'); 設置背景圖片 */
   /* background-color: #D1E9E9	; */
   background-size: cover; /* 背景圖片覆蓋整個區域 */
   background-position: center; /* 背景圖片居中 */

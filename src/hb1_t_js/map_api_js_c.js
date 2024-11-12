@@ -60,6 +60,9 @@ export function map_init() {
                 zoom: 8.2,//地圖縮放倍率
                 center: { lat: 23.6978, lng: 120.9605 },//台灣正中心
                 styles: zoom12_mapstyle,//不顯示任何label
+                scrollwheel: false, // 禁用滾輪縮放
+                disableDoubleClickZoom: true, // 禁用雙擊縮放
+                zoomControl: false, // 禁用縮放控制按鈕
             });
         };
     });
