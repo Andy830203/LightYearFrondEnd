@@ -23,8 +23,14 @@ import 'lightbox2/dist/js/lightbox.min.js';
 
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css'
 
-// import 'datatables.net';
-// import 'datatables.net-dt/css/jquery.dataTables.min.css';
+import vue3GoogleLogin from 'vue3-google-login'
+
+
+// import 'owl.carousel/dist/assets/owl.carousel.min.css';
+// import 'owl.carousel';
+// import WOW from 'wowjs';
+// new WOW.WOW().init();
+
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -37,3 +43,6 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.mount('#app')
+app.use(vue3GoogleLogin, {
+    clientId: '123485736116-eopi4l2deunud3e3l1k2pcesg6a015u1.apps.googleusercontent.com'
+})
