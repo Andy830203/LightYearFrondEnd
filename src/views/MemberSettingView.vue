@@ -266,7 +266,7 @@ onMounted(() => {
 <style scoped>
 .container {
   margin-top: 5rem;
-  background: url('@/assets/images/members/背景.png'); /*設置背景圖片*/
+  /* background: url('@/assets/images/members/背景.png'); 設置背景圖片 */
   /* background-color: #D1E9E9	; */
   background-size: cover; /* 背景圖片覆蓋整個區域 */
   background-position: center; /* 背景圖片居中 */

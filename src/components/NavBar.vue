@@ -3,6 +3,7 @@
 import { m_e_move, m_e_leave, navClass, m_e_onBeforeUnmount } from '@/hb1_t_js/NAV_c'//nav樣式更改
 import { state } from '@/global_value'; // 從外部文件引入狀態
 m_e_onBeforeUnmount()
+
 /* 縮放end */
 
 import { computed } from 'vue';
@@ -33,8 +34,8 @@ function logout() {
     <!-- <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow"> -->
     <!-- 更改的 -->
     <!-- <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow bg-warning.bg-gradient" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass"> -->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-light shadow bg-warning bg-gradient border border-5 border-warning"
-        id="navbar_e1" @mouseenter="m_e_move" @mouseleave="m_e_leave" :class="navClass">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light shadow  border border-5"
+        id="navbar_e1" style="background-color:#c77d34;border-color:#c27930 !important ;" @mouseenter="m_e_move" @mouseleave="m_e_leave" :class="navClass">
         <div class="container-fluid">
             <!-- logo圖路徑之後用ref路徑指向一個變數，下面佔位子的導覽列也是 -->
             <div class="navbar-brand map_img" style="position: absolute; z-index: 999; top: 10%;">
@@ -61,13 +62,13 @@ function logout() {
                     </li>
                     <li class="nav-item mx-3">
 
-                        <a class="nav-link" href="./faq.html">
+                        <a class="nav-link" href="/faq">
                             <i class="bi bi-question-circle"></i>
                             <span>常見問題</span>
                         </a>
                     </li>
                     <li class="nav-item mx-3">
-                        <a class="nav-link" href="./form.html">
+                        <a class="nav-link" href="/Contactus">
                             <i class="bi bi-megaphone"></i>
                             <span>聯絡我們</span>
                         </a>
@@ -79,7 +80,7 @@ function logout() {
                         </router-link>
                     </li>
                     <!--會員-->
-                    <li class="nav-item dropdown lg-mx-auto md-mx-auto">
+                    <li v-show="memberName" class="nav-item dropdown lg-mx-auto md-mx-auto">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person map_icon"></i> 
@@ -88,8 +89,7 @@ function logout() {
                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
                             <a class="dropdown-item" href="/MemberInFo">
-                            <i class="bi bi-info-circle"></i> 
-                            <span>會員資訊</span>
+                                <i class="fa-solid fa-circle-info fa-beat" style="color: #74C0FC;"></i>  <span>會員資訊</span>
                             </a>                  
                         </li>
                         <!-- <li>
@@ -97,19 +97,19 @@ function logout() {
                                 <i class="fa-solid fa-gear"></i> 設定
                             </a>
                         </li> -->
-                        <li>
+                        <!-- <li>
                             <a class="dropdown-item" href="/MemberFavorite">
-                            <i class="fa-solid fa-heart"></i> <span>我的收藏活動</span>
+                                <i class="fa-solid fa-heart fa-shake" style="color: red;"></i> <span>我的收藏活動</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li>
                             <a class="dropdown-item" href="/MemberActivityList">
-                            <i class="fa-solid fa-clipboard-list"></i> <span>我的評論</span>  
+                                <i class="fa-solid fa-feather fa-shake" style="color: cadetblue;"></i> <span>我的評論</span>  
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="/OrderHistory">
-                            <i class="fa-solid fa-clipboard-list"></i> <span>我的歷史訂單</span>  
+                                <i class="fa-regular fa-rectangle-list fa-bounce" style="color:darkcyan"></i> <span>我的歷史訂單</span>  
                             </a>
                         </li>
                      </ul>                    
@@ -222,7 +222,7 @@ span,
     transition: transform .2s ease-in-out;
 }
 .nav-link:hover i,.nav-link:hover span,#map_nav:hover i{
-    color:aqua;
+    color:rgb(237, 218, 138);
     font-weight: bold;
     transform: scale(1.5);
     transition:transform .5s ease-in-out;

@@ -17,6 +17,7 @@
         :eventName="selectedActivityName"
         @close="closeCommentBox"
         @submitted="handleCommentSubmitted"
+        style="right: 20vw;position: absolute;"
       />
     </div>
   </template>

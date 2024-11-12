@@ -1,94 +1,125 @@
 <template>
   <div class="favorites-container">
     <h2>我的收藏活動</h2>
-    <div v-if="favorites.length === 0" class="no-favorites">
+
+    <!-- 判斷是否有收藏活動 -->
+    <div v-if="hasFavorites">
+      <ul class="favorites-list">
+        <li v-for="(favorite, index) in favorites" :key="favorite.id" class="favorite-item">
+          {{ favorite.name }}
+          <span
+            class="favorite-icon"
+            :class="{ active: favorite.isFavorite }"
+            @click="toggleFavorite(favorite)"
+          >
+            ❤
+          </span>
+        </li>
+      </ul>
+    </div>
+    
+    <!-- 沒有收藏活動時顯示提示 -->
+    <div v-else class="no-favorites">
       暫無收藏活動
     </div>
-    <ul v-else class="favorites-list">
-      <li v-for="favorite in favorites" :key="favorite.id" class="favorite-item">
-        <div class="event-info">
-          <p>活動ID: {{ favorite.eventId }}</p>
-          <p>
-            狀態: <span :class="{'attending': favorite.attendance, 'not-attending': favorite.attendance === null}">
-              {{ favorite.attendance ? '已參加' : '未參加' }}
-            </span>
-          </p>
-        </div>
-        <div class="button-group">
-          <button @click="removeFavorite(favorite.eventId)" class="btn-remove">取消收藏</button>
-          <button v-if="favorite.attendance === null" @click="markAsAttending(favorite.id)" class="btn-attend">標記為已參加</button>
-        </div>
-      </li>
-    </ul>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import Swal from 'sweetalert2'; // 引入 SweetAlert2
 
-export default {
-  setup() {
-    const favorites = ref([]);
-    const memberId = ref(null);
+const BASE_URL = import.meta.env.VITE_API_BASEURL;
+const memberId = ref(null);
+const favorites = ref([]);
+const hasFavorites = ref(false);
 
-    // 從 localStorage 中取得 memberId
-    const loadMemberId = () => {
-      const storedMember = localStorage.getItem("member");
-      if (storedMember) {
-        const parsedMember = JSON.parse(storedMember);
-        memberId.value = parsedMember?.memberId || null;
+const loadMemberId = () => {
+  const storedMember = localStorage.getItem("member");
+  if (storedMember) {
+    const parsedMember = JSON.parse(storedMember);
+    memberId.value = parsedMember?.id || null;
+  } else {
+    console.error("無法取得 member，請確認是否已登入");
+  }
+};
+
+const fetchFavorites = async () => {
+  if (memberId.value) {
+    const API_URL = `${BASE_URL}/Collections/${memberId.value}`;
+    try {
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        favorites.value = data.map(event => ({
+          name:event.eventName, 
+          id: event.collectionId, 
+          isFavorite: true,
+        }));
+        hasFavorites.value = favorites.value.length > 0;
       } else {
-        console.error("無法取得 member，請確認是否已登入");
+        console.error("無法取得收藏活動", data);
       }
-    };
+    } catch (error) {
+      console.error("請求錯誤", error);
+    }
+  }
+};
 
-    const getFavorites = async () => {
-      if (!memberId.value) return; // 如果沒有 memberId，停止執行
-      try {
-        const response = await axios.get(`/api/Collections/${memberId.value}`);
-        favorites.value = response.data;
-      } catch (error) {
-        console.error("獲取收藏活動失敗", error);
-      }
-    };
 
-    const removeFavorite = async (eventId) => {
-      try {
-        await axios.delete(`/api/Collections/${memberId.value}/${eventId}`);
-        getFavorites(); // 更新列表
-      } catch (error) {
-        console.error("移除收藏失敗", error);
-      }
-    };
-
-    const markAsAttending = async (id) => {
-      try {
-        await axios.put(`/api/Collections/UpdateAttendance/${id}`, { attendance: true });
-        getFavorites(); // 更新列表
-      } catch (error) {
-        console.error("標記參加失敗", error);
-      }
-    };
-
-    onMounted(() => {
-      loadMemberId(); // 初始化時從 localStorage 中載入 memberId
-      getFavorites();
+const toggleFavorite = async (favorite) => {
+  if (favorite.isFavorite) {
+    const confirmResult = await Swal.fire({
+      title: '確認取消收藏?',
+      text: `確定要取消收藏活動「${favorite .name}」嗎？`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '確定',
+      cancelButtonText: '取消',
     });
 
-    return {
-      favorites,
-      removeFavorite,
-      markAsAttending,
-    };
-  },
+    if (confirmResult.isConfirmed) {
+      await removeFavorite(favorite);
+      Swal.fire('已取消收藏', `活動「${favorite.name}」已取消收藏`, 'success');
+    }
+  }
 };
+
+const removeFavorite = async (favorite) => {
+  const API_URL = `${BASE_URL}/Collections/${favorite.id}`; // 使用 CollectionId 作為取消依據
+  try {
+    const response = await fetch(API_URL, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (response.ok) {
+      favorite.isFavorite = false; // 更新收藏狀態
+      favorites.value = favorites.value.filter(f => f.isFavorite); // 更新列表
+      hasFavorites.value = favorites.value.length > 0;
+    } else {
+      console.error("無法取消收藏活動");
+    }
+  } catch (error) {
+    console.error("請求錯誤", error);
+  }
+};
+
+onMounted(() => {
+  loadMemberId();
+  fetchFavorites();
+});
 </script>
 
 <style scoped>
 .favorites-container {
-  max-width: 600px;
-  margin: 20px auto;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0px 20px 20px 0px;
   padding: 20px;
   background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
   border-radius: 12px;
@@ -112,78 +143,44 @@ h2 {
 }
 
 .favorites-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .favorite-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
-  margin-bottom: 15px;
-  background-color: #fff;
-  border-radius: 8px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  margin: 10px 0;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #ffffff;
+  transition: transform 0.2s, box-shadow 0.3s;
+  cursor: pointer;
 }
 
 .favorite-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.event-info {
-  flex: 1;
-}
-
-.event-info p {
-  margin: 5px 0;
-  color: #555;
-  font-size: 1.1em;
-}
-
-.attending {
-  color: #28a745; /* 綠色代表已參加 */
-  font-weight: bold;
-}
-
-.not-attending {
-  color: #ff6347; /* 紅色代表未參加 */
-  font-weight: bold;
-}
-
-.button-group {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-remove,
-.btn-attend {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
+.favorite-icon {
+  font-size: 1.5em;
+  color: #fff;
+  transition: color 0.3s;
   cursor: pointer;
-  font-size: 0.9em;
-  font-weight: bold;
-  transition: background-color 0.3s;
 }
 
-.btn-remove {
-  background-color: #ff6347;
-  color: #fff;
+.favorite-icon.active {
+  color: #e74c3c; /* 收藏時顯示紅色 */
 }
 
-.btn-remove:hover {
-  background-color: #e03d2d;
-}
-
-.btn-attend {
-  background-color: #28a745;
-  color: #fff;
-}
-
-.btn-attend:hover {
-  background-color: #218838;
+.favorite-icon:not(.active) {
+  color: #ccc; /* 未收藏時顯示灰色 */
 }
 </style>

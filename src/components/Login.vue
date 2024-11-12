@@ -6,8 +6,8 @@
       <!-- 隱藏的 checkbox，作為切換註冊和登入表單的觸發器 -->
       <input type="checkbox" id="chk" aria-hidden="true" />
       <input type="checkbox" id="forgot-pwd" aria-hidden="true" />
-
       <!-- 註冊表單 -->
+       <GoogleLogin v-show="googlebug" :callback="handleGoogleLogin" class="mt-1" />
       <div class="signup" v-if="!isLoggedIn">
         <form @submit.prevent="register">
           <label>註冊</label>
@@ -30,16 +30,18 @@
 
         <!-- 第三方登入按鈕 -->
         <div class="third-party-login">
+          
           <button @click="facebookLogin" class="auth-button">
             <i class="fab fa-facebook"></i>
           </button>
+          <!-- <GoogleLogin :callback="handleGoogleLogin" class="mt-1" /> -->
           <button @click="googleLogin" class="auth-button">
             <i class="fab fa-google"></i>
           </button>
         </div>
         <!-- <label for="forgot-pwd" class="forgot-password">忘記密碼？</label> -->
       </div>
-
+      
       <!-- 忘記密碼表單 -->
       <div class="forgot-password-container" v-if="!isLoggedIn">
         <form @submit.prevent="resetPassword">
@@ -62,7 +64,7 @@
 import { ref, computed, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 import { useMemberStore } from '@/stores/Member';
-
+import { useOAuthStore } from '@/stores/oAuth'; // Google登入
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
 const loginEmail = ref('');
@@ -72,7 +74,8 @@ const registerEmail = ref('');
 const registerPassword = ref('');
 const registerConfirmPassword = ref('');
 const resetEmail = ref('');
-
+const oauthStore = useOAuthStore();
+const googlebug = ref(null)
 // 取得 member store 實例
 const memberStore = useMemberStore();
 const isLoggedIn = computed(() => memberStore.isLoggedIn); // 判斷是否已登入
@@ -291,6 +294,10 @@ function facebookLogin() {
 function googleLogin() {
   // Google 登入邏輯
 }
+// Google oAuth取得 user jwt 回傳 oauth
+const handleGoogleLogin = async (response) => {
+    oauthStore.callback(response);
+};
 </script>
 
 <style scoped>
