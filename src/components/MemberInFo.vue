@@ -105,6 +105,7 @@ function editMemberInfo() {
 
 onMounted(() => {
   MemberInFo();
+  console.log("完整圖片路徑:", IMG_URL + member.photoUrl);
 });
 </script>
 
