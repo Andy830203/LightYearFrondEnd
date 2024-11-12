@@ -102,8 +102,7 @@ const fetchOrderItems = async (orderId) => {
     const data = await response.json(); // 將回應轉換為 JSON 格式
     selectedOrderItems.value = data;
     selectedOrderId.value = orderId;
-    console.log('Fetched order items:', data); // 檢查回傳資料
-     // 使用 SweetAlert2 顯示訂單詳情
+    // console.log('Fetched order items:', data); // 檢查回傳資料
      const orderDetailsHtml = `
       <table style="width: 100%; border-collapse: collapse;">
         <thead style="background-color: #f0f8ff;">
