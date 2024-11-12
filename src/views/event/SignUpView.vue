@@ -5,7 +5,7 @@ import InputFieldComponent from '@/components/event/InputFieldComponent.vue';
 import { onMounted, ref } from 'vue';
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL
-const API_URL = BASE_URL + '/Events'
+const API_URL = BASE_URL + '/Events' //operation with event
 
 //props
 const props = defineProps({
@@ -24,7 +24,9 @@ let eData = {
     'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id dapibus elit. Morbi quis felis quis neque sagittis luctus vel nec lacus. Suspendisse quis ipsum gravida, ultricies ante vitae, dictum sem. Integer laoreet felis et sollicitudin congue. Nunc et lectus venenatis, mollis massa a, imperdiet ipsum. Curabitur sit amet sem a velit accumsan vehicula. In sed tempus arcu. Cras finibus ac nunc at dapibus. Sed ex augue, condimentum sed finibus eget, fermentum nec tellus.'
 };
 
-console.log(eData)
+// console.log(eData)
+
+const member = JSON.parse(localStorage.getItem('member'))
 
 const getEvent = async () => {
     const response = await fetch(`${API_URL}/${props.id}`, {
@@ -33,25 +35,35 @@ const getEvent = async () => {
 
     const json = await response.json()
 
+
+    console.log(json)
     return json
 }
 
 // onMounted(() => {
 // })
-const eventData = ref(getEvent());
+const eventData = ref({});
 
+onMounted(async () => {
+    try {
+        eventData.value = await getEvent(); // 確保正確更新值
+    } catch (error) {
+        console.error('Failed to load event data:', error);
+    }
+})
 </script>
 
 <template>
     <div class="mt-3 container">
         <form>
-            <div class="d-flex">
+            <div class="d-flex" v-if="eventData">
                 <div class="w-25">
                     <div class="d-flex justify-content-around">
-                        <h2>{{ eventData.eventName }}</h2>
-                        <select :name="eventData.eventName" :id="eventData.id">
-                            <option v-for="period in eventData.eventPeriods" :value="period.time">
-                                {{ period.name }}
+                        <h2>{{ member.name }}</h2>
+                        <select :name="eventData.Name" :id="eventData.id">
+                            <!-- get EP DATA -->
+                            <option v-for="period in eventData.periods">
+                                {{ period.description }}
                             </option>
                         </select>
                     </div>
@@ -65,7 +77,7 @@ const eventData = ref(getEvent());
 
             <div class="row g-3">
                 <div class="col-12">
-                    <input class="ms-3" type="checkbox" name="test" id=""> 同會員資料
+                    <input class="ms-3" type="checkbox" name="test" id="same"> <label for="same">同會員資料</label>
                 </div>
                 <div class="col-6">
                     <ColumnInputFieldComponent Type="text" Id="" Label="身分證字號" LabelCol="3" InputCol="8">
@@ -80,7 +92,11 @@ const eventData = ref(getEvent());
                     </ColumnInputFieldComponent>
                 </div>
                 <hr>
-                <EventDatailComponent :Id="props.id" :API="API_URL" />
+                <div class="row">
+                    <EventDatailComponent class="col-md-6 col-12" :Id="props.id" :API="API_URL" />
+                    <div class="col-md-6 col-12 box"></div>
+                </div>
+
                 <!-- <h4> 活動描述 </h4>
                 <div class="text-start mx-3">
                     {{ eventData.description }}
