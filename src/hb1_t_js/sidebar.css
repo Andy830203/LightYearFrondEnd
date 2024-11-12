@@ -1,6 +1,7 @@
 :root{
-  --sidebar_body:aqua;
+  --sidebar_body:rgb(255,220,121);
 }
+
 /* 下拉式樣式 */
 #dt-length-0 {
   width: 200px;
@@ -13,6 +14,7 @@
 /* tbody樣式 */
 #side_dt tbody tr{
   background-color: var(--sidebar_body);
+  color: black;
 }
 #side_dt tbody td{
   background-color: var(--sidebar_body);

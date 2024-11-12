@@ -25,6 +25,7 @@ export function init_sidebar() {
             responsive: true, //響應式
             lengthMenu: [[10, 20, 30, -1], [10, 20, 30, "All"]],
             searching: false,
+            lengthChange: false,
             pageLength: 4,
             language: {
                 lengthMenu: "前往 _MENU_",
