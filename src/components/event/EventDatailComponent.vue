@@ -4,6 +4,9 @@ import CarouselComponent from './CarouselComponent.vue';
 
 //props
 const props = defineProps(['Id', 'API'])
+
+const BASE_URL = import.meta.env.VITE_API_BASEURL
+const SignUp_URL = BASE_URL + '/SignUps/event'
 const eData = ref('')
 const signNumber = ref('')
 
@@ -15,8 +18,14 @@ const loadData = async () => {
     eData.value = await response.json()
 }
 
-const loadSignedNumber = () => {
+const loadSignedNumber = async () => {
     //get sign up
+    const response = await fetch(`${SignUp_URL}/${props.Id}`, {
+        method: 'GET'
+    })
+
+    const json = await response.json()
+    console.log(json)
 }
 
 loadData()
