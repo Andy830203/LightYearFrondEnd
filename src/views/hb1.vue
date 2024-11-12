@@ -1,6 +1,6 @@
 <script setup>
 //@/hb1_t_js/GM_c.js，地圖專用js
-import { map_init, mapHeight,ft_dis_state } from '@/hb1_t_js/GM_c.js';
+import { map_init, mapHeight,ft_dis_state,backtotop } from '@/hb1_t_js/GM_c.js';
 import ft_gm from  '@/hb1_t_js/footbar.vue';//icon專用footer
 import { FT_set } from '@/hb1_t_js/FT_c.js';//@/hb1_t_js/FT_c.js，APP.vue footer專用js
 import sidebar_gm from '@/hb1_t_js/sidebar.vue'//sidebar組件
@@ -38,6 +38,7 @@ function toggleDrawer() {
     </div>
   </div>
   <ft_gm v-if="ft_dis_state"></ft_gm>
+  <button @click="backtotop" style="position: absolute; top: 10vw;left: 3vw;border-radius: 5px;width: 100px;background-color: rgb(255, 193, 7);">台灣全景<i class="bi bi-caret-up-square-fill" style="font-size: 50px;"></i></button>
 </template>
 <style>
     #map {

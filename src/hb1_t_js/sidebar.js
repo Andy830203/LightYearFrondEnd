@@ -1,27 +1,8 @@
-import { onMounted, ref } from 'vue';
+import { watch, onMounted, ref } from 'vue';
 import $ from 'jquery';
-
-
-
-export const tableData = ref([
-    { name: 'Tiger Nixon', position: 'System Architect' },
-    { name: 'Garrett Winters', position: 'Accountant' },
-    { name: 'Ashton Cox', position: 'Junior Technical Author' },
-    { name: 'Cedric Kelly', position: 'Senior Javascript Developer' },
-    { name: 'Airi Satou', position: 'Accountant' },
-    { name: 'Brielle Williamson', position: 'Integration Specialist' },
-    { name: 'Herrod Chandler', position: 'Sales Assistant' },
-    { name: 'Rhona Davidson', position: 'Integration Specialist' },
-    { name: 'Colleen Hurst', position: 'Javascript Developer' },
-    { name: 'Sonya Frost', position: 'Software Engineer' },
-    { name: 'Brielle Williamson', position: 'Integration Specialist' },
-    { name: 'Herrod Chandler', position: 'Sales Assistant' },
-    { name: 'Rhona Davidson', position: 'Integration Specialist' },
-    { name: 'Colleen Hurst', position: 'Javascript Developer' },
-    { name: 'Sonya Frost', position: 'Software Engineer' },
-    // 可以添加更多數據
-]);
-
+import { feature_cityname, feature_townname } from '@/hb1_t_js/GM_c.js';
+const map_loc_url = import.meta.env.VITE_API_BASEURL;
+export const tableData = ref([""]);
 export function init_sidebar() {
     onMounted(() => {
         const link = document.createElement('link');
@@ -45,7 +26,7 @@ export function init_sidebar() {
             // 檢查點擊的是否是 td 元素
             if (event.target && event.target.nodeName === 'TD') {
                 const cellData = table.cell(event.target).data();
-                setOffcanvasContent(cellData); // 將數據傳遞給 setOffcanvasContent 函數
+                setOffcanvasContent(cellData);
             }
         });
         function setOffcanvasContent(content) {
@@ -54,5 +35,36 @@ export function init_sidebar() {
                 contentElement.textContent = content;
             }
         }
+        // console.log(feature_cityname.value);//取得縣市名
+        // console.log(feature_townname.value);//取得區名
     });
+    //datatable的資料來源
+    fetch(map_loc_url + "/EventLocations")
+        .then(res => res.json())
+        .then(events => {
+            events.forEach(event => {
+                console.log(event.eId);//活動id
+                console.log(event.belongedEvent);//活動名稱
+                fetch(map_loc_url + "/Locations" + `/${event.lId}`)//使用地址id搜尋地址
+                    .then(res => res.json())
+                    .then(location => {
+                        const fullAddress = feature_cityname.value + feature_townname.value;// 檢查地址是否符合條件
+                        if (location.address.startsWith(fullAddress)) {
+                            // 如果地址符合條件，將資料加入到 tableData 中
+                            console.log("OK")
+                            console.log(event.belongedEvent)
+                            console.log(location.address)
+                            // watch(tableData, (newVal) => {
+                            //     if (newVal !== null) {
+                            //         console.log("tableData updated:", newVal);
+                            //         tableData.value.push({
+                            //             name: event.belongedEvent,
+                            //             position: location.address
+                            //         });
+                            //     }
+                            // });
+                        }
+                    })
+            });
+        })
 }
