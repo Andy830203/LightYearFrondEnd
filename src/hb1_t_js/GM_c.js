@@ -10,7 +10,8 @@ const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_C
 //地圖所需元件end
 export const mapHeight = ref('500px');//地圖預設值
 var map;
-var markers = [];
+const options = ["公益活動", "志工", "剩食分享", "愛心餐"];//icon隨機
+
 //地圖初始化
 export function map_init() {
   const updateMapHeight = () => {// 函式來調整地圖高度
@@ -144,19 +145,21 @@ export function map_init() {
             return res.json();
           })
           .then(loc_data => {
+            
             loc_data.forEach(location => {
+              const randomicon = getRandomOption();
               const lat_t = parseFloat(location.longitude);//經度
               const lng_t = parseFloat(location.latitude);//緯度
+              console.log("經度"+lat_t+","+"緯度"+lng_t);
               let marker_t = new google.maps.Marker({
                 position: { lat: lat_t, lng: lng_t },
                 map: map,
                 title: location.name,
                 icon: {
-                  url: "src/hb1_t_js/map_even_icon/愛心餐.png",
+                  url: `src/hb1_t_js/map_even_icon/${randomicon}.png`,//後面要改fetch取得的
                   scaledSize: new google.maps.Size(40, 40),
                 },
               });
-              markers.push(marker);
             });
           })
       }
@@ -174,6 +177,11 @@ export function map_init() {
     window.removeEventListener('resize', updateMapHeight); // 組件卸載時移除監聽
   });
 }
+function getRandomOption() {
+  const randomIndex = Math.floor(Math.random() * options.length);
+  return options[randomIndex];
+}
+
 //返回最上層
 export function backtotop() {
   ft_dis_state.value = false;//footer是否顯示
@@ -305,6 +313,7 @@ export function backtotop() {
       })
       .then(loc_data => {
         loc_data.forEach(location => {
+          const randomicon = getRandomOption();
           const lat_t = parseFloat(location.longitude);//經度
           const lng_t = parseFloat(location.latitude);//緯度
           let marker_t = new google.maps.Marker({
@@ -312,7 +321,7 @@ export function backtotop() {
             map: map,
             title: location.name,
             icon: {
-              url: "src/hb1_t_js/map_even_icon/愛心餐.png",
+              url: `src/hb1_t_js/map_even_icon/${randomicon}.png`,//後面要改fetch取得的
               scaledSize: new google.maps.Size(40, 40),
             },
           });

@@ -2,7 +2,18 @@ import { watch, onMounted, ref } from 'vue';
 import $ from 'jquery';
 import { feature_cityname, feature_townname } from '@/hb1_t_js/GM_c.js';
 const map_loc_url = import.meta.env.VITE_API_BASEURL;
-export const tableData = ref([""]);
+export const tableData = ref([
+    { name: '公益活動', position: '高雄市楠梓區德賢路' },
+    { name: '志工', position: '高雄市楠梓區右昌街' },
+    { name: '剩食分享', position: '高雄市楠梓區後昌路' },
+    { name: '愛心餐', position: '高雄市楠梓區藍昌路' },
+    { name: '公益活動', position: '高雄市楠梓區軍校路' },
+    { name: '志工', position: '高雄市楠梓區楠梓新路' },
+    { name: '剩食分享', position: '高雄市楠梓區後勁東路' },
+    { name: '愛心餐', position: '高雄市楠梓區翠屏路' },
+    { name: '公益活動', position: '高雄市楠梓區惠民路' },
+    { name: '志工', position: '高雄市楠梓區興楠路' }
+  ]);
 export function init_sidebar() {
     onMounted(() => {
         const link = document.createElement('link');
