@@ -31,21 +31,8 @@ const updateHander = () => {
 // v-model
 const inputList = defineModel()
 
-const demoList = [
-    { 'id': '0', 'locName': 'Location A1', 'order': '1' },
-    { 'id': '1', 'locName': 'Location A2', 'order': '2' },
-    { 'id': '2', 'locName': 'Location A3', 'order': '3' },
-    { 'id': '3', 'locName': 'Location A4', 'order': '4' },
-    { 'id': '4', 'locName': 'Location A5', 'order': '5' },
-    { 'id': '5', 'locName': 'Location A6', 'order': '6' },
-    { 'id': '6', 'locName': 'Location A7', 'order': '7' },
-    { 'id': '7', 'locName': 'Location A8', 'order': '8' },
-    { 'id': '8', 'locName': 'Location A9', 'order': '9' },
-    { 'id': '9', 'locName': 'Location A10', 'order': '10' },
-]
-
 const enableDragable = ref(false)
-const targetList = ref(demoList)
+const targetList = ref(inputList)
 const newListOrder = ref([])
 
 //drag
@@ -118,12 +105,13 @@ const updateOrder = () => {
     let kvPair = newListOrder.value
     kvPair.forEach(pair => {
         console.log(`${pair.key}, ${pair.index}`)
-        const target = targetList.value.find(x => x.id === pair.key)
+        // const target = targetList.value.find(x => x.id === pair.key)
+        const target = targetList.value[pair.key]
         target.order = pair.index + 1
     })
     alert(JSON.stringify(kvPair))
     // await nextTick()
-    props.enableAddLocation = false
+    // props.enableAddLocation = false
 }
 
 const initDrag = () => {
@@ -179,25 +167,29 @@ onMounted(() => {
 <template>
     <div>
         <!-- <h5>{{ title }}</h5> -->
-        <input type="checkbox" v-model="enableDragable" @change="onChange">開啟拖放
+        <input type="checkbox" v-model="enableDragable" @change="onChange" id="chbDragModel"> <label class="labelweight"
+            for="chbDragModel">
+            開啟拖放 </label>
         <div class="list">
             <ul v-if="enableDragable" class="DragableOn">
-                <li :draggable="enableDragable" v-for="item in targetList" :key="item.id" :data-key="item.id">
-                    <span class="tspan tspan-padding">{{ item.order }}-{{ item.locName }} [<span
-                            class="nowIndex"></span>]</span>
+                <li :draggable="enableDragable" v-for="(item, index) in targetList" :key="index" :data-key="index">
+                    <span class="tspan tspan-padding"> Order: {{ item.order }} Name: {{ item.locName }} Location Id: {{
+                        item.id }} [<span class="nowIndex"></span>]</span>
                 </li>
             </ul>
             <ul v-else class="DragableOff">
-                <li :draggable="enableDragable" v-for="item in targetList" :key="item.id">
-                    <span class="tspan tspan-padding">{{ item.order }}-{{ item.locName }}</span>
+                <li :draggable="enableDragable" v-for="(item, index) in targetList" :key="`${item.id}-${index}`">
+                    <span class="tspan tspan-padding">Order: {{ item.order }} Name: {{ item.locName }} Location Id: {{
+                        item.id }}</span>
                 </li>
             </ul>
         </div>
         <div class="row d-flex justify-content-end">
             <div class="col-6 d-flex justify-content-end">
-                <button class="btn btn-primary me-3" @click="updateOrder(newListOrder)"> 更改 </button>
-                <button v-if="CouldAddLocation()" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#modalLocattions" @click="openModal()"> 新增地點 </button>
+                <button type="button" class="btn btn-primary me-3" @click.stop="updateOrder()"> 更改順序
+                </button>
+                <button type="button" v-if="CouldAddLocation()" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalLocattions" @click.stop="openModal()"> 新增地點 </button>
             </div>
         </div>
 
@@ -209,7 +201,7 @@ onMounted(() => {
                     <div class="modal-header">
                         <h3 class="modal-title" id="modalLocattionsLabel">地點列表</h3>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            @click="closeModal"></button>
+                            @click.stop="closeModal"></button>
                     </div>
                     <div class="modal-body">
                         <DataTable v-if="showTable" :data="props.locationData" :columns="props.columns" class="display"
@@ -220,7 +212,8 @@ onMounted(() => {
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
                         <!-- 將所選加入到targetList -->
-                        <button type="button" class="btn btn-primary" @click="addLocHander(dataTableRef)">添加地點</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                            @click.stop="addLocHander(dataTableRef)">添加地點</button>
                     </div>
                 </div>
             </div>
@@ -310,5 +303,9 @@ ul.DragableOff li {
 
 .table-primary {
     background-color: #e0f7fa !important;
+}
+
+.labelweight {
+    font-weight: normal;
 }
 </style>

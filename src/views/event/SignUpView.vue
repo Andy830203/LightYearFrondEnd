@@ -61,6 +61,7 @@ onMounted(async () => {
                 <div class="w-25">
                     <div class="d-flex justify-content-around">
                         <h2>{{ member.name }}</h2>
+                        <h3> 報名時段 </h3>
                         <select :name="eventData.Name" :id="eventData.id">
                             <!-- get EP DATA -->
                             <option v-for="period in eventData.periods">
@@ -80,10 +81,10 @@ onMounted(async () => {
                 <div class="col-12">
                     <input class="ms-3" type="checkbox" name="test" id="same"> <label for="same">同會員資料</label>
                 </div>
-                <div class="col-6">
+                <!-- <div class="col-6">
                     <ColumnInputFieldComponent Type="text" Id="" Label="身分證字號" LabelCol="3" InputCol="8">
                     </ColumnInputFieldComponent>
-                </div>
+                </div> -->
                 <div class="col-6">
                     <ColumnInputFieldComponent Type="text" Id="" Label="電話" LabelCol="2" InputCol="8">
                     </ColumnInputFieldComponent>
@@ -116,7 +117,7 @@ onMounted(async () => {
                 </div> -->
                 <!-- submit -->
                 <div class="col-12 my-3 d-flex justify-content-end">
-                    <button class="btn btn-primary col-2 me-3">送出</button>
+                    <button class="btn btn-primary col-2 me-3">報名</button>
                     <button class="btn btn-secondary col-2">取消</button>
                 </div>
             </div>

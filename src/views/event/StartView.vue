@@ -7,6 +7,7 @@ import PlacesComponent from '@/components/event/PlacesComponent.vue';
 import MapComponent from '@/components/MapComponent.vue';
 import { ref } from 'vue'
 import ItemView from '../shop/ItemView.vue';
+import { all } from 'axios';
 
 
 // localStorage.setItem('name', 'ted')
@@ -14,19 +15,20 @@ import ItemView from '../shop/ItemView.vue';
 // 資料設定
 const BASE_URL = import.meta.env.VITE_API_BASEURL
 const API_URL = BASE_URL + '/Events'
-const Periods_URL = `${BASE_URL}/EventPeriods`
+const PERIODS_URL = `${BASE_URL}/EventPeriods`
 const CATEGORY_URL = API_URL + '/Categories'
+const LOCATIONS_URL = BASE_URL + '/Locations'
+const EVENTLOCATIONS_URL = BASE_URL + '/EventLocations'
+
 const eventsData = ref({
     "id": 0,
     "name": "string",
     "organizerId": 0,
-    "organizer": "string",
     "fee": 0,
     "capacity": 0,
     "description": "",
     "priority": 0,
     "categoryId": 0,
-    "category": "string"
 })
 
 const categories = ref({
@@ -36,25 +38,28 @@ const categories = ref({
 
 const periods = ref([])
 
-eventsData.value.organizer = JSON.parse(localStorage.getItem('member')).name
+const member = JSON.parse(localStorage.getItem('member'))
+
+eventsData.value.organizer = member.name
+eventsData.value.organizerId = member.id
 
 const getLoc = [
-    {
-        'id': 1,
-        'name': 'Loc1',
-        'addr': 'abcdefg'
-    },
-    {
-        'id': 2,
-        'name': 'Loc2',
-        'addr': 'abcdefg1'
-    },
+    // {
+    //     'id': 1,
+    //     'name': 'Loc1',
+    //     'addr': 'abcdefg'
+    // },
+    // {
+    //     'id': 2,
+    //     'name': 'Loc2',
+    //     'addr': 'abcdefg1'
+    // },
 ]
 
 const columns = [
     { data: 'id', title: 'ID' },
     { data: 'name', title: '名稱' },
-    { data: 'addr', title: '地址' },
+    { data: 'address', title: '地址' },
 ];
 
 const LocationData = ref(getLoc)
@@ -74,6 +79,21 @@ const getData = ref({
     ],
 })
 
+// const demoList = [
+//     { 'id': '1', 'locName': 'Location A1', 'order': '1' },
+//     { 'id': '2', 'locName': 'Location A2', 'order': '2' },
+//     { 'id': '3', 'locName': 'Location A3', 'order': '3' },
+//     { 'id': '4', 'locName': 'Location A4', 'order': '4' },
+//     { 'id': '5', 'locName': 'Location A5', 'order': '5' },
+//     { 'id': '6', 'locName': 'Location A6', 'order': '6' },
+//     { 'id': '7', 'locName': 'Location A7', 'order': '7' },
+//     { 'id': '8', 'locName': 'Location A8', 'order': '8' },
+//     { 'id': '9', 'locName': 'Location A9', 'order': '9' },
+//     { 'id': '10', 'locName': 'Location A10', 'order': '10' },
+// ]
+
+const eventLocs = ref([])
+
 const startData = ref({
     'startPerson': '123',
     'eveTitle': '',
@@ -84,18 +104,25 @@ const startData = ref({
     'eveFee3': '',
 })
 
+const isSubmitClick = ref(false)
+
 const loadCategories = async () => {
-    const response = await fetch(CATEGORY_URL, {
-        method: 'GET',
-    })
-    const datas = await response.json()
-    console.log(datas)
-    categories.value = datas
+    try {
+        const response = await fetch(CATEGORY_URL, {
+            method: 'GET',
+        })
+        const datas = await response.json()
+        console.log(datas)
+        categories.value = datas
+    } catch (error) {
+        alert(`loadCategories 發生錯誤: ${error.name} -> ${error.message}, cause: ${error.cause}`)
+    }
+
 }
 
 const loadLocations = async () => {
     //要改URL
-    const response = await fetch(CATEGORY_URL, {
+    const response = await fetch(LOCATIONS_URL, {
         method: 'GET',
     })
     const datas = await response.json()
@@ -104,73 +131,149 @@ const loadLocations = async () => {
 }
 
 const onSubmit = async () => {
-    if (periods.value.length === 0) {
-        alert('請輸入時段')
-        return
-    }
-
-    let myHeader = {
-        "Content-Type": "application/json",
-    }
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify(eventsData.value),
-        headers: myHeader
-    })
-
-    if (response.ok()) {
-        //post periods
-        const json = await response.json()
-        const rtObj = JSON.parse(json)
-        const newId = rtObj['Id']
-
-        if (periods.value.length > 0) {
-            periods.value.forEach((p, index) => {
-                p['description'] = `第 ${index + 1} 時段`
-                p['EId'] = newId
-            })
+    try {
+        if (periods.value.length === 0 && isSubmitClick.value) {
+            alert('請輸入時段')
+            isSubmitClick.value = false
+            return
         }
 
-        const respPeriods = await fetch(Periods_URL, {
+        if (eventLocs.value.length === 0 && isSubmitClick.value) {
+            alert('請輸入地點')
+            isSubmitClick.value = false
+            return
+        }
+        console.log(API_URL)
+        console.log(eventsData.value)
+        let myHeader = {
+            "Content-Type": "application/json",
+        }
+        const response = await fetch(API_URL, {
             method: 'POST',
-            body: JSON.stringify(periods.value),
+            body: JSON.stringify(eventsData.value),
             headers: myHeader
         })
 
-        if (respPeriods.ok()) {
-            periods.value = []
+        if (response.ok) {
+            let allOk = true
+            //時段
+            const rtObj = await response.json()
+            const newId = rtObj.id
+
+            if (periods.value.length > 0) {
+                periods.value.forEach(async (p, index) => {
+                    p['description'] = `第 ${index + 1} 時段`
+                    p['EId'] = newId
+
+                    const respPeriods = await fetch(PERIODS_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(p),
+                        headers: myHeader
+                    })
+
+                    allOk = allOk && respPeriods.ok
+                })
+            }
+
+
+
+            //地點
+            eventLocs.value.forEach(async locs => {
+                const ELocJson = {
+                    "lId": locs.id,
+                    "eId": newId,
+                    "orderInEvent": locs.order
+                }
+
+                const respELocs = await fetch(EVENTLOCATIONS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(ELocJson),
+                    headers: myHeader
+                })
+
+                allOk = allOk && respELocs.ok
+            })
+
+            //復位
+            if (allOk) {
+                periods.value = []
+                eventLocs.value = []
+                alert('添加成功')
+            }
         }
+
+        isSubmitClick.value = false
+
+        console.log(response.status)
+    } catch (error) {
+        alert(`OnSubmit 發生錯誤: ${error.name} -> ${error.message}, cause: ${error.cause}`)
     }
-    console.log(response.status)
 }
 
 const addLoc = (table) => {
     //https://datatables.net/forums/discussion/76468/how-to-get-selected-row-while-using-vue3-without-jquery
     const tb = table.dt
-    const datas = tb.rows('.selected').data()
+    const datas = tb.rows('.selected').data() // DataTables 的選擇器會回傳類似陣列的物件
 
-    let rtList = null
-    if (datas.length > 1) {
-        const list = Object.values(datas)
-        rtList = list.slice(0, datas.length)
-        console.log(rtList)
+    // 將 datas 轉為陣列處理
+    const selectedItems = Array.from(datas);
 
-    } else {
-        rtList = datas[0]
-        console.log(rtList)
+    // 檢查是否有選中項目
+    if (selectedItems.length > 0) {
+        console.log(selectedItems); // 檢查選中的資料
+        appendTargetList(selectedItems); // 傳遞選中項目到下一個函式
     }
-    appendTargetList(rtList)
+}
+
+const updateOrders = () => {
+    // 根據 eventLocs 的新順序更新 order 值
+    eventLocs.value.forEach((item, index) => {
+        item.order = index + 1; // 重新分配 order，從 1 開始
+    })
 }
 
 const appendTargetList = (list) => {
-    list.forEach(Item => {
-        //要按資料更改
+    // 確認 list 是否為陣列
+    if (Array.isArray(list)) {
+        // 找到當前最大 order
+        let maxOrder = eventLocs.value.length > 0
+            ? Math.max(...eventLocs.value.map(item => Number(item.order)))
+            : 0;
 
-    });
+        // 遍歷每一個選中的項目並添加到 eventLocs
+        list.forEach(item => {
+            console.log(item); // 檢查每個 item 的資料
+            maxOrder += 1; // 增加最大 order
+            // 添加新地點物件
+            // id 為 Location Id
+            const addObj = {
+                'id': `${item.id}`, // 你可以根據需求修改此值
+                'locName': item.name, // 假設 item.name 是你需要的地點名稱
+                'order': `${maxOrder}` // 使用遞增的 order 值
+            };
+            eventLocs.value.push(addObj);
+        });
+    } else {
+        // 若不是陣列，單獨處理一個項目
+        const maxOrder = eventLocs.value.length > 0
+            ? Math.max(...eventLocs.value.map(item => Number(item.order)))
+            : 0;
+
+        // 添加新地點物件
+        const addObj = {
+            'id': `${0}`, // 你可以根據需求修改此值
+            'locName': list.name, // 假設 list.name 是你需要的地點名稱
+            'order': `${maxOrder + 1}` // 使用遞增的 order 值
+        };
+        eventLocs.value.push(addObj);
+    }
+    updateOrders()
+
+    console.log(eventLocs.value)
 }
 
 loadCategories()
-// loadLocations()
+loadLocations()
 </script>
 
 <template>
@@ -204,7 +307,7 @@ loadCategories()
                             </div>
                             <div class="col-6">
                                 <!-- <input type="number" class="form-control" id="eveType"> -->
-                                <select class="form-select" name="" id="eveType" v-model="eventsData.category">
+                                <select class="form-select" name="" id="eveType" v-model="eventsData.categoryId">
                                     <!-- <option value="">type 1</option>
                                     <option value="">type 2</option>
                                     <option value="">type 3</option> -->
@@ -238,7 +341,7 @@ loadCategories()
                             <div class="mt-0">
                                 <!-- 需要從零加入地點 -->
                                 <PlacesComponent :enableAddLocation="true" @addLocation="addLoc"
-                                    :locationData="LocationData" :columns="columns" />
+                                    :locationData="LocationData" :columns="columns" v-model="eventLocs" />
                             </div>
 
                             <!-- 活動描述 -->
@@ -275,7 +378,7 @@ loadCategories()
             </div>
 
             <!-- submit -->
-            <button class="fixedBtn roundBtn btn btn-primary" type="submit">
+            <button class="fixedBtn roundBtn btn btn-primary" type="submit" @click="isSubmitClick = !isSubmitClick">
                 <i class="bi bi-plus-circle-fill"></i>
             </button>
         </form>

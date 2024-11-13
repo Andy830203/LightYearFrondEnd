@@ -53,8 +53,8 @@ const clearPeriods = () => {
             <InputFieldComponent Type="date" Id="eveEndDay" Label="活動結束日期" v-model="endDate" />
             <InputFieldComponent Type="time" Id="eveEndTime" Label="活動結束時間" v-model="endTime" />
         </div>
-        <button class="btn btn-primary mt-3 me-2" @click="addPeriod">添加時段</button>
-        <button class="btn btn-secondary mt-3" @click="clearPeriods">清空列表</button>
+        <button type="button" class="btn btn-primary mt-3 me-2" @click="addPeriod">添加時段</button>
+        <button type="button" class="btn btn-secondary mt-3" @click="clearPeriods">清空列表</button>
     </div>
 </template>
 
