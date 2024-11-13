@@ -13,7 +13,7 @@
             <p class="product-name">{{ product.name }}</p>
             <p class="price">價格: {{ product.price }} 元</p>
             <p class="stock">庫存量: {{ product.stock }} 件</p>
-            <p class="listing-time">上架時間: {{ product.listingTime }}</p>
+            <p class="listing-time">上架時間: {{ formatDate(product.listingTime) || 'N/A'  }}</p>
           </div>
           <div class="action-buttons">
             <button @click="showEditProduct(product.id)" class="custom-button">修改</button>
@@ -33,7 +33,8 @@
   import EditProduct from "@/components/EditProduct.vue";
   import DeleteProduct from "@/components/DeleteProduct.vue";
   import UploadProduct from "@/components/UploadProduct.vue";
-  
+  const BASE_URL = import.meta.env.VITE_API_BASEURL;
+  const IMG_URL = import.meta.env.VITE_API_IMGURL;
   export default {
     components: {
       EditProduct,
@@ -42,22 +43,71 @@
     },
     data() {
       return {
-        products: [
-          { id: 1, name: "商品A", image: "path/to/image1.jpg", price: 1000, stock: 20, listingTime: "2024-11-01" },
-          { id: 2, name: "商品B", image: "path/to/image2.jpg", price: 1500, stock: 15, listingTime: "2024-11-05" },
-        ],
+        products: [],
         currentEditId: null,
         currentDeleteId: null,
         showUploadProduct: false,
       };
     },
+    mounted() {
+    this.fetchProductsBySeller();
+    },
     methods: {
+      async fetchProductsBySeller() {
+        const memberData = JSON.parse(localStorage.getItem('member'));
+    const sellerId = memberData ? memberData.id : null;
+
+    if (!sellerId) {
+        console.error("Seller ID not found in local storage.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${BASE_URL}/Products/seller/${sellerId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error fetching products: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        this.products = data.map(product => ({
+            id: product.id,
+            name: product.name,
+            image: product.mainImageUrl,
+            price: product.price,
+            stock: product.instock,
+            listingTime: product.onShelfTime
+        }));} 
+      catch (error) {
+        console.error("Failed to fetch products:", error);
+        }
+      },
       showEditProduct(id) {
         this.currentEditId = id;
       },
       showDeleteProduct(id) {
         this.currentDeleteId = id;
       },
+      formatDate(dateString){
+      const date = new Date(dateString);
+      date.setHours(date.getHours() + 8);
+
+      // 格式化為 'yyyy/mm/dd aa:bb' 格式
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');  // 月份從 0 開始，所以需要加 1
+      const day = date.getDate().toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+
+      // 返回格式化結果
+      return `${year}/${month}/${day} ${hours}:${minutes}`;
+      }
     },
   };
   </script>
