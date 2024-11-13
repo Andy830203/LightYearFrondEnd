@@ -27,43 +27,6 @@ export default function useDataTable() {
             scrollX: true
         });
     };
-
-    // //獲取資料並加載到 DataTable
-    // const fetchData =() => {
-    //     try {
-    //         // 資料來源和篩選條件
-    //         fetch(map_loc_url + "/EventLocations")
-    //             .then(res => res.json())
-    //             .then(events => {
-    //                 events.forEach(event => {
-    //                     fetch(map_loc_url + "/Locations" + `/${event.lId}`)
-    //                         .then(res => res.json())
-    //                         .then(location => {
-    //                             const fullAddress = feature_cityname.value + feature_townname.value;
-    //                             if (location.address.startsWith(fullAddress)) {
-    //                                 data.push({
-    //                                     "name": "t",
-    //                                     "position": "r"
-    //                                 });
-    //                             }
-    //                         });
-    //                 });
-    //             });
-    //         console.log(data);
-    //         //console.log(datatest);
-    //         nextTick(()=>{
-    //             initializeDataTable(data);
-    //         })
-    //         nextTick(()=>{
-    //             initializeDataTable(data);
-    //         })
-    //     } catch (error) {
-    //         console.error('Error loading data:', error);
-    //     }
-    //     // console.log(data);
-
-    // };
-
     const fetchData = async () => {
         try {
             // 資料來源和篩選條件
