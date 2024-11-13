@@ -26,7 +26,7 @@
       <!-- 動態顯示元件 -->
       <EditProduct v-if="currentEditId !== null" :productId="currentEditId" @close="currentEditId = null" @updated="handleProductUpdated"/>
       <DeleteProduct v-if="currentDeleteId !== null" :productId="currentDeleteId" @cancel="currentDeleteId = null" @deleted="handleProductDeleted"/>
-      <UploadProduct v-if="showUploadProduct" @close="showUploadProduct = false" />
+      <UploadProduct v-if="showUploadProduct" @uploaded="handleProductUploaded" @close="showUploadProduct = false" />
     </div>
   </template>
   
@@ -102,6 +102,9 @@
       },
       handleProductUpdated() {
         this.currentEditId = null;  // Reset currentEditId
+        this.fetchProductsBySeller();  // Re-fetch products
+      },
+      handleProductUploaded() {
         this.fetchProductsBySeller();  // Re-fetch products
       },
       formatDate(dateString){
