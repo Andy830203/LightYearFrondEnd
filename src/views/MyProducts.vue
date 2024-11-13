@@ -11,6 +11,7 @@
           <img :src="product.image" alt="商品圖片" class="product-image" />
           <div class="product-details">
             <p class="product-name">{{ product.name }}</p>
+            <p class="price">類別: {{ product.category}}</p>
             <p class="price">價格: {{ product.price }} 元</p>
             <p class="stock">庫存量: {{ product.stock }} 件</p>
             <p class="listing-time">上架時間: {{ formatDate(product.listingTime) || 'N/A'  }}</p>
@@ -23,8 +24,8 @@
       </div>
   
       <!-- 動態顯示元件 -->
-      <EditProduct v-if="currentEditId !== null" :productId="currentEditId" @close="currentEditId = null" />
-      <DeleteProduct v-if="currentDeleteId !== null" :productId="currentDeleteId" @cancel="currentDeleteId = null" />
+      <EditProduct v-if="currentEditId !== null" :productId="currentEditId" @close="currentEditId = null" @updated="handleProductUpdated"/>
+      <DeleteProduct v-if="currentDeleteId !== null" :productId="currentDeleteId" @cancel="currentDeleteId = null" @deleted="handleProductDeleted"/>
       <UploadProduct v-if="showUploadProduct" @close="showUploadProduct = false" />
     </div>
   </template>
@@ -79,10 +80,11 @@
         this.products = data.map(product => ({
             id: product.id,
             name: product.name,
-            image: product.mainImageUrl,
+            image: IMG_URL + product.mainImageUrl,
             price: product.price,
             stock: product.instock,
-            listingTime: product.onShelfTime
+            listingTime: product.onShelfTime,
+            category: product.categoryName
         }));} 
       catch (error) {
         console.error("Failed to fetch products:", error);
@@ -93,6 +95,14 @@
       },
       showDeleteProduct(id) {
         this.currentDeleteId = id;
+      },
+      handleProductDeleted() {
+        this.currentDeleteId = null;  // Reset currentDeleteId
+        this.fetchProductsBySeller();  // Re-fetch products
+      },
+      handleProductUpdated() {
+        this.currentEditId = null;  // Reset currentEditId
+        this.fetchProductsBySeller();  // Re-fetch products
       },
       formatDate(dateString){
       const date = new Date(dateString);
