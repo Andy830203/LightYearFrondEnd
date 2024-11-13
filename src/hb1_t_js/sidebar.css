@@ -55,3 +55,9 @@
 background-color: rgb(240,230,140);
 }
 /* 詳細資訊視窗樣式end */
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}

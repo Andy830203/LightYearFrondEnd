@@ -112,11 +112,10 @@ export function map_init() {
           //已經進來了，目前在台灣區域邊界內
           feature_cityname.value = event.feature.Fg.COUNTYNAME;//取得geojson裡COUNTYNAME(縣市)
           feature_townname.value = event.feature.Fg.TOWNNAME;//取得geojson裡TOWNNAME(區)
-          const feature_filter = feature_cityname + feature_townname;
-          // console.log(feature_filter);
+          const feature_filter = feature_cityname.value + feature_townname.value;
           removeGeoJson();//移除樣式
           map.data.setStyle({});//清空style設定COUNTYNAME
-          map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`, null, function () {
+          map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname.value}.geojson`, null, function () {
             // 設定樣式，只渲染與 featureTownName 相符的區域
             map.data.setStyle((feature) => {
               return feature.getProperty('TOWNNAME') === event.feature.Fg.TOWNNAME
@@ -150,8 +149,8 @@ export function map_init() {
               const randomicon = getRandomOption();
               const lat_t = parseFloat(location.longitude);//經度
               const lng_t = parseFloat(location.latitude);//緯度
-              console.log("經度"+lat_t+","+"緯度"+lng_t);
-              let marker_t = new google.maps.Marker({
+              //console.log("經度"+lat_t+","+"緯度"+lng_t);
+              let marker_t2 = new google.maps.Marker({
                 position: { lat: lat_t, lng: lng_t },
                 map: map,
                 title: location.name,
@@ -184,6 +183,7 @@ function getRandomOption() {
 
 //返回最上層
 export function backtotop() {
+  const map_loc_url = import.meta.env.VITE_API_BASEURL;
   ft_dis_state.value = false;//footer是否顯示
   triggerCloudAnimation();//載入動畫效果
   let mouseListener_over, mouseListener_out, mouseListener_click;
@@ -283,7 +283,7 @@ export function backtotop() {
       // console.log(feature_filter);
       removeGeoJson();//移除樣式
       map.data.setStyle({});//清空style設定COUNTYNAME
-      map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`, null, function () {
+      map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname.value}.geojson`, null, function () {
         // 設定樣式，只渲染與 featureTownName 相符的區域
         map.data.setStyle((feature) => {
           return feature.getProperty('TOWNNAME') === event.feature.Fg.TOWNNAME
