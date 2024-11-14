@@ -138,21 +138,21 @@ export function map_init() {
           google.maps.event.removeListener(mouseListener_over);
           google.maps.event.removeListener(mouseListener_out);
           google.maps.event.removeListener(mouseListener_click);
-          map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
-            // 獲取點擊位置的經緯度
-            const { latLng } = event;
-            const latitude = latLng.lat();
-            const longitude = latLng.lng();
-            // 在點擊位置創建一個新 marker
-            let mk = new google.maps.Marker({
-              position: latLng,
-              map: map
-            });
+          // map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
+          //   // 獲取點擊位置的經緯度
+          //   const { latLng } = event;
+          //   const latitude = latLng.lat();
+          //   const longitude = latLng.lng();
+          //   // 在點擊位置創建一個新 marker
+          //   let mk = new google.maps.Marker({
+          //     position: latLng,
+          //     map: map
+          //   });
 
-            // 輸出經緯度到 console
-            console.log('Latitude:', latitude);
-            console.log('Longitude:', longitude);
-          });
+          //   // 輸出經緯度到 console
+          //   console.log('Latitude:', latitude);
+          //   console.log('Longitude:', longitude);
+          // });
           fetchData_m(feature_filter);//取得經緯度並建立標籤
         }
         else if (map_zoom_v > 12) {//檢視活動模式
@@ -331,22 +331,22 @@ export function backtotop() {
       google.maps.event.removeListener(mouseListener_over);
       google.maps.event.removeListener(mouseListener_out);
       google.maps.event.removeListener(mouseListener_click);
-      map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
-        // 獲取點擊位置的經緯度
-        const { latLng } = event;
-        const latitude = latLng.lat();
-        const longitude = latLng.lng();
+      // map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
+      //   // 獲取點擊位置的經緯度
+      //   const { latLng } = event;
+      //   const latitude = latLng.lat();
+      //   const longitude = latLng.lng();
 
-        // 在點擊位置創建一個新 marker
-        new google.maps.Marker({
-          position: latLng,
-          map: map
-        });
+      //   // 在點擊位置創建一個新 marker
+      //   new google.maps.Marker({
+      //     position: latLng,
+      //     map: map
+      //   });
 
-        // 輸出經緯度到 console
-        console.log('Latitude:', latitude);
-        console.log('Longitude:', longitude);
-      });
+      //   // 輸出經緯度到 console
+      //   console.log('Latitude:', latitude);
+      //   console.log('Longitude:', longitude);
+      // });
       fetchData_m(feature_filter);//取得經緯度並建立標籤
     }
     else if (map_zoom_v > 12) {//檢視活動模式
