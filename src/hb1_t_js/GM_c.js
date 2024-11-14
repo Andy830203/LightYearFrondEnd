@@ -1,6 +1,7 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 import { zoom8_mapstyle, zoom12_mapstyle, zoom16_mapstyle } from '@/hb1_t_js/map_jsonfile/地圖樣式/zoomset.js';
 import { triggerCloudAnimation } from '@/hb1_t_js/map_load_c.js'
+import { getAddress } from '@/hb1_t_js/mp_getadress.js'
 export const ft_dis_state = ref(false);//footer是否顯示
 export const feature_cityname = ref(''); // 匯出 feature_cityname
 export const feature_townname = ref(''); // 匯出 feature_townname
@@ -11,6 +12,14 @@ const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_C
 export const mapHeight = ref('500px');//地圖預設值
 var map;
 const options = ["公益活動", "志工", "剩食", "愛心餐"];//icon隨機
+
+try{
+  console.log("ok")
+  const test5 =getAddress(120.286850,22.634500);
+  console.log(test5)
+}catch (error) {
+  console.error('Failed to fetch address:', error);
+}
 
 //地圖初始化
 export function map_init() {
