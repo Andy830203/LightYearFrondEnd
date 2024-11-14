@@ -1,7 +1,7 @@
 
 // import $ from 'jquery';
 import { ref, onMounted, nextTick } from 'vue';
-import { dt_set_mp, feature_cityname, feature_townname } from '@/hb1_t_js/GM_c.js';
+import { dt_set_mp, feature_cityname_forsidebar } from '@/hb1_t_js/GM_c.js';
 const map_loc_url = import.meta.env.VITE_API_BASEURL;
 export default function useDataTable() {
     const table = ref(null);
@@ -11,8 +11,8 @@ export default function useDataTable() {
         table.value = $('#dynamicTable').DataTable({
             data: data,
             columns: [
-                { data: 'name', title: '活動名稱' },
-                { data: 'position', title: '位置' }
+                { data: 'county', title: '縣市' },
+                { data: 'activityCount', title: '活動總數' }
             ],
             responsive: true,
             lengthMenu: [[10, 20, 30, -1], [10, 20, 30, "All"]],
@@ -26,51 +26,86 @@ export default function useDataTable() {
             scrollX: true
         });
         // 綁定行點擊事件
-        $('#dynamicTable tbody').on('click', 'tr', function () {
-            handleRowClick(this); // 調用 handleRowClick 函數
-        });
+        // $('#dynamicTable tbody').on('click', 'tr', function () {
+        //     handleRowClick(this); // 調用 handleRowClick 函數
+        // });
     };
-    // 行點擊處理函數
-    const handleRowClick = (rowElement) => {
-        const rowData = table.value.row(rowElement).data();
-        console.log(rowData.position)
-        fetch(map_loc_url + "/Locations")
-            .then(res => { return res.json(); })
-            .then(c => {
-                c.forEach(s_c => {
-                    if (rowData.position === s_c.address) {
-                        dt_set_mp(s_c.longitude,s_c.latitude);
-                    }
-                })
-            })
-    };
+    // // 行點擊處理函數
+    // const handleRowClick = (rowElement) => {
+    //     const rowData = table.value.row(rowElement).data();
+    //     console.log(rowData.position)
+    //     fetch(map_loc_url + "/Locations")
+    //         .then(res => { return res.json(); })
+    //         .then(c => {
+    //             c.forEach(s_c => {
+    //                 if (rowData.position === s_c.address) {
+    //                     dt_set_mp(s_c.longitude,s_c.latitude);
+    //                 }
+    //             })
+    //         })
+    // };
     const fetchData = async () => {
         try {
-            // 資料來源和篩選條件
-            const res = await fetch(map_loc_url + "/EventLocations");
-            const events = await res.json();
+            const countyFilePath = `src/hb1_t_js/map_jsonfile/台灣縣市中心/contrycenter.json`;
             const data = [];
 
-            // 使用 Promise.all 等待所有的 fetch 完成
-            const fetchPromises = events.map(async (event) => {
-                const locationRes = await fetch(map_loc_url + "/Locations" + `/${event.lId}`);
-                const location = await locationRes.json();
-                const fullAddress = feature_cityname.value + feature_townname.value;
-                if (location.address.startsWith(fullAddress)) {
-                    data.push({
-                        "name": event.belongedEvent,
-                        "position": location.address
-                    });
-                }
+            // 1. 加載縣市中心 JSON 檔案
+            const response = await fetch(countyFilePath);
+            if (!response.ok) throw new Error('Failed to load county center JSON file');
+            const countyData = await response.json();
+
+            // 取得所有縣市名稱
+            const counties = Object.keys(countyData);
+
+            // 2. 加載 Locations 和 EventLocations 數據
+            const [locationsResponse, eventLocationsResponse] = await Promise.all([
+                fetch(map_loc_url + "/Locations"),
+                fetch(map_loc_url + "/EventLocations")
+            ]);
+
+            if (!locationsResponse.ok) throw new Error('Failed to load Locations data');
+            if (!eventLocationsResponse.ok) throw new Error('Failed to load EventLocations data');
+
+            const locations = await locationsResponse.json();
+            const eventLocations = await eventLocationsResponse.json();
+
+            // 3. 將 EventLocations 按 lId 組織為映射
+            const eventLocationMap = new Map();
+            eventLocations.forEach(eventLocation => {
+                const count = eventLocationMap.get(eventLocation.lId) || 0;
+                eventLocationMap.set(eventLocation.lId, count + 1);
             });
-            // 等待所有的 fetch 完成後再執行
+
+            // 4. 建立所有縣市的處理 Promise
+            const fetchPromises = counties.map(async (countyName) => {
+                let activityCount = 0;
+
+                // 查找與縣市名匹配的 Locations
+                locations.forEach(location => {
+                    if (location.address.includes(countyName)) {
+                        // 如果 location 有對應的活動數量，則將其加到活動計數中
+                        activityCount += eventLocationMap.get(location.id) || 0;
+                    }
+                });
+
+                // 將結果儲存到 data 陣列中
+                data.push({
+                    "county": countyName,
+                    "activityCount": activityCount
+                });
+            });
+
+            // 5. 等待所有縣市的異步處理完成
             await Promise.all(fetchPromises);
-            // 傳入已完成的 data 陣列
+
+            // 6. 傳入已完成的 data 陣列
             initializeDataTable(data);
         } catch (error) {
             console.error('Error loading data:', error);
         }
     };
+
+
 
     // 載入 jQuery 和 DataTable 資源並加載數據
     onMounted(() => {

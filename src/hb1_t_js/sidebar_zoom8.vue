@@ -21,13 +21,13 @@
     <table id="dynamicTable" class="display" style="width:100%">
       <thead>
         <tr>
-          <th>活動名稱</th>
-          <th>位置</th>
+          <th>縣市</th>
+          <th>活動總數</th>
         </tr>
       </thead>
     </table>
   </div>
-    <div class="offcanvas custom-offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false">
+    <!-- <div class="offcanvas custom-offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">活動介紹</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -40,6 +40,6 @@
           <button>我要參加</button>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
