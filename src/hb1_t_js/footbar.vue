@@ -12,7 +12,7 @@
             <p>志工</p>
         </div>
         <div class="item">
-            <img src="@/hb1_t_js/map_even_icon/剩食分享.png" alt="剩食分享">
+            <img src="@/hb1_t_js/map_even_icon/剩食.png" alt="剩食分享">
             <p>剩食分享</p>
         </div>
         <div class="item">
