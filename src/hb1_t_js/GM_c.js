@@ -11,13 +11,11 @@ const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_C
 //地圖所需元件end
 export const mapHeight = ref('500px');//地圖預設值
 var map;
-const options = ["公益活動", "志工", "剩食", "愛心餐"];//icon隨機
+const options = ["公益", "志工", "剩食", "愛心餐"];//icon隨機
 
-try{
-  console.log("ok")
-  const test5 =getAddress(120.286850,22.634500);
-  console.log(test5)
-}catch (error) {
+try {
+  const test5 = getAddress(120.286850, 22.634500);
+} catch (error) {
   console.error('Failed to fetch address:', error);
 }
 
@@ -162,7 +160,6 @@ export function map_init() {
           for (const c_e_f of c_e) { // 遍歷 EventLocations
             const randomicon = getRandomOption();
             let lat, lng, e_category, e_name;
-
             // 取得經緯度
             const locRes = await fetch(`${map_loc_url}/Locations/${c_e_f.lId}`);
             const locData = await locRes.json();
@@ -170,14 +167,17 @@ export function map_init() {
               lat = locData.longitude;
               lng = locData.latitude;
             }
+            // 取得名稱及 icon 名稱https://localhost:7227/api/Events/Categories/4
+            const eventRes = await fetch(`${map_loc_url}/Events/Categories/${c_e_f.eId}`);
+            const eventData = await eventRes.text();
             // 創建地圖標記
-            if (lat && lng) { // 確認經緯度已取得，避免 null 錯誤
+            if (lat && lng) {
               let marker_t2 = new google.maps.Marker({
                 position: { lat: parseFloat(lat), lng: parseFloat(lng) }, // 經緯度轉換為浮點數
                 map: map,
                 title: c_e_f.belongedEvent,
                 icon: {
-                  url: `src/hb1_t_js/map_even_icon/${randomicon}.png`,
+                  url: `src/hb1_t_js/map_even_icon/${eventData}.png`,
                   scaledSize: new google.maps.Size(40, 40),
                 },
               });
@@ -341,6 +341,9 @@ export function backtotop() {
           lat = locData.longitude;
           lng = locData.latitude;
         }
+        // 取得名稱及 icon 名稱https://localhost:7227/api/Events/Categories/4
+        const eventRes = await fetch(`${map_loc_url}/Events/Categories/${c_e_f.eId}`);
+        const eventData = await eventRes.text();
         // 創建地圖標記
         if (lat && lng) { // 確認經緯度已取得，避免 null 錯誤
           let marker_t = new google.maps.Marker({
@@ -348,7 +351,7 @@ export function backtotop() {
             map: map,
             title: c_e_f.belongedEvent,
             icon: {
-              url: `src/hb1_t_js/map_even_icon/${randomicon}.png`,
+              url: `src/hb1_t_js/map_even_icon/${eventData}.png`,
               scaledSize: new google.maps.Size(40, 40),
             },
           });
