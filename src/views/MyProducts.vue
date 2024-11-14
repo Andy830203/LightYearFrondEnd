@@ -1,0 +1,228 @@
+<template>
+    <div class="my-products-page">
+      <header class="header">
+        <h1 class="page-title">我的商品</h1>
+        <button class="custom-button upload-btn" @click="showUploadProduct = true">我要上架商品</button>
+      </header>
+  
+      <!-- 商品列表區域 -->
+      <div class="product-list">
+        <div v-for="product in products" :key="product.id" class="product-item">
+          <img :src="product.image" alt="商品圖片" class="product-image" />
+          <div class="product-details">
+            <p class="product-name">{{ product.name }}</p>
+            <p class="price">類別: {{ product.category}}</p>
+            <p class="price">價格: {{ product.price }} 元</p>
+            <p class="stock">庫存量: {{ product.stock }} 件</p>
+            <p class="listing-time">上架時間: {{ formatDate(product.listingTime) || 'N/A'  }}</p>
+          </div>
+          <div class="action-buttons">
+            <button @click="showEditProduct(product.id)" class="custom-button">修改</button>
+            <button @click="showDeleteProduct(product.id)" class="custom-button">下架</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- 動態顯示元件 -->
+      <EditProduct v-if="currentEditId !== null" :productId="currentEditId" @close="currentEditId = null" @updated="handleProductUpdated"/>
+      <DeleteProduct v-if="currentDeleteId !== null" :productId="currentDeleteId" @cancel="currentDeleteId = null" @deleted="handleProductDeleted"/>
+      <UploadProduct v-if="showUploadProduct" @uploaded="handleProductUploaded" @close="showUploadProduct = false" />
+    </div>
+  </template>
+  
+  <script>
+  import EditProduct from "@/components/EditProduct.vue";
+  import DeleteProduct from "@/components/DeleteProduct.vue";
+  import UploadProduct from "@/components/UploadProduct.vue";
+  const BASE_URL = import.meta.env.VITE_API_BASEURL;
+  const IMG_URL = import.meta.env.VITE_API_IMGURL;
+  export default {
+    components: {
+      EditProduct,
+      DeleteProduct,
+      UploadProduct,
+    },
+    data() {
+      return {
+        products: [],
+        currentEditId: null,
+        currentDeleteId: null,
+        showUploadProduct: false,
+      };
+    },
+    mounted() {
+    this.fetchProductsBySeller();
+    },
+    methods: {
+      async fetchProductsBySeller() {
+        const memberData = JSON.parse(localStorage.getItem('member'));
+    const sellerId = memberData ? memberData.id : null;
+
+    if (!sellerId) {
+        console.error("Seller ID not found in local storage.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${BASE_URL}/Products/seller/${sellerId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error fetching products: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        this.products = data.map(product => ({
+            id: product.id,
+            name: product.name,
+            image: IMG_URL + product.mainImageUrl,
+            price: product.price,
+            stock: product.instock,
+            listingTime: product.onShelfTime,
+            category: product.categoryName
+        }));} 
+      catch (error) {
+        console.error("Failed to fetch products:", error);
+        }
+      },
+      showEditProduct(id) {
+        this.currentEditId = id;
+      },
+      showDeleteProduct(id) {
+        this.currentDeleteId = id;
+      },
+      handleProductDeleted() {
+        this.currentDeleteId = null;  // Reset currentDeleteId
+        this.fetchProductsBySeller();  // Re-fetch products
+      },
+      handleProductUpdated() {
+        this.currentEditId = null;  // Reset currentEditId
+        this.fetchProductsBySeller();  // Re-fetch products
+      },
+      handleProductUploaded() {
+        this.fetchProductsBySeller();  // Re-fetch products
+      },
+      formatDate(dateString){
+      const date = new Date(dateString);
+      date.setHours(date.getHours() + 8);
+
+      // 格式化為 'yyyy/mm/dd aa:bb' 格式
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');  // 月份從 0 開始，所以需要加 1
+      const day = date.getDate().toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+
+      // 返回格式化結果
+      return `${year}/${month}/${day} ${hours}:${minutes}`;
+      }
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .my-products-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f1f4f8;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 標題區域樣式 */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .page-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #183153;
+  }
+  
+  /* 商品列表區域 */
+  .product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .product-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e4e8;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .product-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .product-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+  }
+  
+  .product-details {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .product-name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .price, .stock, .listing-time {
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  /* 行動按鈕區域 */
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* 新的自定義按鈕樣式 */
+  .custom-button {
+    border: none;
+    outline: none;
+    background-color: 		#844200;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 5px;
+    transition: all ease 0.1s;
+    box-shadow: 0px 5px 0px 0px #3C3C3C;
+    cursor: pointer;
+  }
+  
+  .custom-button:active {
+    transform: translateY(5px);
+    box-shadow: 0px 0px 0px 0px #3C3C3C;
+  }
+  </style>
+  

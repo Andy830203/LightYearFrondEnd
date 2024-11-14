@@ -1,8 +1,6 @@
 <script setup>
 import { ref, computed, onMounted} from 'vue';
 import { useMemberStore } from '@/stores/Member';
-
-
 const IMG_URL = import.meta.env.VITE_API_IMGURL
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
@@ -184,7 +182,6 @@ const base_param = ref({
   CheckMacValue: ''  // Will be generated on the backend and assigned here
 });
 const sendCheck = {
-
 }
 const proceedToCheckout = async function() {
   // Handle checkout logic (e.g., navigate to checkout page)
@@ -217,9 +214,20 @@ const proceedToCheckout = async function() {
     ItemName: result.ItemName,
     CheckMacValue: result.CheckMacValue
   };
-      //console.log(base_param.value);
-       // 從後端生成的 CheckMacValue
-      //console.log(document.getElementById("paymentForm"));
+      for (const item of cartItems.value) {
+          const response = await fetch(`${BASE_URL}/Products/SubtractStock`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                      pId: item.pId,
+                      quantity: item.quantity
+                    }),
+              mode: 'cors'
+          });
+          if (response.status !== 200) {
+            throw new Error(`Failed to update stock for product ID: ${item.pId}`);
+          }
+        }
       // 延遲提交表單
       setTimeout(() => {
         document.getElementById("paymentForm").submit();

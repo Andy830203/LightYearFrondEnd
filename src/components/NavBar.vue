@@ -108,6 +108,11 @@ function logout() {
                             </a>
                         </li>
                         <li>
+                            <a class="dropdown-item" href="/MyProducts">
+                                <i class="fa-solid fa-gift fa-beat" style="color: red;"></i> <span>我的商品</span>  
+                            </a>
+                        </li>
+                        <li>
                             <a class="dropdown-item" href="/OrderHistory">
                                 <i class="fa-regular fa-rectangle-list fa-bounce" style="color:darkcyan"></i> <span>我的歷史訂單</span>  
                             </a>
