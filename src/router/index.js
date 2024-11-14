@@ -27,6 +27,12 @@ import Cart from '@/views/Cart.vue';
 import MemberActivityList from '@/views/MemberActivityList.vue';
 import faq from '@/views/faq.vue';
 import Contactus from '@/views/Contactus.vue';
+import MyProducts from '@/views/MyProducts.vue';
+import EditProduct from '@/components/EditProduct.vue';
+import DeleteProduct from '@/components/DeleteProduct.vue';
+import UploadProduct from '@/components/UploadProduct.vue';
+import Eventlist from '@/views/Eventlist.vue';
+import DetailModal from '@/components/DetailModal.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -173,6 +179,38 @@ const router = createRouter({
       component: Contactus,
       name: 'Contactus'
     },
+    {
+      path: '/MyProducts',
+      component: MyProducts,
+      name: 'MyProducts'
+    },
+    {
+      path: '/EditProduct',
+      component: EditProduct,
+      name: 'EditProduct'
+    },
+    {
+      path: '/DeleteProduct',
+      component: DeleteProduct,
+      name: 'DeleteProduct'
+    },
+    {
+      path: '/UploadProduct',
+      component: UploadProduct,
+      name: 'UploadProduct'
+    },
+    {
+      path: '/Eventlist',
+      component: Eventlist,
+      name: 'Eventlist'
+    },
+    {
+      path: '/DetailModal',
+      component: DetailModal,
+      name: 'DetailModal'
+    },
+
+
 
   ]
 })
