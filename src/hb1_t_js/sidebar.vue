@@ -5,9 +5,7 @@
     export default {
       name: 'DynamicDataTable',
       components: {
-        sz16,
-        sz12,
-        sz8
+        sz12
       },
       data() {
         return {};
@@ -15,7 +13,8 @@
     };
 </script>
 <template>
-  <sz16></sz16>
+  <!-- <sz16></sz16> -->
+  <sz12></sz12>
 </template>
 
 

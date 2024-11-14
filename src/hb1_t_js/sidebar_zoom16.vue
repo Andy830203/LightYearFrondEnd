@@ -27,7 +27,7 @@
       </thead>
     </table>
   </div>
-    <div class="offcanvas custom-offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false">
+    <!-- <div class="offcanvas custom-offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">活動介紹</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -40,6 +40,6 @@
           <button>我要參加</button>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>

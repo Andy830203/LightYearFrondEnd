@@ -1,5 +1,12 @@
-<script setup>
-    
+<script>
+    import '@/hb1_t_js/sidebar.css'; // 側邊攔樣式
+    import useDataTable from '@/hb1_t_js/sidebar_zoom8.js';
+    export default {
+    name: 'DynamicDataTable',   
+    setup() {
+        useDataTable();
+    }
+};
 </script>
 
 <template>
