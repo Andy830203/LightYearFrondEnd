@@ -278,7 +278,7 @@ loadLocations()
 
 <template>
     <div>
-        <form class="" @submit.prevent="onSubmit">
+        <form class="my-5" @submit.prevent="onSubmit">
             <div class="container mt-3">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-5">
