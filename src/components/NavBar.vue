@@ -8,7 +8,7 @@ m_e_onBeforeUnmount()
 
 import { computed } from 'vue';
 import { useMemberStore } from '../stores/Member';
-
+import { useRoute } from 'vue-router';
 import Login from './Login.vue';
 
 const memberStore = useMemberStore();
@@ -27,6 +27,14 @@ function logout() {
   localStorage.removeItem('member'); // 清除 localStorage 中的 member
   window.location.reload(); // 重整頁面以更新顯示
 }
+
+const route = useRoute();
+const cartUrl = computed(() => {
+    const memberData = JSON.parse(localStorage.getItem('member'));
+  const userID = memberData ? memberData.id : null;
+  // 從 localStorage 中獲取 id，如果沒有則使用預設 id 5
+  return `/cart/${userID}`;
+});
 </script>
 
 <template>
@@ -35,7 +43,7 @@ function logout() {
     <!-- 更改的 -->
     <!-- <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow bg-warning.bg-gradient" id="navbar_e1" @mouseenter="m_e_move"  @mouseleave="m_e_leave" :class="navClass"> -->
     <nav class="navbar navbar-expand-lg fixed-top navbar-light shadow  border border-5"
-        id="navbar_e1" style="background-color:#c77d34;border-color:#c27930 !important ;" @mouseenter="m_e_move" @mouseleave="m_e_leave" :class="navClass">
+        id="navbar_e1" style="background-color:#ffbf73;border-color:#ffbf73 !important ;" @mouseenter="m_e_move" @mouseleave="m_e_leave" :class="navClass">
         <div class="container-fluid">
             <!-- logo圖路徑之後用ref路徑指向一個變數，下面佔位子的導覽列也是 -->
             <div class="navbar-brand map_img" style="position: absolute; z-index: 999; top: 10%;">
@@ -48,12 +56,6 @@ function logout() {
             </button>
             <div class="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-lg-0 justify-content-center mx-auto sm-mx-auto">
-                    <li class="nav-item mx-3">
-                        <router-link to="/map_api" class="nav-link">
-                            <i class="bi bi-globe-americas"></i>
-                            <span>地圖api</span>
-                        </router-link>
-                    </li>
                     <li class="nav-item mx-3">
                         <router-link to="/location" class="nav-link">
                             <i class="bi bi-globe-americas"></i>
@@ -135,27 +137,29 @@ function logout() {
                             <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'eventTrack' }">追蹤活動</RouterLink>
                             </li>
+                            <li>
+                                <RouterLink class="dropdown-item" :to="{ name: 'Eventlist' }">活動列表</RouterLink>
+                            </li>
                         </ul>
                     </li>
                 </ul>
                 <div id="map_nav">
                 <!-- 根據登入狀態顯示會員圖示或歡迎訊息 -->
-                        <div id="map_nav" class="nav-container">
+                    <div id="map_nav" class="nav-container">
                         <!-- 未登入狀態顯示登入圖示 -->
                         <i v-if="!isLoggedIn" class="bi bi-person-fill" data-bs-toggle="modal" data-bs-target="#exampleModal" title="登入"></i>
 
                 <!-- 已登入狀態顯示會員訊息與登出圖示 -->
                         <div v-else class="user-info">
-                         <span class="welcome-text">歡迎 <span class="username">{{ memberName }}</span>！</span>
-                        <button @click="logout" class="logout-icon" title="登出">
-                        <i class="bi bi-box-arrow-right"></i>
-                        </button>
-                    </div>
-
-                <!-- 購物車圖示 -->
-                        <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="cart-icon">
-                        <i class="bi bi-cart-fill" title="購物車"></i>
-                        </a>
+                            <span class="welcome-text">歡迎 <span class="username">{{ memberName }}</span>！</span>
+                            <button @click="logout" class="logout-icon" title="登出">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </button>
+                        </div>
+                        <!-- 購物車圖示 -->
+                        <router-link :to="cartUrl" class="cart-icon" aria-controls="offcanvasExample">
+                            <i class="bi bi-cart-fill" title="購物車"></i>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -169,7 +173,6 @@ function logout() {
     </div>
   </div>
 </div>
-
 </template>
 <style lang="css" scoped>
 i,
@@ -180,7 +183,7 @@ span,
 
 .nav-link:hover i,
 .nav-link:hover span {
-    color: grey;
+    color: #FAEEC7;
 }
 
 #map_nav {
@@ -227,7 +230,7 @@ span,
     transition: transform .2s ease-in-out;
 }
 .nav-link:hover i,.nav-link:hover span,#map_nav:hover i{
-    color:rgb(237, 218, 138);
+    color:#EA7500;
     font-weight: bold;
     transform: scale(1.5);
     transition:transform .5s ease-in-out;

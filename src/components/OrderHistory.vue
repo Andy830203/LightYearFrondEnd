@@ -290,6 +290,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
+  margin: 10px;
 }
 
 th, td {
