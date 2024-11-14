@@ -371,3 +371,6 @@ export function backtotop() {
     })
   }
 }
+export function dt_set_mp(lt,lg){
+  map.setCenter({ lat: lt, lng: lg });
+}
