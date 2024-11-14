@@ -14,11 +14,11 @@
        style="width: 20vw;position: absolute; right: 2vw; top: 5vw; border-radius: 20px;background-color: rgb(255, 193, 7) !important;color: black !important;">
     <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" style="color: black !important
     ;">
-      <span class="fs-4">活動一覽</span>
+      <span class="fs-4">各縣市活動一覽</span>
     </div>
     <hr>
     <div>
-    <table id="dynamicTable" class="display" style="width:100%">
+    <table id="dynamicTable_z8" class="display" style="width:100%">
       <thead>
         <tr>
           <th>縣市</th>

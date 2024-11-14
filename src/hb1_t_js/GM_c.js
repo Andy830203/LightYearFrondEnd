@@ -397,7 +397,6 @@ export function backtotop() {
         // console.log(lng)
         // 創建地圖標記
         if (lat && lng) { // 確認經緯度已取得，避免 null 錯誤
-          console.log("ok")
           let marker_t = new google.maps.Marker({
             position: { lat: parseFloat(lat), lng: parseFloat(lng) }, // 經緯度轉換為浮點數
             map: map,

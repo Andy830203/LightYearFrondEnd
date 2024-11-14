@@ -1,14 +1,14 @@
 
 // import $ from 'jquery';
 import { ref, onMounted, nextTick } from 'vue';
-import { dt_set_mp, feature_cityname_forsidebar } from '@/hb1_t_js/GM_c.js';
+import { dt_set_mp } from '@/hb1_t_js/GM_c.js';
 const map_loc_url = import.meta.env.VITE_API_BASEURL;
 export default function useDataTable() {
     const table = ref(null);
 
     // 初始化 DataTable
     const initializeDataTable = (data) => {
-        table.value = $('#dynamicTable').DataTable({
+        table.value = $('#dynamicTable_z8').DataTable({
             data: data,
             columns: [
                 { data: 'county', title: '縣市' },
