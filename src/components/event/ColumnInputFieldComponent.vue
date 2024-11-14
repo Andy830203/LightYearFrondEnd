@@ -9,6 +9,7 @@ const props = defineProps({
     LabelCol: Number,
     InputCol: Number,
     // SpaceCol: Number
+    Disable: Boolean
 });
 
 const model = defineModel();
@@ -41,7 +42,7 @@ if (props.Indent === 'true') {
                 <label :for="Id" class="col-form-label">{{ Label }}</label>
             </div>
             <div :class="ICol">
-                <input :type="Type" class="form-control" :id="Id" v-model="model">
+                <input :type="Type" class="form-control" :id="Id" v-model="model" :disabled="Disable">
             </div>
             <!-- <div :class="SCol"></div> -->
         </div>

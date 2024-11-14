@@ -36,7 +36,7 @@ loadSignedNumber()
     <div>
         <h2>{{ eData.name }}</h2>
         <div>{{ eData.description }}</div>
-        <CarouselComponent />
+        <!-- <CarouselComponent /> -->
         <div>
             <label for="">報名費用</label> {{ eData.fee }}
             <label for="">剩餘人數</label> {{ eData.capacity }}
