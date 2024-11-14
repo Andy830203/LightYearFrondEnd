@@ -138,7 +138,6 @@ export function map_init() {
           google.maps.event.removeListener(mouseListener_over);
           google.maps.event.removeListener(mouseListener_out);
           google.maps.event.removeListener(mouseListener_click);
-
           fetchData_m(feature_filter);//取得經緯度並建立標籤
         }
         else if (map_zoom_v > 12) {//檢視活動模式
@@ -298,7 +297,7 @@ export function backtotop() {
       //已經進來了，目前在台灣區域邊界內
       feature_cityname.value = event.feature.Fg.COUNTYNAME;//取得geojson裡COUNTYNAME(縣市)
       feature_townname.value = event.feature.Fg.TOWNNAME;//取得geojson裡TOWNNAME(區)
-      const feature_filter = feature_cityname + feature_townname;
+      const feature_filter = feature_cityname.value + feature_townname.value;
       // console.log(feature_filter);
       removeGeoJson();//移除樣式
       map.data.setStyle({});//清空style設定COUNTYNAME
@@ -326,6 +325,7 @@ export function backtotop() {
   });
   //取得經緯度並建立標籤
   async function fetchData_m(fullAddress) {
+    console.log(fullAddress)
     try {
       const res = await fetch(`${map_loc_url}/EventLocations`);
       const c_e = await res.json(); // 這裡是 evenloc 的資料
@@ -344,8 +344,11 @@ export function backtotop() {
         // 取得名稱及 icon 名稱https://localhost:7227/api/Events/Categories/4
         const eventRes = await fetch(`${map_loc_url}/Events/Categories/${c_e_f.eId}`);
         const eventData = await eventRes.text();
+        // console.log(lat)
+        // console.log(lng)
         // 創建地圖標記
         if (lat && lng) { // 確認經緯度已取得，避免 null 錯誤
+          console.log("ok")
           let marker_t = new google.maps.Marker({
             position: { lat: parseFloat(lat), lng: parseFloat(lng) }, // 經緯度轉換為浮點數
             map: map,
