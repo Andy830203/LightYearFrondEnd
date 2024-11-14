@@ -3,7 +3,11 @@ import { zoom8_mapstyle, zoom12_mapstyle, zoom16_mapstyle } from '@/hb1_t_js/map
 import { triggerCloudAnimation } from '@/hb1_t_js/map_load_c.js'
 import { getAddress } from '@/hb1_t_js/mp_getadress.js'
 export const ft_dis_state = ref(false);//footer是否顯示
+export const sideb_8 = ref(false);//footer是否顯示
+export const sideb_12 = ref(false);//footer是否顯示
+export const sideb_16 = ref(false);//footer是否顯示
 export const feature_cityname = ref(''); // 匯出 feature_cityname
+export const feature_cityname_forsidebar = ref(''); //給sidebar用的
 export const feature_townname = ref(''); // 匯出 feature_townname
 //地圖所需元件St(靜態)
 //Json路徑(靜態)
@@ -21,10 +25,12 @@ try {
 
 //地圖初始化
 export function map_init() {
+
   const updateMapHeight = () => {// 函式來調整地圖高度
     mapHeight.value = `${window.innerHeight}px`;
   };
   onMounted(() => {
+    sideb_8.value = true;
     triggerCloudAnimation();//載入動畫效果
     const map_loc_url = import.meta.env.VITE_API_BASEURL;
     const script = document.createElement('script');
@@ -100,8 +106,12 @@ export function map_init() {
         const map_zoom_v = map.getZoom();//有響應
         if (map_zoom_v < 12) {//進入區域模式
           ft_dis_state.value = false;//footer是否顯示
+          sideb_8.value = false;
+          sideb_12.value = true;
+          sideb_16.value = false;
           triggerCloudAnimation();//載入動畫效果
           const feature_cityname = event.feature.Fg.COUNTY;//取得geojson裡COUNTY_ID
+          feature_cityname_forsidebar.value = event.feature.Fg.COUNTY;//給sidebar用的
           removeGeoJson();//移除樣式
           map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`);
           map.setOptions({ styles: zoom12_mapstyle });//更改地圖樣式zoom12
@@ -114,6 +124,9 @@ export function map_init() {
             })
         } else if (map_zoom_v === 12) {//進入檢視活動模式
           setTimeout(() => {
+            sideb_8.value = false;
+            sideb_12.value = false;
+            sideb_16.value = true;
             ft_dis_state.value = true;//footer是否顯示
           }, 700);//顯性等待
           triggerCloudAnimation();//載入動畫效果
@@ -218,6 +231,7 @@ function getRandomOption() {
 export function backtotop() {
   const map_loc_url = import.meta.env.VITE_API_BASEURL;
   ft_dis_state.value = false;//footer是否顯示
+  sideb_8.value = true;
   triggerCloudAnimation();//載入動畫效果
   let mouseListener_over, mouseListener_out, mouseListener_click;
   map = new google.maps.Map(document.getElementById("map"), {//佈署地圖
@@ -292,6 +306,9 @@ export function backtotop() {
     const map_zoom_v = map.getZoom();//有響應
     if (map_zoom_v < 12) {//進入區域模式
       ft_dis_state.value = false;//footer是否顯示
+      sideb_8.value = false;
+      sideb_12.value = true;
+      sideb_16.value = false;
       triggerCloudAnimation();//載入動畫效果
       const feature_cityname = event.feature.Fg.COUNTY;//取得geojson裡COUNTY_ID
       removeGeoJson();//移除樣式
@@ -306,6 +323,9 @@ export function backtotop() {
         })
     } else if (map_zoom_v === 12) {//進入檢視活動模式
       setTimeout(() => {
+        sideb_8.value = false;
+        sideb_12.value = false;
+        sideb_16.value = true;
         ft_dis_state.value = true;//footer是否顯示
       }, 700);//顯性等待
       triggerCloudAnimation();//載入動畫效果

@@ -1,7 +1,7 @@
 
 // import $ from 'jquery';
 import { ref, onMounted } from 'vue';
-import { dt_set_mp, feature_cityname, feature_townname } from '@/hb1_t_js/GM_c.js';
+import { dt_set_mp, feature_cityname_forsidebar } from '@/hb1_t_js/GM_c.js';
 const map_loc_url = import.meta.env.VITE_API_BASEURL;
 export default function useDataTable() {
     const table = ref(null);
@@ -47,7 +47,7 @@ export default function useDataTable() {
     //datatable資料寫入
     const fetchData = async () => {
         try {
-            const townname = `src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname.value}.geojson`;
+            const townname = `src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname_forsidebar.value}.geojson`;
             const data = [];
 
             // 1. 加載 GeoJSON 檔案
@@ -81,7 +81,7 @@ export default function useDataTable() {
 
                 // 查找與區名匹配的 Locations
                 locations.forEach(location => {
-                    if (location.address.includes(feature_cityname.value + townName)) {
+                    if (location.address.includes(feature_cityname_forsidebar.value + townName)) {
                         // 如果 location 有對應的活動數量，則將其加到活動計數中
                         activityCount += eventLocationMap.get(location.id) || 0;
                     }
