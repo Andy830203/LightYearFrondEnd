@@ -12,15 +12,35 @@
   </template>
   
   <script>
+  const BASE_URL = import.meta.env.VITE_API_BASEURL;
   export default {
     props: {
-      productId: Number,
+    productId: {
+      type: Number,
+      required: true,
     },
+  },
     methods: {
-      confirmDelete() {
-        alert(`刪除商品 ID: ${this.productId}`);
-      },
-    },
+      async confirmDelete() {
+      try {
+        const response = await fetch(`${BASE_URL}/products/Offshelf/${this.productId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+          // Emit an event to inform the parent component about the deletion
+          this.$emit('deleted', this.productId);
+          alert('商品已成功刪除');
+        } else {
+          alert('刪除商品失敗');
+        }
+      } catch (error) {
+        console.error('刪除商品時發生錯誤:', error);
+        alert('刪除商品時發生錯誤');
+      }
+    },    
+    }
   };
   </script>
   
