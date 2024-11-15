@@ -90,7 +90,7 @@ function printPage() {
 }
 
 .custom-accordion .accordion-button {
-  background: linear-gradient(135deg, #FFDC35, #FFD306);
+  background: linear-gradient(135deg, #e2bda0, #dfcfab);
   color: #000000;
   font-weight: bold;
   font-size: 1.25rem; /* 約等於 h3 的大小 */
