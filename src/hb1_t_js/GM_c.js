@@ -215,6 +215,17 @@ export function map_init() {
                   scaledSize: new google.maps.Size(40, 40),
                 },
               });
+              // 清除點擊事件
+              try {
+                google.maps.event.removeListener(clickListener);
+              }
+              catch {
+                console.log("無此事件可清除")
+              }
+              // 新增點擊事件，並將監聽器存入變數 clickListener
+              const clickListener = marker_t2.addListener("click", function () {
+                console.log("ok");
+              });
             }
           }
         } catch (error) {
@@ -418,6 +429,17 @@ export function backtotop() {
               url: `src/hb1_t_js/map_even_icon/${eventData}.png`,
               scaledSize: new google.maps.Size(40, 40),
             },
+          });
+          // 清除點擊事件
+          try {
+            google.maps.event.removeListener(clickListener);
+          }
+          catch {
+            console.log("無此事件可清除")
+          }
+          // 新增點擊事件，並將監聽器存入變數 clickListener
+          const clickListener = marker_t2.addListener("click", function () {
+            console.log("ok");
           });
         }
       }
