@@ -21,7 +21,11 @@ export default function useDataTable() {
             pageLength: 4,
             language: {
                 lengthMenu: "前往 _MENU_",
-                info: ""
+                info: "",
+                paginate: {
+                    previous: "上一頁", // 自定義「上一頁」的文字
+                    next: "下一頁" // 自定義「下一頁」的文字
+                }
             },
             scrollX: true
         });
