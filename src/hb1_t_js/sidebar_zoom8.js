@@ -1,7 +1,7 @@
 
 // import $ from 'jquery';
 import { ref, onMounted, nextTick } from 'vue';
-import { dt_set_mp } from '@/hb1_t_js/GM_c.js';
+import { dt_set_mp_forsd } from '@/hb1_t_js/GM_c.js';
 const map_loc_url = import.meta.env.VITE_API_BASEURL;
 export default function useDataTable() {
     const table = ref(null);
@@ -37,7 +37,7 @@ export default function useDataTable() {
         fetch('src/hb1_t_js/map_jsonfile/台灣縣市中心/contrycenter.json')
             .then(res => { return res.json(); })
             .then(c_f => {
-                dt_set_mp(parseFloat(c_f[rowData.county][0]["lat"]),parseFloat(c_f[rowData.county][0]["lng"]))
+                dt_set_mp_forsd(parseFloat(c_f[rowData.county][0]["lat"]),parseFloat(c_f[rowData.county][0]["lng"]))
             })
     };
     const fetchData = async () => {

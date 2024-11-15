@@ -1,7 +1,7 @@
 
 // import $ from 'jquery';
 import { ref, onMounted } from 'vue';
-import { dt_set_mp, feature_cityname_forsidebar } from '@/hb1_t_js/GM_c.js';
+import { dt_set_mp_forsd, feature_cityname_forsidebar } from '@/hb1_t_js/GM_c.js';
 const map_loc_url = import.meta.env.VITE_API_BASEURL;
 export default function useDataTable() {
     const table = ref(null);
@@ -41,8 +41,8 @@ export default function useDataTable() {
 
                 if (targetFeature) {
                     const centerCoordinates = targetFeature.properties.CENTER.coordinates;
-                    // 若有需要將 centerCoordinates 傳給 dt_set_mp
-                    dt_set_mp(centerCoordinates[1], centerCoordinates[0]); //假設 dt_set_mp(lat, lng)
+                    // 若有需要將 centerCoordinates 傳給 dt_set_mp_forsd
+                    dt_set_mp_forsd(centerCoordinates[1], centerCoordinates[0]); //假設 dt_set_mp_forsd(lat, lng)
                 } else {
                     console.error(`找不到 TOWNNAME 為 ${rowData.town} 的 feature`);
                 }

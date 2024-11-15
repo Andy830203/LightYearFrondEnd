@@ -15,6 +15,7 @@ const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_C
 //地圖所需元件end
 export const mapHeight = ref('500px');//地圖預設值
 var map;
+let markers = [];
 const options = ["公益", "志工", "剩食", "愛心餐"];//icon隨機
 
 try {
@@ -58,6 +59,8 @@ export function map_init() {
           },
         },
       });
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];//清除所有標記
       // //讀取所有縣市邊界geojson
       let filenum = 0;
       let fileroute;
@@ -105,6 +108,8 @@ export function map_init() {
         //alert("縣市id:" + feature_COUNTY_ID + "\n" + "縣市名:" + feature_cityname + "\n" + "目前zoom:" + map.zoom);
         const map_zoom_v = map.getZoom();//有響應
         if (map_zoom_v < 12) {//進入區域模式
+          markers.forEach(marker => marker.setMap(null));
+          markers = [];//清除所有標記
           ft_dis_state.value = false;//footer是否顯示
           sideb_8.value = false;
           sideb_12.value = true;
@@ -123,6 +128,8 @@ export function map_init() {
               map.setCenter({ lat: parseFloat(c_cen[feature_cityname][0]["lat"]), lng: parseFloat(c_cen[feature_cityname][0]["lng"]) });
             })
         } else if (map_zoom_v === 12) {//進入檢視活動模式
+          markers.forEach(marker => marker.setMap(null));
+          markers = [];//清除所有標記
           setTimeout(() => {
             sideb_8.value = false;
             sideb_12.value = false;
@@ -258,6 +265,8 @@ export function backtotop() {
   // map.setZoom(8.2);
   // map.setOptions({ styles: zoom8_mapstyle });
   // map.setCenter({ lat: 23.6978, lng: 120.9605 });
+  markers.forEach(marker => marker.setMap(null));
+  markers = [];//清除所有標記
   // //讀取所有縣市邊界geojson
   let filenum = 0;
   let fileroute;
@@ -305,6 +314,8 @@ export function backtotop() {
     //alert("縣市id:" + feature_COUNTY_ID + "\n" + "縣市名:" + feature_cityname + "\n" + "目前zoom:" + map.zoom);
     const map_zoom_v = map.getZoom();//有響應
     if (map_zoom_v < 12) {//進入區域模式
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];//清除所有標記
       ft_dis_state.value = false;//footer是否顯示
       sideb_8.value = false;
       sideb_12.value = true;
@@ -322,6 +333,8 @@ export function backtotop() {
           map.setCenter({ lat: parseFloat(c_cen[feature_cityname][0]["lat"]), lng: parseFloat(c_cen[feature_cityname][0]["lng"]) });
         })
     } else if (map_zoom_v === 12) {//進入檢視活動模式
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];//清除所有標記
       setTimeout(() => {
         sideb_8.value = false;
         sideb_12.value = false;
@@ -421,4 +434,17 @@ export function backtotop() {
 }
 export function dt_set_mp(lt, lg) {
   map.setCenter({ lat: lt, lng: lg });
+}
+export function dt_set_mp_forsd(lt, lg) {
+  map.setCenter({ lat: lt, lng: lg });
+  // 清除現有的標記
+  markers.forEach(marker => marker.setMap(null));
+  markers = [];
+
+  // 新增新的標記
+  const marker = new google.maps.Marker({
+    position: { lat: lt, lng: lg },
+    map: map
+  });
+  markers.push(marker);
 }
