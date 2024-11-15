@@ -8,7 +8,6 @@ export async function getAddress(longitude, latitude) {
         const lat = Number(latitude);
         const lng = Number(longitude);
         const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${API_KEY}`;
-        console.log(url);
         const response = await axios.get(url);
 
         // 檢查 API 回傳的狀態和結果

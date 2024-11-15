@@ -76,9 +76,15 @@ const handlePriceChange = (newPrice) => {
 </script>
 
 <template>
-  <div class="container-fluid product-page">
-    <div class="container py-5">
-      <div class="row g-4">
+  <div class="container-fluid product-page row">
+    <div class="filter-container col-md-3">
+      <div class="filter-section">
+        <CategoryFilter @categorySelected="handleCategorySelected" />
+        <PriceRangeBar :maxPrice="maxPrice" @priceChanged="handlePriceChange" />
+      </div>
+    </div>
+    <div class="container py-5 col-md-9">
+      <div class="row g-4" style="width: 100%;">
         <div class="col-lg-12">
           <div class="row g-4 justify-content-between align-items-center search-sort-bar">
             <div class="col-xl-3">
@@ -89,14 +95,8 @@ const handlePriceChange = (newPrice) => {
             </div>
           </div>
           <div class="row g-4 mt-4">
-            <div class="col-lg-3">
-              <div class="filter-section">
-                <CategoryFilter @categorySelected="handleCategorySelected" />
-                <PriceRangeBar :maxPrice="maxPrice" @priceChanged="handlePriceChange" />
-              </div>
-            </div>
-            <div class="col-lg-9">
-              <div class="row g-4 justify-content-start product-list">
+            <div class="col-lg-12">
+              <div class="row g-3 justify-content-start">
                 <ProductCard 
                   v-for="product in result.products" 
                   :key="product.id"
@@ -124,6 +124,7 @@ const handlePriceChange = (newPrice) => {
   </div>
 </template>
 
+
 <style scoped>
 /* 整體頁面樣式 */
 .product-page {
@@ -140,15 +141,24 @@ const handlePriceChange = (newPrice) => {
 }
 
 /* 篩選區塊樣式 */
+.filter-container {
+  position: fixed;
+  top: 5vw; /* 根據需求調整 */
+  left: 0;
+  width: 400px; /* 固定寬度 */
+  padding: 20px;
+  background-color: transparent; /* 移除背景色設置 */
+  z-index: 100; /* 防止被覆蓋 */
+}
+
 .filter-section {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  left: 2vw;
-  top: 10vw;
-  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 /* 產品列表樣式 */

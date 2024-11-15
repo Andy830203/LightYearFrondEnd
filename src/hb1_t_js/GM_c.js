@@ -3,7 +3,11 @@ import { zoom8_mapstyle, zoom12_mapstyle, zoom16_mapstyle } from '@/hb1_t_js/map
 import { triggerCloudAnimation } from '@/hb1_t_js/map_load_c.js'
 import { getAddress } from '@/hb1_t_js/mp_getadress.js'
 export const ft_dis_state = ref(false);//footer是否顯示
+export const sideb_8 = ref(false);//footer是否顯示
+export const sideb_12 = ref(false);//footer是否顯示
+export const sideb_16 = ref(false);//footer是否顯示
 export const feature_cityname = ref(''); // 匯出 feature_cityname
+export const feature_cityname_forsidebar = ref(''); //給sidebar用的
 export const feature_townname = ref(''); // 匯出 feature_townname
 //地圖所需元件St(靜態)
 //Json路徑(靜態)
@@ -11,22 +15,23 @@ const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_C
 //地圖所需元件end
 export const mapHeight = ref('500px');//地圖預設值
 var map;
-const options = ["公益活動", "志工", "剩食", "愛心餐"];//icon隨機
+let markers = [];
+const options = ["公益", "志工", "剩食", "愛心餐"];//icon隨機
 
-try{
-  console.log("ok")
-  const test5 =getAddress(120.286850,22.634500);
-  console.log(test5)
-}catch (error) {
+try {
+  const test5 = getAddress(120.286850, 22.634500);
+} catch (error) {
   console.error('Failed to fetch address:', error);
 }
 
 //地圖初始化
 export function map_init() {
+
   const updateMapHeight = () => {// 函式來調整地圖高度
     mapHeight.value = `${window.innerHeight}px`;
   };
   onMounted(() => {
+    sideb_8.value = true;
     triggerCloudAnimation();//載入動畫效果
     const map_loc_url = import.meta.env.VITE_API_BASEURL;
     const script = document.createElement('script');
@@ -54,6 +59,8 @@ export function map_init() {
           },
         },
       });
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];//清除所有標記
       // //讀取所有縣市邊界geojson
       let filenum = 0;
       let fileroute;
@@ -101,9 +108,15 @@ export function map_init() {
         //alert("縣市id:" + feature_COUNTY_ID + "\n" + "縣市名:" + feature_cityname + "\n" + "目前zoom:" + map.zoom);
         const map_zoom_v = map.getZoom();//有響應
         if (map_zoom_v < 12) {//進入區域模式
+          markers.forEach(marker => marker.setMap(null));
+          markers = [];//清除所有標記
           ft_dis_state.value = false;//footer是否顯示
+          sideb_8.value = false;
+          sideb_12.value = true;
+          sideb_16.value = false;
           triggerCloudAnimation();//載入動畫效果
           const feature_cityname = event.feature.Fg.COUNTY;//取得geojson裡COUNTY_ID
+          feature_cityname_forsidebar.value = event.feature.Fg.COUNTY;//給sidebar用的
           removeGeoJson();//移除樣式
           map.data.loadGeoJson(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname}.geojson`);
           map.setOptions({ styles: zoom12_mapstyle });//更改地圖樣式zoom12
@@ -115,7 +128,12 @@ export function map_init() {
               map.setCenter({ lat: parseFloat(c_cen[feature_cityname][0]["lat"]), lng: parseFloat(c_cen[feature_cityname][0]["lng"]) });
             })
         } else if (map_zoom_v === 12) {//進入檢視活動模式
+          markers.forEach(marker => marker.setMap(null));
+          markers = [];//清除所有標記
           setTimeout(() => {
+            sideb_8.value = false;
+            sideb_12.value = false;
+            sideb_16.value = true;
             ft_dis_state.value = true;//footer是否顯示
           }, 700);//顯性等待
           triggerCloudAnimation();//載入動畫效果
@@ -140,7 +158,21 @@ export function map_init() {
           google.maps.event.removeListener(mouseListener_over);
           google.maps.event.removeListener(mouseListener_out);
           google.maps.event.removeListener(mouseListener_click);
+          // map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
+          //   // 獲取點擊位置的經緯度
+          //   const { latLng } = event;
+          //   const latitude = latLng.lat();
+          //   const longitude = latLng.lng();
+          //   // 在點擊位置創建一個新 marker
+          //   let mk = new google.maps.Marker({
+          //     position: latLng,
+          //     map: map
+          //   });
 
+          //   // 輸出經緯度到 console
+          //   console.log('Latitude:', latitude);
+          //   console.log('Longitude:', longitude);
+          // });
           fetchData_m(feature_filter);//取得經緯度並建立標籤
         }
         else if (map_zoom_v > 12) {//檢視活動模式
@@ -162,7 +194,6 @@ export function map_init() {
           for (const c_e_f of c_e) { // 遍歷 EventLocations
             const randomicon = getRandomOption();
             let lat, lng, e_category, e_name;
-
             // 取得經緯度
             const locRes = await fetch(`${map_loc_url}/Locations/${c_e_f.lId}`);
             const locData = await locRes.json();
@@ -170,14 +201,17 @@ export function map_init() {
               lat = locData.longitude;
               lng = locData.latitude;
             }
+            // 取得名稱及 icon 名稱https://localhost:7227/api/Events/Categories/4
+            const eventRes = await fetch(`${map_loc_url}/Events/Categories/${c_e_f.eId}`);
+            const eventData = await eventRes.text();
             // 創建地圖標記
-            if (lat && lng) { // 確認經緯度已取得，避免 null 錯誤
+            if (lat && lng) {
               let marker_t2 = new google.maps.Marker({
                 position: { lat: parseFloat(lat), lng: parseFloat(lng) }, // 經緯度轉換為浮點數
                 map: map,
                 title: c_e_f.belongedEvent,
                 icon: {
-                  url: `src/hb1_t_js/map_even_icon/${randomicon}.png`,
+                  url: `src/hb1_t_js/map_even_icon/${eventData}.png`,
                   scaledSize: new google.maps.Size(40, 40),
                 },
               });
@@ -204,6 +238,7 @@ function getRandomOption() {
 export function backtotop() {
   const map_loc_url = import.meta.env.VITE_API_BASEURL;
   ft_dis_state.value = false;//footer是否顯示
+  sideb_8.value = true;
   triggerCloudAnimation();//載入動畫效果
   let mouseListener_over, mouseListener_out, mouseListener_click;
   map = new google.maps.Map(document.getElementById("map"), {//佈署地圖
@@ -230,6 +265,8 @@ export function backtotop() {
   // map.setZoom(8.2);
   // map.setOptions({ styles: zoom8_mapstyle });
   // map.setCenter({ lat: 23.6978, lng: 120.9605 });
+  markers.forEach(marker => marker.setMap(null));
+  markers = [];//清除所有標記
   // //讀取所有縣市邊界geojson
   let filenum = 0;
   let fileroute;
@@ -277,7 +314,12 @@ export function backtotop() {
     //alert("縣市id:" + feature_COUNTY_ID + "\n" + "縣市名:" + feature_cityname + "\n" + "目前zoom:" + map.zoom);
     const map_zoom_v = map.getZoom();//有響應
     if (map_zoom_v < 12) {//進入區域模式
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];//清除所有標記
       ft_dis_state.value = false;//footer是否顯示
+      sideb_8.value = false;
+      sideb_12.value = true;
+      sideb_16.value = false;
       triggerCloudAnimation();//載入動畫效果
       const feature_cityname = event.feature.Fg.COUNTY;//取得geojson裡COUNTY_ID
       removeGeoJson();//移除樣式
@@ -291,14 +333,19 @@ export function backtotop() {
           map.setCenter({ lat: parseFloat(c_cen[feature_cityname][0]["lat"]), lng: parseFloat(c_cen[feature_cityname][0]["lng"]) });
         })
     } else if (map_zoom_v === 12) {//進入檢視活動模式
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];//清除所有標記
       setTimeout(() => {
+        sideb_8.value = false;
+        sideb_12.value = false;
+        sideb_16.value = true;
         ft_dis_state.value = true;//footer是否顯示
       }, 700);//顯性等待
       triggerCloudAnimation();//載入動畫效果
       //已經進來了，目前在台灣區域邊界內
       feature_cityname.value = event.feature.Fg.COUNTYNAME;//取得geojson裡COUNTYNAME(縣市)
       feature_townname.value = event.feature.Fg.TOWNNAME;//取得geojson裡TOWNNAME(區)
-      const feature_filter = feature_cityname + feature_townname;
+      const feature_filter = feature_cityname.value + feature_townname.value;
       // console.log(feature_filter);
       removeGeoJson();//移除樣式
       map.data.setStyle({});//清空style設定COUNTYNAME
@@ -317,7 +364,22 @@ export function backtotop() {
       google.maps.event.removeListener(mouseListener_over);
       google.maps.event.removeListener(mouseListener_out);
       google.maps.event.removeListener(mouseListener_click);
+      // map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
+      //   // 獲取點擊位置的經緯度
+      //   const { latLng } = event;
+      //   const latitude = latLng.lat();
+      //   const longitude = latLng.lng();
 
+      //   // 在點擊位置創建一個新 marker
+      //   new google.maps.Marker({
+      //     position: latLng,
+      //     map: map
+      //   });
+
+      //   // 輸出經緯度到 console
+      //   console.log('Latitude:', latitude);
+      //   console.log('Longitude:', longitude);
+      // });
       fetchData_m(feature_filter);//取得經緯度並建立標籤
     }
     else if (map_zoom_v > 12) {//檢視活動模式
@@ -341,6 +403,11 @@ export function backtotop() {
           lat = locData.longitude;
           lng = locData.latitude;
         }
+        // 取得名稱及 icon 名稱https://localhost:7227/api/Events/Categories/4
+        const eventRes = await fetch(`${map_loc_url}/Events/Categories/${c_e_f.eId}`);
+        const eventData = await eventRes.text();
+        // console.log(lat)
+        // console.log(lng)
         // 創建地圖標記
         if (lat && lng) { // 確認經緯度已取得，避免 null 錯誤
           let marker_t = new google.maps.Marker({
@@ -348,7 +415,7 @@ export function backtotop() {
             map: map,
             title: c_e_f.belongedEvent,
             icon: {
-              url: `src/hb1_t_js/map_even_icon/${randomicon}.png`,
+              url: `src/hb1_t_js/map_even_icon/${eventData}.png`,
               scaledSize: new google.maps.Size(40, 40),
             },
           });
@@ -364,4 +431,20 @@ export function backtotop() {
       map.data.remove(feature)
     })
   }
+}
+export function dt_set_mp(lt, lg) {
+  map.setCenter({ lat: lt, lng: lg });
+}
+export function dt_set_mp_forsd(lt, lg) {
+  map.setCenter({ lat: lt, lng: lg });
+  // 清除現有的標記
+  markers.forEach(marker => marker.setMap(null));
+  markers = [];
+
+  // 新增新的標記
+  const marker = new google.maps.Marker({
+    position: { lat: lt, lng: lg },
+    map: map
+  });
+  markers.push(marker);
 }
