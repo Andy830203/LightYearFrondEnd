@@ -5,12 +5,12 @@
     <!-- 判斷是否有收藏活動 -->
     <div v-if="hasFavorites">
       <ul class="favorites-list">
-        <li v-for="(favorite, index) in favorites" :key="favorite.id" class="favorite-item">
+        <li v-for="(favorite, index) in favorites" :key="favorite.id" class="favorite-item" @click="registerEvent(favorite.id)" >
           {{ favorite.name }}
           <span
             class="favorite-icon"
             :class="{ active: favorite.isFavorite }"
-            @click="toggleFavorite(favorite)"
+            @click="toggleFavorite(favorite, $event)" 
           >
             ❤
           </span>
@@ -28,12 +28,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import Swal from 'sweetalert2'; // 引入 SweetAlert2
-
+import { useRouter } from 'vue-router';  // Import useRouter
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 const memberId = ref(null);
 const favorites = ref([]);
 const hasFavorites = ref(false);
-
+const router = useRouter(); 
 const loadMemberId = () => {
   const storedMember = localStorage.getItem("member");
   if (storedMember) {
@@ -69,8 +69,11 @@ const fetchFavorites = async () => {
   }
 };
 
-
+const registerEvent = (eventId) => {
+  router.push({ name: 'eventSignUpWithId', params: { id: eventId } });  // Use router.push to navigate
+};
 const toggleFavorite = async (favorite) => {
+  event.stopPropagation();
   if (favorite.isFavorite) {
     const confirmResult = await Swal.fire({
       title: '確認取消收藏?',
