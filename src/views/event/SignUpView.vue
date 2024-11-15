@@ -1,12 +1,19 @@
 <script setup>
+import DetailModal from '@/components/DetailModal.vue';
 import ColumnInputFieldComponent from '@/components/event/ColumnInputFieldComponent.vue';
+import DetailModalSignUp from '@/components/event/DetailModalSignUp.vue';
 import EventDatailComponent from '@/components/event/EventDatailComponent.vue';
 import InputFieldComponent from '@/components/event/InputFieldComponent.vue';
 import { onMounted, ref } from 'vue';
+import Swal from 'sweetalert2';
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL
 const EVENT_URL = BASE_URL + '/Events' //operation with event
+const ELOCS_URL = EVENT_URL + '/Locations'
+const CHOSEN_PERIOD_URL = BASE_URL + '/EventPeriods'
 const MEMBERINFO_URL = BASE_URL + '/Members/GetMemberInFo'
+
+const SignUp_URL = BASE_URL + '/SignUps'
 
 //props
 const props = defineProps({
@@ -27,9 +34,18 @@ let eData = {
 
 const member = JSON.parse(localStorage.getItem('member'))
 
-const eventData = ref({});
+const eventData = ref({})
+
+const EventLocations = ref([])
+
+const choosePeriodId = ref(-1)
+
+const choosePeriod = ref({})
 
 const memberInfo = ref({})
+
+const showModal = ref(false);
+// const selectedEvent = ref(null);
 
 const getEvent = async () => {
     const response = await fetch(`${EVENT_URL}/${props.id}`, {
@@ -37,10 +53,26 @@ const getEvent = async () => {
     })
 
     const json = await response.json()
-
-
     console.log(json)
     return json
+}
+
+const getEventLocs = async () => {
+    const response = await fetch(`${ELOCS_URL}/${props.id}`, {
+        method: 'GET'
+    })
+
+    const json = await response.json()
+    EventLocations.value = json
+}
+
+const getChosenPeriod = async () => {
+    const response = await fetch(`${CHOSEN_PERIOD_URL}/${choosePeriodId.value}`, {
+        method: 'GET'
+    })
+
+    const json = await response.json()
+    choosePeriod.value = json
 }
 
 const getMemberInfo = async () => {
@@ -52,18 +84,60 @@ const getMemberInfo = async () => {
     memberInfo.value = json
 }
 
+const onSubmit = () => {
+    // alert('請選擇時段')
+    console.log(eventData.value)
+    console.log(choosePeriodId.value)
+    openDetails()
+}
+
+function openDetails() {
+    // eventData.value = event;
+    showModal.value = true;
+}
+
+function closeModal() {
+    showModal.value = false;
+    // eventData.value = null;
+}
+
+async function registerEvent(event) {
+    // post signUp
+    let postObj = {
+        "epId": 0,
+        "applicant": 0
+    }
+
+    postObj.epId = choosePeriodId.value
+    postObj.applicant = memberInfo.value.id
+
+    const response = await fetch(SignUp_URL, {
+        method: 'POST',
+        body: JSON.stringify(postObj),
+        headers: { "Content-Type": "application/json" }
+    })
+
+    if (response.ok) {
+        Swal.fire('已報名', `您已成功報名活動「${event.name}」`, 'success');
+    }
+
+}
+
 onMounted(async () => {
     try {
         eventData.value = await getEvent(); // 確保正確更新值
+
         getMemberInfo()
+        if (eventData.value.periods.length > 0) {
+            choosePeriodId.value = eventData.value.periods[0].id;
+        }
+        getEventLocs()
+        getChosenPeriod()
+        // alert('請選擇時段')
     } catch (error) {
         console.error('Failed to load event data:', error);
     }
 })
-
-const onSubmit = () => {
-
-}
 </script>
 
 <template>
@@ -74,7 +148,8 @@ const onSubmit = () => {
                     <h2>{{ member.name }}</h2>
                     <div class="d-flex justify-content-around">
                         <label class="me-5"> 報名時段 </label>
-                        <select :name="eventData.Name" :id="eventData.id" class="form-select">
+                        <select class="form-select" :name="eventData.Name" :id="eventData.id" v-model="choosePeriodId"
+                            @change="getChosenPeriod">
                             <!-- get EP DATA -->
                             <option v-for="period in eventData.periods" :value="period.id">
                                 {{ period.description }}
@@ -134,6 +209,8 @@ const onSubmit = () => {
                 </div>
             </div>
         </form>
+        <DetailModalSignUp v-if="showModal" :event="eventData" :locations="EventLocations" :choose-period="choosePeriod"
+            @close="closeModal" @register="registerEvent" />
     </div>
 </template>
 
