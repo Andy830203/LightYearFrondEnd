@@ -10,14 +10,23 @@ count_init();
 
 <template>
 <div class="centered-container">
-    <div id="id_1" class="align-middle">
-        <h1>主題介紹</h1>
-        <p>我們的公益平台旨在解決當今公益資訊分散的問題，讓更多人能夠輕鬆參與社會公益活動。在這個平台上，不論是個人或團體，都可以輕鬆發起或參與各種活動，如社區清潔、淨灘等，從而更快地聚集有意參與的夥伴，加速活動的推展。我們致力於整合各種公益資源，並提供便利的功能，讓使用者在尋找公益資訊時更加便捷高效。
-        <br>
-        此外，我們在網站中特別增加了「愛心餐點」的領取與捐贈功能，讓有需求的人可以快速找到附近的愛心餐點，並讓有心人能便捷地進行捐助。透過地圖功能，使用者可以查看離自己最近的活動地點或資源，使公益參與更加直接有效。我們的目標是提供一個透明而開放的公益平台，讓所有人都能輕鬆找到志同道合的夥伴，無論是單純參與或組織活動，皆能在此找到支持。
-        <br>
-        我們深信，此平台的建立將使公益參與變得簡單且充滿互助精神，讓社會中的每個人都能輕鬆地成為改變的力量，共同創造和諧與溫暖的社區。</p>
+    <div id="id_1" class="card flex-container">
+        <div class="image-container">
+            <img src="/src/assets/images/members/內文手transparent.png" alt="公益平台介紹圖片" class="intro-image" style="background-color: #FFE6FF;">
+        </div>
+        <div class="text-content">
+            <h1>主題介紹</h1>
+            <p>
+                我們的公益平台旨在整合分散的公益資訊，方便更多人參與社會公益活動。無論個人或團體，都可以輕鬆發起或參加各種活動，如社區清潔、淨灘等，加速活動推展，迅速聚集志同道合的夥伴。
+                <br><br>
+                此外，我們特別增加了「愛心餐點」功能，讓有需求的人快速找到附近的愛心餐點，也便於愛心人士進行捐助。透過地圖功能，使用者可查找離自己最近的活動地點，讓公益參與更直接有效。
+                <br><br>
+                我們的目標是打造一個透明、開放的公益平台，讓每個人都能輕鬆找到夥伴，無論參與或組織活動，皆能得到支持。我們相信，這個平台將讓公益參與變得簡單且充滿互助精神，促進社會和諧，共同創造溫暖的社區。
+            </p>
+        </div>
     </div>
+</div>
+
     <div id="id_3">
         <h1>使用說明</h1>
     </div>
@@ -60,30 +69,81 @@ count_init();
     </div>
 </div>
     </div>
-</div>
+
 </template>
 
 <style lang="css" scoped>
+/* 主容器設定，讓內容置中排列 */
 .centered-container {
     display: flex;
     flex-direction: column;
     align-items: center; /* 水平置中 */
-    justify-content: center; /* 垂直置中 */
+
+    min-height: 100vh;
+    padding: -20px;
 }
-div{
+
+/* 全部 div 的字體顏色設置 */
+div {
     color: black;
 }
-#id_1{
-    width: 80%;
+
+/* 卡片容器設定 */
+.flex-container {
+    display: flex;
+    gap: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 1200px;
+    width: 90%;
+    align-items: center; /* 垂直置中圖片和文字 */
+}
+
+/* 圖片樣式設定 */
+.intro-image {
+    width: 200px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* 文字內容區塊設定 */
+.text-content {
+    flex: 1;
+    text-align: left;
+}
+
+/* 標題樣式 */
+h1 {
+    font-size: 28px;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+/* 文字段落樣式 */
+p {
+    font-size: 18px;
+    color: #555555;
+    line-height: 1.6;
+}
+
+/* id 為 id_1 的區塊特定樣式 */
+#id_1 {
     font-size: 25px;
     padding: 20px;
-    text-align: center; /* 保持內容左對齊 */
-    height: 500px;
-    }
-#id_3{
+    text-align: center;
+    height: auto; /* 設定自動高度，讓內容撐開 */
+}
+
+/* id 為 id_3 的區塊特定樣式 */
+#id_3 {
     height: 300px;
-    }
-h1{
-top: 50%;
+}
+/* 圖片容器樣式，確保圖片和標題並排 */
+.image-container {
+    flex-shrink: 0;
 }
 </style>

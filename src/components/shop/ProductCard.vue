@@ -24,7 +24,7 @@ const imgurlProcess = function(urlFromDB) {
 </script>
 
 <template>
-    <div class="col-md-6 col-lg-6 col-xl-4">
+    <div class="col-md-4 col-lg-4 col-xl-4">
         <div class="product-item">
             <div class="product-img">
                 <img :src="imgurlProcess(productImage)" :alt="productName" class="img-fluid">
