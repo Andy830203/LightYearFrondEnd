@@ -118,10 +118,16 @@ async function registerEvent(event) {
     })
 
     if (response.ok) {
-        Swal.fire('已報名', `您已成功報名活動「${event.name}」`, 'success');
+        Swal.fire('已報名', `您已成功報名活動「${event.name}」`, 'success')
+            .then(result => {
+                if (result.isConfirmed) {
+                    closeModal()
+                }
+            })
     }
-
 }
+
+
 
 onMounted(async () => {
     try {
@@ -144,20 +150,24 @@ onMounted(async () => {
     <div class="mt-3 container">
         <form @submit.prevent="onSubmit">
             <div class="d-flex" v-if="eventData">
-                <div class="w-25">
+                <div class="w-50">
                     <h2>{{ member.name }}</h2>
-                    <div class="d-flex justify-content-around">
-                        <label class="me-5"> 報名時段 </label>
-                        <select class="form-select" :name="eventData.Name" :id="eventData.id" v-model="choosePeriodId"
-                            @change="getChosenPeriod">
-                            <!-- get EP DATA -->
-                            <option v-for="period in eventData.periods" :value="period.id">
-                                {{ period.description }}
-                            </option>
-                        </select>
+                    <div class="row">
+                        <div class="col-4 d-flex align-items-center">
+                            <label> 報名時段 </label>
+                        </div>
+                        <div class="col-8">
+                            <select class="col-1 form-select" :name="eventData.Name" :id="eventData.id"
+                                v-model="choosePeriodId" @change="getChosenPeriod">
+                                <!-- get EP DATA -->
+                                <option v-for="period in eventData.periods" :value="period.id">
+                                    {{ period.description }} ({{ period.startTime }} ~ {{ period.endTime }})
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="w-75">
+                <div class="w-50">
                     <div class="d-flex justify-content-center">
                         <img src="/images/non-found.jpg" alt="">
                     </div>
