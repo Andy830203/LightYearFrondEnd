@@ -2,7 +2,7 @@
 import CarouselComponent from '@/components/event/CarouselComponent.vue';
 import PlacesComponent from '@/components/event/PlacesComponent.vue';
 import '@/components/member/Count.css';
-import { memberCount,count_init } from '@/components/member/Count';
+import { memberCount,count_init, productsCount, eventsCount } from '@/components/member/Count';
 count_init();
 
 
@@ -43,18 +43,18 @@ count_init();
     <div class="stats-section col-3">
         <h2>活動總數</h2>
       <div class="stats-container">
-        <div class="stat-card" v-if="memberCount !== null">
+        <div class="stat-card" v-if="eventsCount !== null">
           
-          <h2>{{ memberCount }}+</h2>
+          <h2>{{ eventsCount }}+</h2>
         </div>
       </div>
     </div>
     <div class="stats-section col-3">
         <h2>愛心商品總數</h2>
       <div class="stats-container">
-        <div class="stat-card" v-if="memberCount !== null">
+        <div class="stat-card" v-if="productsCount !== null">
           
-          <h2>{{ memberCount }}+</h2>
+          <h2>{{ productsCount }}+</h2>
         </div>
       </div>
     </div>

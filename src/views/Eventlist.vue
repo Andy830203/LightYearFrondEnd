@@ -29,8 +29,7 @@
           <th>活動名稱</th>
           <th>發起人</th>
           <th>報名費</th>
-          <th>時段</th>
-          <th>地點</th>
+          <th>最早開始時間</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -40,10 +39,9 @@
           <td>{{ event.name }}</td>
           <td>{{ event.organizer }}</td>
           <td>{{ event.fee }} 元</td>
-          <td>{{ event.timeSlot }}</td>
-          <td>{{ event.location }}</td>
+          <td>{{ getEarliestStartTime(event.periods) }}</td>
           <td class="event-actions">
-            <button @click="openDetails(event)" class="details-button">詳細內容</button>
+            <button @click="openDetails(event.id)" class="details-button">詳細內容</button>
             <span
               class="favorite-icon"
               :class="{ active: event.isFavorite }"
@@ -59,122 +57,198 @@
     <!-- 詳細內容彈跳視窗 -->
     <DetailModal
       v-if="showModal"
-      :event="selectedEvent"
+      :eventId="selectedEventId"
       @close="closeModal"
       @register="registerEvent"
     />
   </div>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue';
+<script>
+import { ref, computed, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 import DetailModal from '@/components/DetailModal.vue';
 
-const showModal = ref(false);
-const selectedEvent = ref(null);
+const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
-const events = ref([
-  {
-    id: 1,
-    name: '活動名稱',
-    organizer: '發起人A',
-    fee: 100,
-    timeSlot: '2024-11-12 14:00-16:00',
-    location: '台北市中正區',
-    image: 'https://via.placeholder.com/80',
-    isFavorite: false,
-    maxParticipants: 50,
-    category: '文化',
-    images: [
-      'https://via.placeholder.com/150',
-      'https://via.placeholder.com/150',
-      'https://via.placeholder.com/150'
-    ]
+export default {
+  components: {
+    DetailModal,
   },
-  {
-    id: 2,
-    name: '藝術展覽',
-    organizer: '藝術協會',
-    fee: 200,
-    timeSlot: '2024-12-01 10:00-18:00',
-    location: '台中市西屯區',
-    image: 'https://via.placeholder.com/80',
-    isFavorite: true,
-    maxParticipants: 30,
-    category: '藝術',
-    images: [
-      'https://via.placeholder.com/150',
-      'https://via.placeholder.com/150',
-      'https://via.placeholder.com/150'
-    ]
-  }
-  // 更多活動...
-]);
+  data() {
+    return {
+      showModal: false,
+      selectedEventId: null,
+      events: [],
+      filters: {
+        minFee: null,
+        maxFee: null,
+        startDate: null,
+        endDate: null,
+      },
+    };
+  },
+  computed: {
+    filteredEvents() {
+      return this.events.filter(event => {
+        const isWithinPriceRange =
+          (!this.filters.minFee || event.fee >= this.filters.minFee) &&
+          (!this.filters.maxFee || event.fee <= this.filters.maxFee);
 
-const filters = ref({
-  minFee: null,
-  maxFee: null,
-  startDate: null,
-  endDate: null
-});
+        const earliestPeriod = event.periods.reduce((earliest, period) => {
+          const startTime = new Date(period.startTime);
+          return !earliest || startTime < new Date(earliest.startTime) ? period : earliest;
+        }, null);
+        const eventDate = earliestPeriod ? new Date(earliestPeriod.startTime) : null;
 
-const filteredEvents = computed(() =>
-  events.value.filter(event => {
-    const isWithinPriceRange =
-      (!filters.value.minFee || event.fee >= filters.value.minFee) &&
-      (!filters.value.maxFee || event.fee <= filters.value.maxFee);
-    const eventDate = new Date(event.timeSlot.split(' ')[0]);
-    const isWithinDateRange =
-      (!filters.value.startDate || eventDate >= new Date(filters.value.startDate)) &&
-      (!filters.value.endDate || eventDate <= new Date(filters.value.endDate));
-    return isWithinPriceRange && isWithinDateRange;
-  })
-);
+        const isWithinDateRange =
+          (!this.filters.startDate || (eventDate && eventDate >= new Date(this.filters.startDate))) &&
+          (!this.filters.endDate || (eventDate && eventDate <= new Date(this.filters.endDate)));
 
-function openDetails(event) {
-  selectedEvent.value = event;
-  showModal.value = true;
-}
-
-function closeModal() {
-  showModal.value = false;
-  selectedEvent.value = null;
-}
-
-function registerEvent(event) {
-  Swal.fire('已報名', `您已成功報名活動「${event.name}」`, 'success');
-}
-
-async function toggleFavorite(event) {
-  if (event.isFavorite) {
-    const confirmResult = await Swal.fire({
-      title: '確認取消收藏?',
-      text: `確定要取消收藏活動「${event.name}」嗎？`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '確定',
-      cancelButtonText: '取消',
-    });
-
-    if (confirmResult.isConfirmed) {
-      event.isFavorite = false;
-      Swal.fire('已取消收藏', `活動「${event.name}」已取消收藏`, 'success');
+        return isWithinPriceRange && isWithinDateRange;
+      });
+    },
+  },
+  methods: {
+    async fetchEvents() {
+      try {
+        const response = await fetch(`${BASE_URL}/Events`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        });
+        if (!response.ok) throw new Error('Failed to fetch events');
+        this.events = await response.json();
+        this.fetchfavorites();
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        Swal.fire('錯誤', '無法獲取活動資料，請稍後再試', 'error');
+      }
+    },
+    async fetchfavorites() {
+      const memberData = JSON.parse(localStorage.getItem('member'));
+      const userID = memberData ? memberData.id : null;
+      if (!userID) return; // Exit if not logged in
+      try {
+        const response = await fetch(`${BASE_URL}/Collections/${userID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        });
+        if (!response.ok) throw new Error('Failed to fetch favorites');
+        const favorites = await response.json();
+        // Set isFavorite to true for events that are in the favorites list
+        const favoriteIds = new Set(favorites.map(fav => fav.eventId));
+        this.events.forEach(event => {
+          event.isFavorite = favoriteIds.has(event.id);
+        });
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+        Swal.fire('錯誤', '無法獲取收藏資料，請稍後再試', 'error');
     }
-  } else {
-    event.isFavorite = true;
-    Swal.fire('已添加收藏', `活動「${event.name}」已添加到收藏`, 'success');
   }
-}
+    ,
+    getEarliestStartTime(periods) {
+      if (!periods || periods.length === 0) return '無時段';
+      
+      const earliestPeriod = periods.reduce((earliest, period) => {
+        const startTime = new Date(new Date(period.startTime).getTime() + 8 * 60 * 60 * 1000);
+        return !earliest || startTime < new Date(earliest.startTime) ? period : earliest;
+      }, null);
 
-function resetFilters() {
-  filters.value.minFee = null;
-  filters.value.maxFee = null;
-  filters.value.startDate = null;
-  filters.value.endDate = null;
-}
+      if (!earliestPeriod) return '無時段';
+
+      const startTime = new Date(new Date(earliestPeriod.startTime).getTime() + 8 * 60 * 60 * 1000);
+      const year = startTime.getFullYear();
+      const month = String(startTime.getMonth() + 1).padStart(2, '0');
+      const day = String(startTime.getDate()).padStart(2, '0');
+      const hours = String(startTime.getHours()).padStart(2, '0');
+      const minutes = String(startTime.getMinutes()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
+    },
+    openDetails(eventId) {
+      this.selectedEventId = eventId;
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+      this.selectedEventId = null;
+    },
+    registerEvent(event) {
+      Swal.fire('已報名', `您已成功報名活動「${event.name}」`, 'success');
+    },
+    async toggleFavorite(event) {
+      if (event.isFavorite) {
+        const confirmResult = await Swal.fire({
+          title: '確認取消收藏?',
+          text: `確定要取消收藏活動「${event.name}」嗎？`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '確定',
+          cancelButtonText: '取消',
+        });
+        if (confirmResult.isConfirmed) {
+          try {
+            const memberData = JSON.parse(localStorage.getItem('member'));
+            const userID = memberData ? memberData.id : null;
+            await fetch(`${BASE_URL}/Collections/${userID}/${event.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+            });
+            event.isFavorite = false;
+            Swal.fire('已取消收藏', `活動「${event.name}」已取消收藏`, 'success');
+          } 
+          catch (error) {
+            console.error('Error Deleting favorites:', error);
+            Swal.fire('錯誤', '無法刪除收藏資料，請稍後再試', 'error');
+          }
+        }
+      }
+      else {
+        try {
+            const memberData = JSON.parse(localStorage.getItem('member'));
+            const userID = memberData ? memberData.id : null;
+            await fetch(`${BASE_URL}/Collections/AddFavorite`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      "memberId": userID,
+                      "eventId": event.id
+                    }),
+                    mode: 'cors'
+});
+            event.isFavorite = true;
+            Swal.fire('已添加收藏', `活動「${event.name}」已添加收藏`, 'success');
+          } 
+          catch (error) {
+            console.error('Error Adding favorites:', error);
+            Swal.fire('錯誤', '無法新增收藏資料，請稍後再試', 'error');
+          }
+      }
+    },
+    resetFilters() {
+      this.filters.minFee = null;
+      this.filters.maxFee = null;
+      this.filters.startDate = null;
+      this.filters.endDate = null;
+    },
+  },
+  mounted() {
+    this.fetchEvents();
+  },
+};
 </script>
 
 <style scoped>
