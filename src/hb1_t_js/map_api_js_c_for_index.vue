@@ -10,7 +10,7 @@ map_init();//地圖初始化
 </template>
 <style scoped>
 #map {
-    height: 250px;
-    width: 250px;
+    height: 300px;
+    width: 500px;
 }
 </style>

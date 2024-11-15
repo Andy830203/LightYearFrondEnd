@@ -1,8 +1,6 @@
 <script setup>
 import { ref, computed, onMounted} from 'vue';
 import { useMemberStore } from '@/stores/Member';
-
-
 const IMG_URL = import.meta.env.VITE_API_IMGURL
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
@@ -149,6 +147,26 @@ const removeItem = async (itemId) => {
   }
 };
 
+const removeAllItem = async (userId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/CartItems/userID/${userId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors'
+    });
+
+    if (response.ok) {
+      // 刪除成功後，將 cartItems 清空
+      cartItems.value = [];
+      console.log("All items deleted successfully for the user");
+    } else {
+      console.error("Failed to delete items for the user");
+    }
+  } catch (error) {
+    console.error("Error deleting items:", error);
+  }
+}
+
 const base_param = ref({
   MerchantID: "3002607",
   MerchantTradeNo: '',
@@ -164,7 +182,6 @@ const base_param = ref({
   CheckMacValue: ''  // Will be generated on the backend and assigned here
 });
 const sendCheck = {
-
 }
 const proceedToCheckout = async function() {
   // Handle checkout logic (e.g., navigate to checkout page)
@@ -197,9 +214,20 @@ const proceedToCheckout = async function() {
     ItemName: result.ItemName,
     CheckMacValue: result.CheckMacValue
   };
-      console.log(base_param.value);
-       // 從後端生成的 CheckMacValue
-      console.log(document.getElementById("paymentForm"));
+      for (const item of cartItems.value) {
+          const response = await fetch(`${BASE_URL}/Products/SubtractStock`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                      pId: item.pId,
+                      quantity: item.quantity
+                    }),
+              mode: 'cors'
+          });
+          if (response.status !== 200) {
+            throw new Error(`Failed to update stock for product ID: ${item.pId}`);
+          }
+        }
       // 延遲提交表單
       setTimeout(() => {
         document.getElementById("paymentForm").submit();
@@ -210,6 +238,7 @@ const proceedToCheckout = async function() {
   } catch (error) {
     console.error("Error proceeding to checkout:", error);
   }
+  removeAllItem(memberId);
 }
 </script>
 
