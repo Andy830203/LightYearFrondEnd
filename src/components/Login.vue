@@ -1,14 +1,14 @@
 
 複製程式碼
 <template>
-  <div id="auth-container">
+  <div id="auth-container" v-if="!isLoggedIn">
     <div class="main">
       <!-- 隱藏的 checkbox，作為切換註冊和登入表單的觸發器 -->
       <input type="checkbox" id="chk" aria-hidden="true" />
       <input type="checkbox" id="forgot-pwd" aria-hidden="true" />
       <!-- 註冊表單 -->
        <GoogleLogin v-show="googlebug" :callback="handleGoogleLogin" class="mt-1" />
-      <div class="signup" v-if="!isLoggedIn">
+      <div class="signup" >
         <form @submit.prevent="register">
           <label>註冊</label>
           <input type="text" v-model="registerUsername" placeholder="用戶姓名" required />
@@ -52,10 +52,10 @@
       </div>
 
       <!-- 已登入狀態顯示登出按鈕 -->
-      <div v-else>
+      <!-- <div v-else>
         <p>已登入，歡迎使用！</p>
         <button @click="logout">登出</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
