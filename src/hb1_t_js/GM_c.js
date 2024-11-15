@@ -438,7 +438,7 @@ export function backtotop() {
             console.log("無此事件可清除")
           }
           // 新增點擊事件，並將監聽器存入變數 clickListener
-          const clickListener = marker_t2.addListener("click", function () {
+          const clickListener = marker_t.addListener("click", function () {
             console.log("ok");
           });
         }
