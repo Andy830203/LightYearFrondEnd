@@ -26,24 +26,28 @@ export default function useDataTable() {
             scrollX: true
         });
         // 綁定行點擊事件
-        // $('#dynamicTable tbody').on('click', 'tr', function () {
-        //     handleRowClick(this); // 調用 handleRowClick 函數
-        // });
+        $('#dynamicTable_z12 tbody').on('click', 'tr', function () {
+            handleRowClick(this); // 調用 handleRowClick 函數
+        });
     };
     // 行點擊處理函數
-    // const handleRowClick = (rowElement) => {
-    //     const rowData = table.value.row(rowElement).data();
-    //     console.log(rowData.position)
-    //     fetch(map_loc_url + "/Locations")
-    //         .then(res => { return res.json(); })
-    //         .then(c => {
-    //             c.forEach(s_c => {
-    //                 if (rowData.position === s_c.address) {
-    //                     dt_set_mp(s_c.longitude,s_c.latitude);
-    //                 }
-    //             })
-    //         })
-    // };
+    const handleRowClick = (rowElement) => {
+        const rowData = table.value.row(rowElement).data();
+        fetch(`src/hb1_t_js/map_jsonfile/台灣區域邊界/${feature_cityname_forsidebar.value}.geojson`)
+            .then(res => { return res.json(); })
+            .then(c_f => {
+                // 根據 TOWNNAME 來篩選出符合的 feature
+                const targetFeature = c_f.features.find(feature => feature.properties.TOWNNAME === rowData.town);
+
+                if (targetFeature) {
+                    const centerCoordinates = targetFeature.properties.CENTER.coordinates;
+                    // 若有需要將 centerCoordinates 傳給 dt_set_mp
+                    dt_set_mp(centerCoordinates[1], centerCoordinates[0]); //假設 dt_set_mp(lat, lng)
+                } else {
+                    console.error(`找不到 TOWNNAME 為 ${rowData.town} 的 feature`);
+                }
+            })
+    };
     //datatable資料寫入
     const fetchData = async () => {
         try {

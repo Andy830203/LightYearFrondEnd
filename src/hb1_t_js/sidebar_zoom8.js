@@ -26,24 +26,20 @@ export default function useDataTable() {
             scrollX: true
         });
         // 綁定行點擊事件
-        // $('#dynamicTable tbody').on('click', 'tr', function () {
-        //     handleRowClick(this); // 調用 handleRowClick 函數
-        // });
+        $('#dynamicTable_z8 tbody').on('click', 'tr', function () {
+            handleRowClick(this); // 調用 handleRowClick 函數
+        });
     };
-    // // 行點擊處理函數
-    // const handleRowClick = (rowElement) => {
-    //     const rowData = table.value.row(rowElement).data();
-    //     console.log(rowData.position)
-    //     fetch(map_loc_url + "/Locations")
-    //         .then(res => { return res.json(); })
-    //         .then(c => {
-    //             c.forEach(s_c => {
-    //                 if (rowData.position === s_c.address) {
-    //                     dt_set_mp(s_c.longitude,s_c.latitude);
-    //                 }
-    //             })
-    //         })
-    // };
+    // 行點擊處理函數
+    const handleRowClick = (rowElement) => {
+        const rowData = table.value.row(rowElement).data();
+        console.log(rowData.county)
+        fetch('src/hb1_t_js/map_jsonfile/台灣縣市中心/contrycenter.json')
+            .then(res => { return res.json(); })
+            .then(c_f => {
+                dt_set_mp(parseFloat(c_f[rowData.county][0]["lat"]),parseFloat(c_f[rowData.county][0]["lng"]))
+            })
+    };
     const fetchData = async () => {
         try {
             const countyFilePath = `src/hb1_t_js/map_jsonfile/台灣縣市中心/contrycenter.json`;
