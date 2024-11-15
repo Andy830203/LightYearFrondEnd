@@ -1,9 +1,8 @@
 
 // import $ from 'jquery';
 import { ref, onMounted, nextTick } from 'vue';
-import { feature_cityname, feature_townname } from '@/hb1_t_js/GM_c.js';
+import { dt_set_mp_forsd, feature_cityname, feature_townname } from '@/hb1_t_js/GM_c.js';
 const map_loc_url = import.meta.env.VITE_API_BASEURL;
-const data = [];
 export default function useDataTable() {
     const table = ref(null);
 
@@ -22,10 +21,32 @@ export default function useDataTable() {
             pageLength: 4,
             language: {
                 lengthMenu: "前往 _MENU_",
-                info: ""
+                info: "",
+                paginate: {
+                    previous: "上一頁", // 自定義「上一頁」的文字
+                    next: "下一頁" // 自定義「下一頁」的文字
+                }
             },
             scrollX: true
         });
+        // 綁定行點擊事件
+        $('#dynamicTable tbody').on('click', 'tr', function () {
+            handleRowClick(this); // 調用 handleRowClick 函數
+        });
+    };
+    // 行點擊處理函數
+    const handleRowClick = (rowElement) => {
+        const rowData = table.value.row(rowElement).data();
+        console.log(rowData.position)
+        fetch(map_loc_url + "/Locations")
+            .then(res => { return res.json(); })
+            .then(c => {
+                c.forEach(s_c => {
+                    if (rowData.position === s_c.address) {
+                        dt_set_mp_forsd(s_c.longitude,s_c.latitude);
+                    }
+                })
+            })
     };
     const fetchData = async () => {
         try {
@@ -39,17 +60,13 @@ export default function useDataTable() {
                 const locationRes = await fetch(map_loc_url + "/Locations" + `/${event.lId}`);
                 const location = await locationRes.json();
                 const fullAddress = feature_cityname.value + feature_townname.value;
-                    //console.log(event.belongedEvent);
-                    if (location.address.startsWith(fullAddress)) {
-                        data.push({
-                            "name": event.belongedEvent,
-                            "position": location.address
-                        });
-                    }
+                if (location.address.startsWith(fullAddress)) {
+                    data.push({
+                        "name": event.belongedEvent,
+                        "position": location.address
+                    });
+                }
             });
-            // events.forEach(event => {
-            //     console.log(event.belongedEvent);
-            // });
             // 等待所有的 fetch 完成後再執行
             await Promise.all(fetchPromises);
             // 傳入已完成的 data 陣列

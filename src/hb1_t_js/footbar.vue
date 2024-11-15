@@ -4,7 +4,7 @@
 <template>
     <div class="bottom-bar">
         <div class="item">
-            <img src="@/hb1_t_js/map_even_icon/公益活動.png" alt="公益活動">
+            <img src="@/hb1_t_js/map_even_icon/公益.png" alt="公益活動">
             <p>公益活動</p>
         </div>
         <div class="item">
