@@ -1,10 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import CarouselComponent from './CarouselComponent.vue';
-
 //props
 const props = defineProps(['Id', 'API'])
-
 const BASE_URL = import.meta.env.VITE_API_BASEURL
 const SignUp_URL = BASE_URL + '/SignUps/event'
 const eData = ref('')

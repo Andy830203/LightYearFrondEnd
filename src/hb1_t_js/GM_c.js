@@ -9,6 +9,18 @@ export const sideb_16 = ref(false);//footer是否顯示
 export const feature_cityname = ref(''); // 匯出 feature_cityname
 export const feature_cityname_forsidebar = ref(''); //給sidebar用的
 export const feature_townname = ref(''); // 匯出 feature_townname
+export const m_for_e_bool = ref(true); // 匯出 feature_townname
+export const m_for_e_id = ref(''); // 匯出 feature_townname
+export const m_for_e_loc = ref(''); // 匯出 feature_townname
+
+
+//報名視窗狀態
+export const isModalVisible = ref(false);
+//開啟報名視窗
+const openModal = () => {
+  isModalVisible.value = true;
+};
+
 //地圖所需元件St(靜態)
 //Json路徑(靜態)
 const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_City', 'Hsinchu_County', 'Hualien_County', 'Kaohsiung', 'Keelung_City', 'Miaoli_County', 'nantou_county', 'New_Taipei_City', 'Pingtung_County', 'Taichung_City', 'tainan', 'Taipei_City', 'Taitung_County', 'Taoyuan_County', 'Yilan_County', 'Yunlin_County'];//可以依據檔案數量進行修改
@@ -224,7 +236,24 @@ export function map_init() {
               }
               // 新增點擊事件，並將監聽器存入變數 clickListener
               const clickListener = marker_t2.addListener("click", function () {
-                console.log("ok");
+                const member = localStorage.getItem('member'); // 取得儲存的值
+                if (member) {
+                  try {
+                    const memberData = JSON.parse(member); // 嘗試解析為 JSON
+                    if (memberData && memberData.id) { // 確保 id 存在
+                      openModal();
+                      m_for_e_bool.value = true;
+                      m_for_e_id.value = c_e_f.eId;
+                      m_for_e_loc.value = locData.address;
+                    } else {
+                      console.log("未登入");
+                    }
+                  } catch (error) {
+                    console.error('JSON 解析失敗:', error);
+                  }
+                } else {
+                  console.log('member 不存在於 localStorage');
+                }
               });
             }
           }
@@ -440,6 +469,7 @@ export function backtotop() {
           // 新增點擊事件，並將監聽器存入變數 clickListener
           const clickListener = marker_t.addListener("click", function () {
             console.log("ok");
+            openModal();//開啟報名視窗
           });
         }
       }
