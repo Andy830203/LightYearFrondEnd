@@ -144,7 +144,7 @@ onMounted(fetchProductDetails);
                         <div class="col-lg-6" v-if="productDetails">
                             <h4 class="fw-bold mb-3">{{ productDetails.name }}</h4>
                             <p class="text-muted mb-3">分類: {{ productDetails.categoryName }}</p>
-                            <h5 class="text-primary fw-bold mb-3">價格: {{ productDetails.price || "未標示" }}</h5>
+                            <h5 class="text-primary fw-bold mb-3">價格: {{ `NT$ ${productDetails.price}` || "未標示" }}</h5>
                             <p class="text-secondary mb-4">賣家: {{ productDetails.sellerName}}</p>
                             <p class="mb-4">商品描述: {{ productDetails.description || "無"}}</p>
                             <p class="text-secondary mb-4">庫存量: {{ productDetails.instock || "不詳"}}</p>
