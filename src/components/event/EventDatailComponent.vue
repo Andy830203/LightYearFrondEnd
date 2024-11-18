@@ -6,7 +6,7 @@ const props = defineProps(['Id', 'API'])
 const BASE_URL = import.meta.env.VITE_API_BASEURL
 const SignUp_URL = BASE_URL + '/SignUps/event'
 const eData = ref('')
-const signNumber = ref('')
+const signNumber = ref('0')
 
 const loadData = async () => {
     const response = await fetch(`${props.API}/${props.Id}`, {
@@ -37,7 +37,7 @@ loadSignedNumber()
         <!-- <CarouselComponent /> -->
         <div>
             <label for="">報名費用</label> {{ eData.fee }}
-            <label for="">剩餘人數</label> {{ eData.capacity }}
+            <label for="">剩餘人數</label> {{ signNumber }} /{{ eData.capacity }}
             <label for="">地點</label>
         </div>
     </div>

@@ -131,6 +131,7 @@ const loadLocations = async () => {
 }
 
 const onSubmit = async () => {
+    let newId;
     try {
         if (periods.value.length === 0 && isSubmitClick.value) {
             alert('請輸入時段')
@@ -158,7 +159,7 @@ const onSubmit = async () => {
             let allOk = true
             //時段
             const rtObj = await response.json()
-            const newId = rtObj.id
+            newId = rtObj.id
 
             if (periods.value.length > 0) {
                 periods.value.forEach(async (p, index) => {
@@ -174,8 +175,6 @@ const onSubmit = async () => {
                     allOk = allOk && respPeriods.ok
                 })
             }
-
-
 
             //地點
             eventLocs.value.forEach(async locs => {
@@ -194,6 +193,12 @@ const onSubmit = async () => {
                 allOk = allOk && respELocs.ok
             })
 
+            if (newId !== null && newId > 0) {
+                updateImage(newId)
+            } else {
+                throw new Error('缺少 Event Id');
+            }
+
             //復位
             if (allOk) {
                 periods.value = []
@@ -203,7 +208,6 @@ const onSubmit = async () => {
         }
 
         isSubmitClick.value = false
-
         console.log(response.status)
     } catch (error) {
         alert(`OnSubmit 發生錯誤: ${error.name} -> ${error.message}, cause: ${error.cause}`)
@@ -272,6 +276,49 @@ const appendTargetList = (list) => {
     console.log(eventLocs.value)
 }
 
+//圖片存檔
+const updatePicture = ref(null); // 儲存選取的圖片檔案
+
+
+const loadImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        updatePicture.value = file; // 儲存選取的圖片檔案
+        // imagePreview.value = URL.createObjectURL(file); // 更新圖片預覽
+        // console.log(profilePicture.value)
+    }
+}
+
+const updateImage = async (eid) => {
+    let imgName = ''
+
+    // 如果選擇了新圖片，先上傳圖片
+    if (updatePicture.value) {
+        const imageData = new FormData();
+        imageData.append("updatePic", updatePicture.value);
+        imageData.append("EId", eid)
+        imageData.append("ImgName", updatePicture.value.name)
+        // console.log(`uIMG${imageData}`)
+
+        try {
+            const imageResponse = await fetch(`${BASE_URL}/EventImgs`, {
+                method: 'POST',
+                body: imageData,
+                mode: 'cors',
+            });
+
+            if (!imageResponse.ok) throw new Error('圖片上傳失敗');
+
+            const imageResult = await imageResponse.json();
+            imgName = imageResult.fileName; // 保存圖片名稱
+        } catch (error) {
+            console.error('圖片上傳錯誤', error);
+            alert('圖片上傳失敗');
+            return; // 如果圖片上傳失敗，停止後續操作
+        }
+    }
+}
+
 loadCategories()
 loadLocations()
 </script>
@@ -298,7 +345,7 @@ loadLocations()
                                 <label for="eveFee" class="col-form-label">報名費</label>
                             </div>
                             <div class="col-6">
-                                <input type="number" class="form-control" id="eveFee" v-model="eventsData.fee">
+                                <input type="number" class="form-control" id="eveFee" v-model="eventsData.fee" min="0">
                             </div>
                             <div class="col-3"></div>
                             <!-- 活動類別 -->
@@ -359,7 +406,7 @@ loadLocations()
                                 實作輪播
                                 <CarouselComponent></CarouselComponent>
                             </div> -->
-                            <input type="file" name="Photo" id="evePhoto" class="form-control">
+                            <input type="file" name="Photo" id="evePhoto" class="form-control" @change="loadImage">
 
                             <!-- 活動時間 -->
                             <EventPeriods v-model="periods" />

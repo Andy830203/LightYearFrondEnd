@@ -109,7 +109,7 @@ const fetchOrderItems = async (orderId) => {
           <tr>
             <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 40%;">商品名稱</th>
             <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 20%;">數量</th>
-            <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 20%;">單價</th>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 20%;">單價(NT$)</th>
             <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 20%;">賣家名稱</th>
           </tr>
         </thead>

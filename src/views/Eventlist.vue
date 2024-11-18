@@ -25,7 +25,6 @@
     <table class="event-table">
       <thead>
         <tr>
-          <th>活動圖片</th>
           <th>活動名稱</th>
           <th>發起人</th>
           <th>報名費</th>
@@ -35,7 +34,6 @@
       </thead>
       <tbody>
         <tr v-for="event in filteredEvents" :key="event.id" class="event-row">
-          <td><img :src="event.image" alt="活動圖片" class="event-image"></td>
           <td>{{ event.name }}</td>
           <td>{{ event.organizer }}</td>
           <td>{{ event.fee }} 元</td>
@@ -179,8 +177,8 @@ export default {
       this.showModal = false;
       this.selectedEventId = null;
     },
-    registerEvent(event) {
-      Swal.fire('已報名', `您已成功報名活動「${event.name}」`, 'success');
+    registerEvent(eventId) {
+      this.$router.push({ name: 'eventSignUpWithId', params: { id: eventId } });
     },
     async toggleFavorite(event) {
       if (event.isFavorite) {
