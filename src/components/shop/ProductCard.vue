@@ -34,7 +34,7 @@ const imgurlProcess = function(urlFromDB) {
                 <h4>{{ productName }}</h4>
                 <p>{{ productDescription !== null ? desciption50(productDescription) : "無商品描述" }}</p>
                 <div class="product-footer">
-                    <p class="product-price">{{ productPrice !== null ? productPrice : "未標示價格" }}</p>
+                    <p class="product-price">{{ productPrice !== null ? `NT$ ${productPrice}` : "未標示價格" }}</p>
                     <router-link :to="{ name: 'itemDetails', params: { id: productId }}" class="btn-view-details">
                         <i class="fa fa-shopping-bag me-2"></i>查看詳細
                     </router-link>
