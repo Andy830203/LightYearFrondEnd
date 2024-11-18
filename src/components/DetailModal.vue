@@ -8,7 +8,7 @@
         <p><strong>報名費:</strong> {{ event.fee }} 元</p>
         
         <!-- 時段下拉選單 -->
-        <div>
+        <!-- <div>
           <strong>選擇時段:</strong>
           <select v-model="selectedPeriod" class="time-slot-dropdown">
             <option 
@@ -18,7 +18,7 @@
               {{ period.description }} ({{ formatDate(period.startTime) }} - {{ formatDate(period.endTime) }})
             </option>
           </select>
-        </div>
+        </div> -->
 
         <div><strong>地點:</strong>
           <ul>
@@ -31,13 +31,13 @@
 
         <p><strong>最大人數:</strong> {{ event.capacity || '無限制' }}</p>
         <p><strong>活動類別:</strong> {{ event.category }}</p>
-        <div class="modal-images">
+        <!-- <div class="modal-images">
           <h3>活動圖片</h3>
           <div v-for="(img, index) in event.images" :key="index" class="modal-image">
             <img :src="img" alt="活動圖片">
           </div>
-        </div>
-        <button @click="registerEvent" class="register-button" :disabled="!selectedPeriod">報名</button>
+        </div> -->
+        <button @click="registerEvent" class="register-button">前往報名頁面</button>
       </div>
     </div>
   </div>
@@ -125,7 +125,8 @@ function closeModal() {
 
 // Emit register event
 function registerEvent() {
-  emit('register', event.value);
+  emit('close');
+  emit('register', props.eventId);
 }
 </script>
 <style scoped>
