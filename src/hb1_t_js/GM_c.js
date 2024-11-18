@@ -415,22 +415,17 @@ export function backtotop() {
       google.maps.event.removeListener(mouseListener_over);
       google.maps.event.removeListener(mouseListener_out);
       google.maps.event.removeListener(mouseListener_click);
-      // map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
-      //   // 獲取點擊位置的經緯度
-      //   const { latLng } = event;
-      //   const latitude = latLng.lat();
-      //   const longitude = latLng.lng();
-
-      //   // 在點擊位置創建一個新 marker
-      //   new google.maps.Marker({
-      //     position: latLng,
-      //     map: map
-      //   });
-
-      //   // 輸出經緯度到 console
-      //   console.log('Latitude:', latitude);
-      //   console.log('Longitude:', longitude);
-      // });
+      map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
+        // 獲取點擊位置的經緯度
+        const { latLng } = event;
+        const latitude = latLng.lat();
+        const longitude = latLng.lng();
+        async function fetchAddress(longitude, latitude) {
+          const address = await getAddress(longitude, latitude); // 等待 Promise 完成
+          GM_insert_loc(address, longitude.toFixed(6), latitude.toFixed(6), address)
+        }
+        fetchAddress(longitude, latitude)
+      });
       fetchData_m(feature_filter);//取得經緯度並建立標籤
     }
     else if (map_zoom_v > 12) {//檢視活動模式
@@ -545,7 +540,8 @@ export function dt_set_mp_forsd(lt, lg) {
   });
   markers.push(marker);
 }
-async function GM_insert_loc(name, longitude, latitude, address) {
+//這裡經緯度是反的
+async function GM_insert_loc(name, latitude, longitude, address) {
   // 彈出確認對話框，直接寫在主程式邏輯內
   const confirmation = await Swal.fire({
     title: '確定要新增地點嗎？',
@@ -599,7 +595,7 @@ async function GM_insert_loc(name, longitude, latitude, address) {
 
       // 如果用戶確認跳轉，使用 router 進行跳轉
       if (jumpConfirmation.isConfirmed) {
-        router.push({ name: 'eventStart'});
+        router.push({ name: 'eventStart' });
       }
     }
     else {
