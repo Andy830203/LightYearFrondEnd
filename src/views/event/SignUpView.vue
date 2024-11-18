@@ -6,13 +6,16 @@ import EventDatailComponent from '@/components/event/EventDatailComponent.vue';
 import InputFieldComponent from '@/components/event/InputFieldComponent.vue';
 import { onMounted, ref } from 'vue';
 import Swal from 'sweetalert2';
+import OneImageComponent from '@/components/event/OneImageComponent.vue';
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL
+const IMG_URL = import.meta.env.VITE_API_IMGURL
 const EVENT_URL = BASE_URL + '/Events' //operation with event
 const ELOCS_URL = EVENT_URL + '/Locations'
 const CHOSEN_PERIOD_URL = BASE_URL + '/EventPeriods'
 const MEMBERINFO_URL = BASE_URL + '/Members/GetMemberInFo'
 
+// const EIMG_URL = `${BASE_URL}/EventImgs`
 const SignUp_URL = BASE_URL + '/SignUps'
 
 //props
@@ -20,17 +23,17 @@ const props = defineProps({
     id: String
 })
 
-let eData = {
-    'id': 0,
-    'eventName': 'title',
-    'fee': '300',
-    'eventPeriods': [
-        { 'name': '第一梯次', 'time': '20240801-00:00:00' },
-        { 'name': '第二梯次', 'time': '20240802-00:00:00' },
-        { 'name': '第三梯次', 'time': '20240803-00:00:00' },
-    ],
-    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id dapibus elit. Morbi quis felis quis neque sagittis luctus vel nec lacus. Suspendisse quis ipsum gravida, ultricies ante vitae, dictum sem. Integer laoreet felis et sollicitudin congue. Nunc et lectus venenatis, mollis massa a, imperdiet ipsum. Curabitur sit amet sem a velit accumsan vehicula. In sed tempus arcu. Cras finibus ac nunc at dapibus. Sed ex augue, condimentum sed finibus eget, fermentum nec tellus.'
-};
+// let eData = {
+//     'id': 0,
+//     'eventName': 'title',
+//     'fee': '300',
+//     'eventPeriods': [
+//         { 'name': '第一梯次', 'time': '20240801-00:00:00' },
+//         { 'name': '第二梯次', 'time': '20240802-00:00:00' },
+//         { 'name': '第三梯次', 'time': '20240803-00:00:00' },
+//     ],
+//     'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id dapibus elit. Morbi quis felis quis neque sagittis luctus vel nec lacus. Suspendisse quis ipsum gravida, ultricies ante vitae, dictum sem. Integer laoreet felis et sollicitudin congue. Nunc et lectus venenatis, mollis massa a, imperdiet ipsum. Curabitur sit amet sem a velit accumsan vehicula. In sed tempus arcu. Cras finibus ac nunc at dapibus. Sed ex augue, condimentum sed finibus eget, fermentum nec tellus.'
+// };
 
 const member = JSON.parse(localStorage.getItem('member'))
 
@@ -46,6 +49,7 @@ const memberInfo = ref({})
 
 const showModal = ref(false);
 // const selectedEvent = ref(null);
+const imageUrl = ref('')
 
 const getEvent = async () => {
     const response = await fetch(`${EVENT_URL}/${props.id}`, {
@@ -73,6 +77,21 @@ const getChosenPeriod = async () => {
 
     const json = await response.json()
     choosePeriod.value = json
+}
+
+const getFirstEventImg = async (eid) => {
+    const response = await fetch(`${BASE_URL}/EventImgs/First/${eid}`)
+
+    if (response.ok) {
+        const path = await response.json();
+        const url = `${IMG_URL}/${path.fileName}`
+
+        console.log(url)
+        imageUrl.value = url
+    } else {
+        imageUrl.value = 'NotFound'
+    }
+
 }
 
 const getMemberInfo = async () => {
@@ -127,7 +146,25 @@ async function registerEvent(event) {
     }
 }
 
+//調整時區
+const getStrPlus8TimeZone = (isoString) => {
+    // const isoString = "2023-11-15T08:00:00Z"; // 示例 ISO 8601 字串
+    const date = new Date(isoString);
 
+    // 將時間轉換為東八區時間
+    const utcOffset = 8 * 60 * 60 * 1000; // 東八區的偏移量為 8 小時（以毫秒計）
+    const localDate = new Date(date.getTime() + utcOffset);
+
+    // 格式化成 YYYY-MM-DD HH:mm
+    const year = localDate.getFullYear();
+    const month = String(localDate.getMonth() + 1).padStart(2, '0'); // 月份從 0 開始，需要 +1
+    const day = String(localDate.getDate()).padStart(2, '0');
+    const hours = String(localDate.getHours()).padStart(2, '0');
+    const minutes = String(localDate.getMinutes()).padStart(2, '0');
+
+    const formattedString = `${year}-${month}-${day} ${hours}:${minutes}`;
+    return formattedString
+}
 
 onMounted(async () => {
     try {
@@ -139,6 +176,8 @@ onMounted(async () => {
         }
         getEventLocs()
         getChosenPeriod()
+        getFirstEventImg(props.id)
+        // getFirstEventImg(props.id)
         // alert('請選擇時段')
     } catch (error) {
         console.error('Failed to load event data:', error);
@@ -147,10 +186,10 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="mt-3 container">
+    <div class="mt-5 container">
         <form @submit.prevent="onSubmit">
-            <div class="d-flex" v-if="eventData">
-                <div class="w-50">
+            <div class="row" v-if="eventData">
+                <div class="col-6">
                     <h2>{{ member.name }}</h2>
                     <div class="row">
                         <div class="col-4 d-flex align-items-center">
@@ -161,16 +200,15 @@ onMounted(async () => {
                                 v-model="choosePeriodId" @change="getChosenPeriod">
                                 <!-- get EP DATA -->
                                 <option v-for="period in eventData.periods" :value="period.id">
-                                    {{ period.description }} ({{ period.startTime }} ~ {{ period.endTime }})
+                                    {{ period.description }} ({{ getStrPlus8TimeZone(period.startTime) }} ~ {{
+                                        getStrPlus8TimeZone(period.endTime) }})
                                 </option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="w-50">
-                    <div class="d-flex justify-content-center">
-                        <img src="/images/non-found.jpg" alt="">
-                    </div>
+                <div class="col-6">
+                    <OneImageComponent :Url="imageUrl" />
                 </div>
             </div>
 
