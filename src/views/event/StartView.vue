@@ -345,7 +345,7 @@ loadLocations()
                                 <label for="eveFee" class="col-form-label">報名費</label>
                             </div>
                             <div class="col-6">
-                                <input type="number" class="form-control" id="eveFee" v-model="eventsData.fee">
+                                <input type="number" class="form-control" id="eveFee" v-model="eventsData.fee" min="0">
                             </div>
                             <div class="col-3"></div>
                             <!-- 活動類別 -->
