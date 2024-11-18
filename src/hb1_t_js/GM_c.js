@@ -3,6 +3,7 @@ import { zoom8_mapstyle, zoom12_mapstyle, zoom16_mapstyle } from '@/hb1_t_js/map
 import { triggerCloudAnimation } from '@/hb1_t_js/map_load_c.js'
 import { getAddress } from '@/hb1_t_js/mp_getadress.js'
 import Swal from 'sweetalert2';
+import router from '@/router';
 export const ft_dis_state = ref(false);//footer是否顯示
 export const sideb_8 = ref(false);//footer是否顯示
 export const sideb_12 = ref(false);//footer是否顯示
@@ -13,14 +14,12 @@ export const feature_townname = ref(''); // 匯出 feature_townname
 export const m_for_e_bool = ref(true); // 匯出 feature_townname
 export const m_for_e_id = ref(''); // 匯出 feature_townname
 export const m_for_e_loc = ref(''); // 匯出 feature_townname
-
 //報名視窗狀態
 export const isModalVisible = ref(false);
 //開啟報名視窗
 const openModal = () => {
   isModalVisible.value = true;
 };
-
 //地圖所需元件St(靜態)
 //Json路徑(靜態)
 const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_City', 'Hsinchu_County', 'Hualien_County', 'Kaohsiung', 'Keelung_City', 'Miaoli_County', 'nantou_county', 'New_Taipei_City', 'Pingtung_County', 'Taichung_City', 'tainan', 'Taipei_City', 'Taitung_County', 'Taoyuan_County', 'Yilan_County', 'Yunlin_County'];//可以依據檔案數量進行修改
@@ -241,10 +240,22 @@ export function map_init() {
                   try {
                     const memberData = JSON.parse(member); // 嘗試解析為 JSON
                     if (memberData && memberData.id) { // 確保 id 存在
-                      openModal();
-                      m_for_e_bool.value = true;
-                      m_for_e_id.value = c_e_f.eId;
-                      m_for_e_loc.value = locData.address;
+                      Swal.fire({
+                        icon: 'question', // 問號圖示
+                        title: '確認報名', // 標題
+                        text: '您確定要報名此活動嗎？', // 說明文字
+                        showCancelButton: true, // 顯示取消按鈕
+                        confirmButtonText: '確定', // 確認按鈕文字
+                        cancelButtonText: '取消', // 取消按鈕文字
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          // 使用者點擊 "確定"
+                          router.push({ name: 'eventSignUpWithId', params: { id: c_e_f.eId } });
+                        } else {
+                          // 使用者點擊 "取消" 或關閉對話框
+                          console.log('已取消報名');
+                        }
+                      });
                     } else {
                       console.log("未登入");
                       Swal.fire({
@@ -474,8 +485,42 @@ export function backtotop() {
           }
           // 新增點擊事件，並將監聽器存入變數 clickListener
           const clickListener = marker_t.addListener("click", function () {
-            // 使用 SweetAlert 顯示成功提示
-            openModal();//開啟報名視窗
+            const member = localStorage.getItem('member'); // 取得儲存的值
+            if (member) {
+              try {
+                const memberData = JSON.parse(member); // 嘗試解析為 JSON
+                if (memberData && memberData.id) { // 確保 id 存在
+                  Swal.fire({
+                    icon: 'question', // 問號圖示
+                    title: '確認報名', // 標題
+                    text: '您確定要報名此活動嗎？', // 說明文字
+                    showCancelButton: true, // 顯示取消按鈕
+                    confirmButtonText: '確定', // 確認按鈕文字
+                    cancelButtonText: '取消', // 取消按鈕文字
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // 使用者點擊 "確定"
+                      router.push({ name: 'eventSignUpWithId', params: { id: c_e_f.eId } });
+                    } else {
+                      // 使用者點擊 "取消" 或關閉對話框
+                      console.log('已取消報名');
+                    }
+                  });
+                } else {
+                  console.log("未登入");
+                  Swal.fire({
+                    icon: 'error', // 顯示錯誤圖示
+                    title: '您尚未登入', // 標題
+                    text: '請點擊右上角登入', // 說明文字
+                    cancelButtonText: '好的', // 取消按鈕文字
+                  });
+                }
+              } catch (error) {
+                console.error('JSON 解析失敗:', error);
+              }
+            } else {
+              console.log('member 不存在於 localStorage');
+            }
           });
         }
       }
