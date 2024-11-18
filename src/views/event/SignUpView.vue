@@ -120,29 +120,51 @@ function closeModal() {
     // eventData.value = null;
 }
 
-async function registerEvent(event) {
-    // post signUp
-    let postObj = {
-        "epId": 0,
-        "applicant": 0
-    }
-
-    postObj.epId = choosePeriodId.value
-    postObj.applicant = memberInfo.value.id
-
-    const response = await fetch(SignUp_URL, {
-        method: 'POST',
-        body: JSON.stringify(postObj),
-        headers: { "Content-Type": "application/json" }
-    })
-
+const checkRepeated = async (epid, applicant) => {
+    const response = await fetch(`${SignUp_URL}/isRepeat/${epid}/${applicant}`)
     if (response.ok) {
-        Swal.fire('已報名', `您已成功報名活動「${event.name}」`, 'success')
-            .then(result => {
-                if (result.isConfirmed) {
-                    closeModal()
-                }
+        const result = await response.text()
+        console.log(result)
+
+        return result
+    } else {
+        throw new Error(' checkRepeated fetch error ')
+    }
+}
+
+async function registerEvent(event) {
+    try {
+        // post signUp
+        let postObj = {
+            "epId": 0,
+            "applicant": 0
+        }
+
+        postObj.epId = choosePeriodId.value
+        postObj.applicant = memberInfo.value.id
+
+        let isRepeated = checkRepeated(postObj.epId, postObj.applicant)
+
+        if (await isRepeated === 'NotExist') {
+            const response = await fetch(SignUp_URL, {
+                method: 'POST',
+                body: JSON.stringify(postObj),
+                headers: { "Content-Type": "application/json" }
             })
+
+            if (response.ok) {
+                Swal.fire('已報名', `您已成功報名活動「${event.name}」`, 'success')
+                    .then(result => {
+                        if (result.isConfirmed) {
+                            closeModal()
+                        }
+                    })
+            }
+        } else {
+            alert('已經存在，不報名')
+        }
+    } catch (error) {
+        alert(error.message)
     }
 }
 
