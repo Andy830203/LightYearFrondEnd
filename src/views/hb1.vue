@@ -5,6 +5,8 @@ import ft_gm from  '@/hb1_t_js/footbar.vue';//icon專用footer
 import { FT_set } from '@/hb1_t_js/FT_c.js';//@/hb1_t_js/FT_c.js，APP.vue footer專用js
 import sidebar_gm from '@/hb1_t_js/sidebar.vue'//sidebar組件
 import '@/hb1_t_js/mp_load_styles.css';//loading動畫
+import  sed  from '@/hb1_t_js/event_detail.vue'//事件細節視窗
+import signup_view from "@/hb1_t_js/sighup_sidebar.vue"
 //sidebar
 map_init();//地圖初始化
 FT_set()//設置footer是否顯示
@@ -18,6 +20,8 @@ function toggleDrawer() {
 <template>
   <div id="map"></div>
   <sidebar_gm></sidebar_gm>
+  <!-- <sed></sed> -->
+  <signup_view></signup_view>
   <div class="cloud-overlay" id="cloudOverlay">
     <div class="cloud-container">
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:0%;left: 55%;">
