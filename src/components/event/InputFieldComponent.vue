@@ -13,10 +13,9 @@ const model = defineModel()
 <template>
     <div>
         <label :for="Id" class="mb-2 form-label">{{ Label }}</label>
-        <input :type="Type" :id="Id" class="form-control" :name="Id" v-model="model">
+        <input :type="Type" :id="Id" class="form-control" :name="Id" v-model="model"
+            :min="Type === 'number' ? 0 : undefined">
     </div>
 </template>
 
-<style lang="css" scoped>
-
-</style>
+<style lang="css" scoped></style>
