@@ -46,7 +46,7 @@ const fetchFavorites = async () => {
 const toggleevenjoin = async (favorite) => {
     const confirmResult = await Swal.fire({
       title: '確認取消報名?',
-      text: `確定要取消報名活動「${favorite .name}」嗎？`,
+      text: `確定要取消報名活動「${favorite.name}」嗎？`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -62,14 +62,19 @@ const toggleevenjoin = async (favorite) => {
 };
 // /api/SignUps/DeleteByApplicantAndPeriod?applicantId={applicantId}&periodId={periodId}
 const removeFavorite = async (favorite) => {
-  const API_URL = `${BASE_URL}/SignUps/DeleteByApplicantAndPeriod/?applicantId=${favorite.id}&periodId=${favorite.eventPeriodId}`;
+  const memberData = JSON.parse(localStorage.getItem('member'));
+  const userID = memberData ? memberData.id : null;
+  const eventID = favorite.periodid;
+  console.log(eventID);
+  const API_URL = `${BASE_URL}/SignUps/DeleteByApplicantAndPeriod/?applicantId=${userID}&periodId=${eventID}`;
   try {
     const response = await fetch(API_URL, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     });
     if (response.ok) {
-      evenjoin.value = evenjoin.value.filter(f => f.isFavorite); // 更新列表
+      fetchFavorites();
+      // evenjoin.value = evenjoin.value.filter(f => f == f); // 更新列表
       hasFavorites.value = evenjoin.value.length > 0;
     } else {
       console.error("無法取消報名活動");

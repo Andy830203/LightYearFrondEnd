@@ -131,12 +131,12 @@ const cartUrl = computed(() => {
                             <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'eventStart' }">發起活動</RouterLink>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'eventSignUp' }">報名活動</RouterLink>
                             </li>
                             <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'eventTrack' }">追蹤活動</RouterLink>
-                            </li>
+                            </li> -->
                             <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'Eventlist' }">活動列表</RouterLink>
                             </li>
