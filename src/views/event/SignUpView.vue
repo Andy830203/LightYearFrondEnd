@@ -38,22 +38,6 @@ function sign_close(){
 }
 //我新增的end--by 梅
 
-//我新增的st--by 梅
-import { m_for_e_id, m_for_e_loc,m_for_e_bool,isModalVisible } from '@/hb1_t_js/GM_c.js';
-const sign_m_for_e_id = ref('');
-const sign_close_v = ref(false);//預設關閉
-if(props.id!==undefined && m_for_e_bool==false){//進入正常頁面
-    console.log("")
-}
-else{//進入地圖後
-    sign_m_for_e_id.value = m_for_e_id.value
-}
-function sign_close(){
-    // sign_close_v.value=true;
-    isModalVisible.value=false;
-}
-//我新增的end--by 梅
-
 // let eData = {
 //     'id': 0,
 //     'eventName': 'title',
