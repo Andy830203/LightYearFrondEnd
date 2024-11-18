@@ -1,7 +1,7 @@
 
 // import $ from 'jquery';
 import { ref, onMounted, nextTick } from 'vue';
-import { dt_set_mp_forsd, feature_cityname, feature_townname } from '@/hb1_t_js/GM_c.js';
+import { dt_set_mp, feature_cityname, feature_townname } from '@/hb1_t_js/GM_c.js';
 const map_loc_url = import.meta.env.VITE_API_BASEURL;
 export default function useDataTable() {
     const table = ref(null);
@@ -43,7 +43,7 @@ export default function useDataTable() {
             .then(c => {
                 c.forEach(s_c => {
                     if (rowData.position === s_c.address) {
-                        dt_set_mp_forsd(s_c.longitude,s_c.latitude);
+                        dt_set_mp(s_c.longitude, s_c.latitude);
                     }
                 })
             })

@@ -21,7 +21,7 @@
     <table id="dynamicTable" class="display" style="width:100%">
       <thead>
         <tr>
-          <th>活動名稱</th>
+          <th>活動</th>
           <th>位置</th>
         </tr>
       </thead>
