@@ -18,14 +18,15 @@
 </template>
 <style scoped>
 #sighup_page {
-    width: 50vw;
-    height: 30vw;
+    width: 78vw;
+    height: 40vw;
     background-color: #fffdf1;
     position: absolute;
-    right: 25vw;
-    top: 7vw;
+    right: 11vw;
+    top: 2vw;
     border-radius: 16px;
     padding: 2%;
+    z-index: 1110;
 }
 button{
     position: absolute;

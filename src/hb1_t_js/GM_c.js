@@ -2,6 +2,7 @@ import { onMounted, onBeforeUnmount, ref } from 'vue';
 import { zoom8_mapstyle, zoom12_mapstyle, zoom16_mapstyle } from '@/hb1_t_js/map_jsonfile/地圖樣式/zoomset.js';
 import { triggerCloudAnimation } from '@/hb1_t_js/map_load_c.js'
 import { getAddress } from '@/hb1_t_js/mp_getadress.js'
+import Swal from 'sweetalert2';
 export const ft_dis_state = ref(false);//footer是否顯示
 export const sideb_8 = ref(false);//footer是否顯示
 export const sideb_12 = ref(false);//footer是否顯示
@@ -12,7 +13,6 @@ export const feature_townname = ref(''); // 匯出 feature_townname
 export const m_for_e_bool = ref(true); // 匯出 feature_townname
 export const m_for_e_id = ref(''); // 匯出 feature_townname
 export const m_for_e_loc = ref(''); // 匯出 feature_townname
-
 
 //報名視窗狀態
 export const isModalVisible = ref(false);
@@ -247,6 +247,12 @@ export function map_init() {
                       m_for_e_loc.value = locData.address;
                     } else {
                       console.log("未登入");
+                      Swal.fire({
+                        icon: 'error', // 顯示錯誤圖示
+                        title: '您尚未登入', // 標題
+                        text: '請點擊右上角登入', // 說明文字
+                        cancelButtonText: '好的', // 取消按鈕文字
+                      });
                     }
                   } catch (error) {
                     console.error('JSON 解析失敗:', error);
@@ -468,7 +474,7 @@ export function backtotop() {
           }
           // 新增點擊事件，並將監聽器存入變數 clickListener
           const clickListener = marker_t.addListener("click", function () {
-            console.log("ok");
+            // 使用 SweetAlert 顯示成功提示
             openModal();//開啟報名視窗
           });
         }
