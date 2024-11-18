@@ -29,12 +29,6 @@ var map;
 let markers = [];
 const options = ["公益", "志工", "剩食", "愛心餐"];//icon隨機
 
-try {
-  const test5 = getAddress(120.286850, 22.634500);
-} catch (error) {
-  console.error('Failed to fetch address:', error);
-}
-
 //地圖初始化
 export function map_init() {
 
@@ -160,7 +154,7 @@ export function map_init() {
             // 設定樣式，只渲染與 featureTownName 相符的區域
             map.data.setStyle((feature) => {
               return feature.getProperty('TOWNNAME') === event.feature.Fg.TOWNNAME
-                ? { strokeWeight: 0.5, fillColor: 'green' } // 符合條件的區域樣式
+                ? { strokeWeight: 0.5, fillColor: 'green', clickable: false } // 符合條件的區域樣式
                 : { visible: false }; // 其他區域不顯示
             });
           });
@@ -171,21 +165,17 @@ export function map_init() {
           google.maps.event.removeListener(mouseListener_over);
           google.maps.event.removeListener(mouseListener_out);
           google.maps.event.removeListener(mouseListener_click);
-          // map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
-          //   // 獲取點擊位置的經緯度
-          //   const { latLng } = event;
-          //   const latitude = latLng.lat();
-          //   const longitude = latLng.lng();
-          //   // 在點擊位置創建一個新 marker
-          //   let mk = new google.maps.Marker({
-          //     position: latLng,
-          //     map: map
-          //   });
-
-          //   // 輸出經緯度到 console
-          //   console.log('Latitude:', latitude);
-          //   console.log('Longitude:', longitude);
-          // });
+          map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
+            // 獲取點擊位置的經緯度
+            const { latLng } = event;
+            const latitude = latLng.lat();
+            const longitude = latLng.lng();
+            async function fetchAddress(longitude, latitude) {
+              const address = await getAddress(longitude, latitude); // 等待 Promise 完成
+              GM_insert_loc(address, longitude.toFixed(6), latitude.toFixed(6), address)
+            }
+            fetchAddress(longitude, latitude)
+          });
           fetchData_m(feature_filter);//取得經緯度並建立標籤
         }
         else if (map_zoom_v > 12) {//檢視活動模式
@@ -554,4 +544,78 @@ export function dt_set_mp_forsd(lt, lg) {
     map: map
   });
   markers.push(marker);
+}
+async function GM_insert_loc(name, longitude, latitude, address) {
+  // 彈出確認對話框，直接寫在主程式邏輯內
+  const confirmation = await Swal.fire({
+    title: '確定要新增地點嗎？',
+    text: `地址: ${address}`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: '確認新增',
+    cancelButtonText: '取消',
+  });
+
+  // 如果用戶選擇取消，直接返回
+  if (!confirmation.isConfirmed) {
+    await Swal.fire({
+      icon: 'info',
+      title: '操作已取消',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    return;
+  }
+  try {
+    const payload = {
+      name: name,
+      longitude: longitude,
+      latitude: latitude,
+      address: address,
+    };
+    const response = await fetch(`${import.meta.env.VITE_API_BASEURL}/Locations`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (response.ok) {
+      Swal.fire({
+        icon: 'success',
+        title: '成功新增地點',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // 顯示詢問是否跳轉的對話框
+      const jumpConfirmation = await Swal.fire({
+        title: '新增完成',
+        text: '是否要跳轉至地點管理頁面？',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+      });
+
+      // 如果用戶確認跳轉，使用 router 進行跳轉
+      if (jumpConfirmation.isConfirmed) {
+        router.push({ name: 'eventStart'});
+      }
+    }
+    else {
+      Swal.fire({
+        icon: 'error',
+        title: '新增失敗',
+        text: "請聯繫網站管理人員",
+        confirmButtonText: '確認',
+      });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    Swal.fire({
+      icon: 'error',
+      title: '新增時發生錯誤',
+      confirmButtonText: '確認'
+    });
+  }
 }
