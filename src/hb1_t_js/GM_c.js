@@ -42,6 +42,8 @@ export function map_init() {
     mapHeight.value = `${window.innerHeight}px`;
   };
   onMounted(() => {
+    sideb_12.value = false;
+    sideb_16.value = false;
     sideb_8.value = true;
     triggerCloudAnimation();//載入動畫效果
     const map_loc_url = import.meta.env.VITE_API_BASEURL;
@@ -295,6 +297,8 @@ function getRandomOption() {
 export function backtotop() {
   const map_loc_url = import.meta.env.VITE_API_BASEURL;
   ft_dis_state.value = false;//footer是否顯示
+  sideb_12.value = false;
+  sideb_16.value = false;
   sideb_8.value = true;
   triggerCloudAnimation();//載入動畫效果
   let mouseListener_over, mouseListener_out, mouseListener_click;
