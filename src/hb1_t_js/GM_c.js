@@ -166,15 +166,34 @@ export function map_init() {
           google.maps.event.removeListener(mouseListener_out);
           google.maps.event.removeListener(mouseListener_click);
           map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
-            // 獲取點擊位置的經緯度
-            const { latLng } = event;
-            const latitude = latLng.lat();
-            const longitude = latLng.lng();
-            async function fetchAddress(longitude, latitude) {
-              const address = await getAddress(longitude, latitude); // 等待 Promise 完成
-              GM_insert_loc(address, longitude.toFixed(6), latitude.toFixed(6), address)
+            const member = localStorage.getItem('member'); // 取得儲存的值
+            if (member) {
+              try {
+                const memberData = JSON.parse(member); // 嘗試解析為 JSON
+                if (memberData && memberData.id) {
+                  // 獲取點擊位置的經緯度
+                  const { latLng } = event;
+                  const latitude = latLng.lat();
+                  const longitude = latLng.lng();
+                  async function fetchAddress(longitude, latitude) {
+                    const address = await getAddress(longitude, latitude); // 等待 Promise 完成
+                    GM_insert_loc(address, longitude.toFixed(6), latitude.toFixed(6), address)
+                  }
+                  fetchAddress(longitude, latitude)
+                } // 確保 id 存在
+              }
+              catch (error) {
+                console.error('JSON 解析失敗:', error);
+              }
             }
-            fetchAddress(longitude, latitude)
+            else {
+              Swal.fire({
+                icon: 'error', // 顯示錯誤圖示
+                title: '您尚未登入', // 標題
+                text: '請點擊右上角登入', // 說明文字
+                cancelButtonText: '好的', // 取消按鈕文字
+              });
+            }
           });
           fetchData_m(feature_filter);//取得經緯度並建立標籤
         }
@@ -249,7 +268,6 @@ export function map_init() {
                         }
                       });
                     } else {
-                      console.log("未登入");
                       Swal.fire({
                         icon: 'error', // 顯示錯誤圖示
                         title: '您尚未登入', // 標題
@@ -416,15 +434,34 @@ export function backtotop() {
       google.maps.event.removeListener(mouseListener_out);
       google.maps.event.removeListener(mouseListener_click);
       map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
-        // 獲取點擊位置的經緯度
-        const { latLng } = event;
-        const latitude = latLng.lat();
-        const longitude = latLng.lng();
-        async function fetchAddress(longitude, latitude) {
-          const address = await getAddress(longitude, latitude); // 等待 Promise 完成
-          GM_insert_loc(address, longitude.toFixed(6), latitude.toFixed(6), address)
+        const member = localStorage.getItem('member'); // 取得儲存的值
+        if (member) {
+          try {
+            const memberData = JSON.parse(member); // 嘗試解析為 JSON
+            if (memberData && memberData.id) {
+              // 獲取點擊位置的經緯度
+              const { latLng } = event;
+              const latitude = latLng.lat();
+              const longitude = latLng.lng();
+              async function fetchAddress(longitude, latitude) {
+                const address = await getAddress(longitude, latitude); // 等待 Promise 完成
+                GM_insert_loc(address, longitude.toFixed(6), latitude.toFixed(6), address)
+              }
+              fetchAddress(longitude, latitude)
+            } // 確保 id 存在
+          }
+          catch (error) {
+            console.error('JSON 解析失敗:', error);
+          }
         }
-        fetchAddress(longitude, latitude)
+        else {
+          Swal.fire({
+            icon: 'error', // 顯示錯誤圖示
+            title: '您尚未登入', // 標題
+            text: '請點擊右上角登入', // 說明文字
+            cancelButtonText: '好的', // 取消按鈕文字
+          });
+        }
       });
       fetchData_m(feature_filter);//取得經緯度並建立標籤
     }
@@ -586,7 +623,7 @@ async function GM_insert_loc(name, latitude, longitude, address) {
       // 顯示詢問是否跳轉的對話框
       const jumpConfirmation = await Swal.fire({
         title: '新增完成',
-        text: '是否要跳轉至地點管理頁面？',
+        text: '是否要跳轉至新建活動頁面？',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: '是',
