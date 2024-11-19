@@ -30,6 +30,9 @@ function toggleDrawer() {
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:30%;left: 50%;">
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:50%;left: 50%;">
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:70%;left: 50%;">
+      <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:80%;left: 55%;">
+      <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:90%;left: 60%;">
+
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:0%;right: 50%;">
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:5%;right: 60%;">
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:15%;right: 55%;">
@@ -37,7 +40,8 @@ function toggleDrawer() {
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:30%;right: 50%;">
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:50%;right: 50%;">
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:70%;right: 50%;">
-
+      <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:80%;right: 55%;">
+      <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:90%;right: 60%;">
     </div>
   </div>
   <ft_gm v-if="ft_dis_state"></ft_gm>
