@@ -133,7 +133,7 @@ async function login() {
     });
 
     // 導向到 MemberInFo 頁面
-    // window.location.href = "/MemberInFo";
+    window.location.href = "/MemberInFo";
 
   } catch (error) {
     console.error("登入發生錯誤", error);
