@@ -19,6 +19,7 @@ export default function useDataTable() {
             searching: false,
             lengthChange: false,
             pageLength: 4,
+            pagingType: "simple",
             language: {
                 lengthMenu: "前往 _MENU_",
                 info: "",
