@@ -1,11 +1,250 @@
 /* 覆蓋層的基本樣式 */
-.ques_over {
+.ques_over_8 {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vw;
+    height: 100vh;
     display: none;
     z-index: 1000;
-    background-color: aquamarine;
+    /* background-color: rgba(0, 0, 0, 0.7); */
 }
+.ques_over_8_1{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40vw;
+    height: 100vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* mask視現代通用 */
+    mask: radial-gradient(circle at calc(100% - 12vw) 40vh, transparent 12vw, rgba(0, 0, 0, 1) 16vw);
+    /* -webkit-mask視兼容舊版 */
+    -webkit-mask: radial-gradient(circle at calc(100% - 12vw) 40vh, transparent 12vw, rgba(0, 0, 0, 1) 16vw);
+}
+.ques_over_8_2{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60vw;
+    height: 100vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* mask視現代通用 */
+    mask: radial-gradient(circle at calc(100% - 12vw) 70vh, transparent 3vw, rgba(0, 0, 0, 1) 5vw);
+    /* -webkit-mask視兼容舊版 */
+    -webkit-mask: radial-gradient(circle at calc(100% - 15vw) 70vh, transparent 3vw, rgba(0, 0, 0, 1) 5vw);
+}
+
+.ques_over_12 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    z-index: 1000;
+}
+
+.ques_over_12_1{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40vw;
+    height: 100vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* mask視現代通用 */
+    mask: radial-gradient(circle at calc(100% - 12vw) 40vh, transparent 12vw, rgba(0, 0, 0, 1) 16vw);
+    /* -webkit-mask視兼容舊版 */
+    -webkit-mask: radial-gradient(circle at calc(100% - 12vw) 40vh, transparent 12vw, rgba(0, 0, 0, 1) 16vw);
+}
+.ques_over_12_2{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60vw;
+    height: 100vw;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* mask視現代通用 */
+    mask: radial-gradient(circle at calc(100% - 12vw) 20vh, transparent 3vw, rgba(0, 0, 0, 1) 5vw);
+    /* -webkit-mask視兼容舊版 */
+    -webkit-mask: radial-gradient(circle at calc(100% - 12vw) 55vh, transparent 8vw, rgba(0, 0, 0, 1) 10vw);
+}
+
+.ques_over_16 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    z-index: 1000;
+}
+
+.ques_over_16_1{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40vw;
+    height: 80vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* mask視現代通用 */
+    mask: radial-gradient(circle at calc(100% - 12vw) 40vh, transparent 12vw, rgba(0, 0, 0, 1) 16vw);
+    /* -webkit-mask視兼容舊版 */
+    -webkit-mask: radial-gradient(circle at calc(100% - 12vw) 40vh, transparent 12vw, rgba(0, 0, 0, 1) 16vw);
+}
+.ques_over_16_2{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60vw;
+    height: 40vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* mask視現代通用 */
+    mask: radial-gradient(circle at calc(100% - 12vw) 27vh, transparent 3vw, rgba(0, 0, 0, 1) 5vw);
+    /* -webkit-mask視兼容舊版 */
+    -webkit-mask: radial-gradient(circle at calc(100% - 10vw) 27vh, transparent 4vw, rgba(0, 0, 0, 1) 6vw);
+}
+.ques_over_16_3{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 20vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* mask視現代通用 */
+    mask: radial-gradient(circle at calc(100% - 12vw) 12vh, transparent 12vw, rgba(0, 0, 0, 1) 16vw);
+    /* -webkit-mask視兼容舊版 */
+    -webkit-mask: radial-gradient(circle at calc(100% - 60vw) 12vh, transparent 2vw, rgba(0, 0, 0, 1) 4vw);
+}
+.ques_over_16_4{
+    position: fixed;
+    top: 40vh;
+    left: 0;
+    width: 60vw;
+    height: 40vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* mask視現代通用 */
+    mask: radial-gradient(circle at calc(100% - 12vw) 20vh, transparent 3vw, rgba(0, 0, 0, 1) 5vw);
+    /* -webkit-mask視兼容舊版 */
+    -webkit-mask: radial-gradient(circle at calc(100% - 12vw) 20vh, transparent 6vw, rgba(0, 0, 0, 1) 8vw);
+}
+
+/*8的動畫st*/
+.moving-text_8_1 {
+    position: absolute;
+    top: 30vh;
+    right: 25vw;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    animation: moveUpDown 2s ease-in-out infinite;
+    z-index: 1100;
+}
+.moving-text_8_2 {
+    position: absolute;
+    top: 66vh;
+    right: 20vw;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    animation: moveUpDown 2s ease-in-out infinite;
+    z-index: 1100;
+}
+/*8的動畫end*/
+/*12的動畫st*/
+.moving-text_12_1 {
+    position: absolute;
+    top: 30vh;
+    right: 25vw;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    animation: moveUpDown 2s ease-in-out infinite;
+    z-index: 1100;
+}
+.moving-text_12_2 {
+    position: absolute;
+    top: 51vh;
+    right: 25vw;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    animation: moveUpDown 2s ease-in-out infinite;
+    z-index: 1100;
+}
+/*12的動畫end*/
+/*16的動畫st*/
+.moving-text_16_1 {/*跳轉至指定活動*/
+    position: absolute;
+    top: 30vh;
+    right: 25vw;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    animation: moveUpDown 2s ease-in-out infinite;
+    z-index: 1100;
+}
+.moving-text_16_2 {/*報名*/
+    position: absolute;
+    top: 25vh;
+    right: 15vw;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    animation: moveUpDown 2s ease-in-out infinite;
+    z-index: 1100;
+}
+.moving-text_16_3 {/*圖示類別*/
+    position: absolute;
+    top: 10vh;
+    right: 65vw;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    animation: moveUpDown 2s ease-in-out infinite;
+    z-index: 1100;
+}
+.moving-text_16_4 {/*地點*/
+    position: absolute;
+    top: 15vh;
+    right: 22vw;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    animation: moveUpDown 2s ease-in-out infinite;
+    z-index: 1100;
+}
+/*12的動畫end*/
+/* 定義移動的動畫 */
+@keyframes moveUpDown {
+    0% {
+        transform: translateX(0);
+        /* 起始位置 */
+    }
+
+    50% {
+        transform: translateX(-10px);
+        /* 向上移動 */
+    }
+
+    100% {
+        transform: translateX(0);
+        /* 回到原位置 */
+    }
+}
+
