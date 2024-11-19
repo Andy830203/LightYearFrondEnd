@@ -83,7 +83,7 @@
       price: "NT$ 200",
       description: "幫助偏鄉兒童學習用品。",
       image: "/src/assets/images/members/文具用品.jpg",
-      link: "/itemDetails/15",
+      link: "/itemDetails/17",
     },
     {
       id: 5,
@@ -91,7 +91,7 @@
       price: "NT$ 100",
       description: "幫助偏鄉國小棒球隊出國比賽的經費。",
       image: "/src/assets/images/members/愛心筆.jpg",
-      link: "/itemDetails/17",
+      link: "/itemDetails/12",
     },
     {
       id: 6,
@@ -99,7 +99,31 @@
       price: "NT$ 400",
       description: "幫助偏鄉小學棒球手套。",
       image: "/src/assets/images/members/棒球手套.jpg",
-      link: "/itemDetails/17",
+      link: "/itemDetails/18",
+    },
+    {
+      id: 7,
+      name: "生活物資箱",
+      price: "NT$ 1000",
+      description: "將提供每個清寒家庭物資，內容物為食物、生活用品等等。",
+      image: "/src/assets/images/members/紙箱.jpg",
+      link: "/itemDetails/38",
+    },
+    {
+      id: 8,
+      name: "成人尿布",
+      price: "NT$ 1500",
+      description: "將會全數提供給有需要的家庭。",
+      image: "/src/assets/images/members/成人尿布.jpg",
+      link: "/itemDetails/34",
+    },
+    {
+      id: 9,
+      name: "色鉛筆",
+      price: "NT$ 330",
+      description: "聖誕禮物認購",
+      image: "/src/assets/images/members/色鉛筆.jpg",
+      link: "/itemDetails/27",
     },
   ]);
   
