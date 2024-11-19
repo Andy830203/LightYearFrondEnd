@@ -3,6 +3,7 @@ import { zoom8_mapstyle, zoom12_mapstyle, zoom16_mapstyle } from '@/hb1_t_js/map
 import { triggerCloudAnimation } from '@/hb1_t_js/map_load_c.js'
 import { getAddress } from '@/hb1_t_js/mp_getadress.js'
 import Swal from 'sweetalert2';
+import router from '@/router';
 export const ft_dis_state = ref(false);//footer是否顯示
 export const sideb_8 = ref(false);//footer是否顯示
 export const sideb_12 = ref(false);//footer是否顯示
@@ -13,14 +14,12 @@ export const feature_townname = ref(''); // 匯出 feature_townname
 export const m_for_e_bool = ref(true); // 匯出 feature_townname
 export const m_for_e_id = ref(''); // 匯出 feature_townname
 export const m_for_e_loc = ref(''); // 匯出 feature_townname
-
 //報名視窗狀態
 export const isModalVisible = ref(false);
 //開啟報名視窗
 const openModal = () => {
   isModalVisible.value = true;
 };
-
 //地圖所需元件St(靜態)
 //Json路徑(靜態)
 const fileNames = ['Changhua_County', 'Chiayi_City', 'Chiayi_County', 'Hsinchu_City', 'Hsinchu_County', 'Hualien_County', 'Kaohsiung', 'Keelung_City', 'Miaoli_County', 'nantou_county', 'New_Taipei_City', 'Pingtung_County', 'Taichung_City', 'tainan', 'Taipei_City', 'Taitung_County', 'Taoyuan_County', 'Yilan_County', 'Yunlin_County'];//可以依據檔案數量進行修改
@@ -30,12 +29,6 @@ var map;
 let markers = [];
 const options = ["公益", "志工", "剩食", "愛心餐"];//icon隨機
 
-try {
-  const test5 = getAddress(120.286850, 22.634500);
-} catch (error) {
-  console.error('Failed to fetch address:', error);
-}
-
 //地圖初始化
 export function map_init() {
 
@@ -43,6 +36,8 @@ export function map_init() {
     mapHeight.value = `${window.innerHeight}px`;
   };
   onMounted(() => {
+    sideb_12.value = false;
+    sideb_16.value = false;
     sideb_8.value = true;
     triggerCloudAnimation();//載入動畫效果
     const map_loc_url = import.meta.env.VITE_API_BASEURL;
@@ -159,7 +154,7 @@ export function map_init() {
             // 設定樣式，只渲染與 featureTownName 相符的區域
             map.data.setStyle((feature) => {
               return feature.getProperty('TOWNNAME') === event.feature.Fg.TOWNNAME
-                ? { strokeWeight: 0.5, fillColor: 'green' } // 符合條件的區域樣式
+                ? { strokeWeight: 0.5, fillColor: 'green', clickable: false } // 符合條件的區域樣式
                 : { visible: false }; // 其他區域不顯示
             });
           });
@@ -170,21 +165,36 @@ export function map_init() {
           google.maps.event.removeListener(mouseListener_over);
           google.maps.event.removeListener(mouseListener_out);
           google.maps.event.removeListener(mouseListener_click);
-          // map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
-          //   // 獲取點擊位置的經緯度
-          //   const { latLng } = event;
-          //   const latitude = latLng.lat();
-          //   const longitude = latLng.lng();
-          //   // 在點擊位置創建一個新 marker
-          //   let mk = new google.maps.Marker({
-          //     position: latLng,
-          //     map: map
-          //   });
-
-          //   // 輸出經緯度到 console
-          //   console.log('Latitude:', latitude);
-          //   console.log('Longitude:', longitude);
-          // });
+          map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
+            const member = localStorage.getItem('member'); // 取得儲存的值
+            if (member) {
+              try {
+                const memberData = JSON.parse(member); // 嘗試解析為 JSON
+                if (memberData && memberData.id) {
+                  // 獲取點擊位置的經緯度
+                  const { latLng } = event;
+                  const latitude = latLng.lat();
+                  const longitude = latLng.lng();
+                  async function fetchAddress(longitude, latitude) {
+                    const address = await getAddress(longitude, latitude); // 等待 Promise 完成
+                    GM_insert_loc(address, longitude.toFixed(6), latitude.toFixed(6), address)
+                  }
+                  fetchAddress(longitude, latitude)
+                } // 確保 id 存在
+              }
+              catch (error) {
+                console.error('JSON 解析失敗:', error);
+              }
+            }
+            else {
+              Swal.fire({
+                icon: 'error', // 顯示錯誤圖示
+                title: '您尚未登入', // 標題
+                text: '請點擊右上角登入', // 說明文字
+                cancelButtonText: '好的', // 取消按鈕文字
+              });
+            }
+          });
           fetchData_m(feature_filter);//取得經緯度並建立標籤
         }
         else if (map_zoom_v > 12) {//檢視活動模式
@@ -241,12 +251,23 @@ export function map_init() {
                   try {
                     const memberData = JSON.parse(member); // 嘗試解析為 JSON
                     if (memberData && memberData.id) { // 確保 id 存在
-                      openModal();
-                      m_for_e_bool.value = true;
-                      m_for_e_id.value = c_e_f.eId;
-                      m_for_e_loc.value = locData.address;
+                      Swal.fire({
+                        icon: 'question', // 問號圖示
+                        title: '確認報名', // 標題
+                        text: '您確定要報名此活動嗎？', // 說明文字
+                        showCancelButton: true, // 顯示取消按鈕
+                        confirmButtonText: '確定', // 確認按鈕文字
+                        cancelButtonText: '取消', // 取消按鈕文字
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          // 使用者點擊 "確定"
+                          router.push({ name: 'eventSignUpWithId', params: { id: c_e_f.eId } });
+                        } else {
+                          // 使用者點擊 "取消" 或關閉對話框
+                          console.log('已取消報名');
+                        }
+                      });
                     } else {
-                      console.log("未登入");
                       Swal.fire({
                         icon: 'error', // 顯示錯誤圖示
                         title: '您尚未登入', // 標題
@@ -284,6 +305,8 @@ function getRandomOption() {
 export function backtotop() {
   const map_loc_url = import.meta.env.VITE_API_BASEURL;
   ft_dis_state.value = false;//footer是否顯示
+  sideb_12.value = false;
+  sideb_16.value = false;
   sideb_8.value = true;
   triggerCloudAnimation();//載入動畫效果
   let mouseListener_over, mouseListener_out, mouseListener_click;
@@ -410,22 +433,36 @@ export function backtotop() {
       google.maps.event.removeListener(mouseListener_over);
       google.maps.event.removeListener(mouseListener_out);
       google.maps.event.removeListener(mouseListener_click);
-      // map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
-      //   // 獲取點擊位置的經緯度
-      //   const { latLng } = event;
-      //   const latitude = latLng.lat();
-      //   const longitude = latLng.lng();
-
-      //   // 在點擊位置創建一個新 marker
-      //   new google.maps.Marker({
-      //     position: latLng,
-      //     map: map
-      //   });
-
-      //   // 輸出經緯度到 console
-      //   console.log('Latitude:', latitude);
-      //   console.log('Longitude:', longitude);
-      // });
+      map.addListener('click', (event) => {//點擊後創建marker且輸出經緯度
+        const member = localStorage.getItem('member'); // 取得儲存的值
+        if (member) {
+          try {
+            const memberData = JSON.parse(member); // 嘗試解析為 JSON
+            if (memberData && memberData.id) {
+              // 獲取點擊位置的經緯度
+              const { latLng } = event;
+              const latitude = latLng.lat();
+              const longitude = latLng.lng();
+              async function fetchAddress(longitude, latitude) {
+                const address = await getAddress(longitude, latitude); // 等待 Promise 完成
+                GM_insert_loc(address, longitude.toFixed(6), latitude.toFixed(6), address)
+              }
+              fetchAddress(longitude, latitude)
+            } // 確保 id 存在
+          }
+          catch (error) {
+            console.error('JSON 解析失敗:', error);
+          }
+        }
+        else {
+          Swal.fire({
+            icon: 'error', // 顯示錯誤圖示
+            title: '您尚未登入', // 標題
+            text: '請點擊右上角登入', // 說明文字
+            cancelButtonText: '好的', // 取消按鈕文字
+          });
+        }
+      });
       fetchData_m(feature_filter);//取得經緯度並建立標籤
     }
     else if (map_zoom_v > 12) {//檢視活動模式
@@ -474,8 +511,42 @@ export function backtotop() {
           }
           // 新增點擊事件，並將監聽器存入變數 clickListener
           const clickListener = marker_t.addListener("click", function () {
-            // 使用 SweetAlert 顯示成功提示
-            openModal();//開啟報名視窗
+            const member = localStorage.getItem('member'); // 取得儲存的值
+            if (member) {
+              try {
+                const memberData = JSON.parse(member); // 嘗試解析為 JSON
+                if (memberData && memberData.id) { // 確保 id 存在
+                  Swal.fire({
+                    icon: 'question', // 問號圖示
+                    title: '確認報名', // 標題
+                    text: '您確定要報名此活動嗎？', // 說明文字
+                    showCancelButton: true, // 顯示取消按鈕
+                    confirmButtonText: '確定', // 確認按鈕文字
+                    cancelButtonText: '取消', // 取消按鈕文字
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // 使用者點擊 "確定"
+                      router.push({ name: 'eventSignUpWithId', params: { id: c_e_f.eId } });
+                    } else {
+                      // 使用者點擊 "取消" 或關閉對話框
+                      console.log('已取消報名');
+                    }
+                  });
+                } else {
+                  console.log("未登入");
+                  Swal.fire({
+                    icon: 'error', // 顯示錯誤圖示
+                    title: '您尚未登入', // 標題
+                    text: '請點擊右上角登入', // 說明文字
+                    cancelButtonText: '好的', // 取消按鈕文字
+                  });
+                }
+              } catch (error) {
+                console.error('JSON 解析失敗:', error);
+              }
+            } else {
+              console.log('member 不存在於 localStorage');
+            }
           });
         }
       }
@@ -505,4 +576,79 @@ export function dt_set_mp_forsd(lt, lg) {
     map: map
   });
   markers.push(marker);
+}
+//這裡經緯度是反的
+async function GM_insert_loc(name, latitude, longitude, address) {
+  // 彈出確認對話框，直接寫在主程式邏輯內
+  const confirmation = await Swal.fire({
+    title: '確定要新增地點嗎？',
+    text: `地址: ${address}`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: '確認新增',
+    cancelButtonText: '取消',
+  });
+
+  // 如果用戶選擇取消，直接返回
+  if (!confirmation.isConfirmed) {
+    await Swal.fire({
+      icon: 'info',
+      title: '操作已取消',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    return;
+  }
+  try {
+    const payload = {
+      name: name,
+      longitude: longitude,
+      latitude: latitude,
+      address: address,
+    };
+    const response = await fetch(`${import.meta.env.VITE_API_BASEURL}/Locations`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (response.ok) {
+      Swal.fire({
+        icon: 'success',
+        title: '成功新增地點',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // 顯示詢問是否跳轉的對話框
+      const jumpConfirmation = await Swal.fire({
+        title: '新增完成',
+        text: '是否要跳轉至新建活動頁面？',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+      });
+
+      // 如果用戶確認跳轉，使用 router 進行跳轉
+      if (jumpConfirmation.isConfirmed) {
+        router.push({ name: 'eventStart' });
+      }
+    }
+    else {
+      Swal.fire({
+        icon: 'error',
+        title: '新增失敗',
+        text: "請聯繫網站管理人員",
+        confirmButtonText: '確認',
+      });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    Swal.fire({
+      icon: 'error',
+      title: '新增時發生錯誤',
+      confirmButtonText: '確認'
+    });
+  }
 }

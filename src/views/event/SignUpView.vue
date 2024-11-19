@@ -21,23 +21,6 @@ const SignUp_URL = BASE_URL + '/SignUps'
 const props = defineProps({
     id: String
 })
-
-//我新增的st--by 梅
-import { m_for_e_id, m_for_e_loc,m_for_e_bool,isModalVisible } from '@/hb1_t_js/GM_c.js';
-const sign_m_for_e_id = ref('');
-const sign_close_v = ref(false);//預設關閉
-if(props.id!==undefined && m_for_e_bool==false){//進入正常頁面
-    console.log("")
-}
-else{//進入地圖後
-    sign_m_for_e_id.value = m_for_e_id.value
-}
-function sign_close(){
-    // sign_close_v.value=true;
-    isModalVisible.value=false;
-}
-//我新增的end--by 梅
-
 // let eData = {
 //     'id': 0,
 //     'eventName': 'title',
@@ -268,7 +251,7 @@ onMounted(async () => {
                 <hr>
                 <div class="row">
                     <!-- 這裡我有改成三元運算符，只要props.id不要硬給值都沒事 -->
-                    <EventDatailComponent class="col-md-12 col-12" :Id="props.id !== undefined ? props.id : sign_m_for_e_id" :API="EVENT_URL" />
+                    <EventDatailComponent class="col-md-12 col-12" :Id="props.id" :API="EVENT_URL" />
                     <!-- <div class="col-md-6 col-12 box"></div> -->
                 </div>
 
@@ -290,9 +273,9 @@ onMounted(async () => {
                 </div> -->
                 <!-- submit -->
                 <div class="col-12 my-3 d-flex justify-content-end">
-                    <button class="btn btn-primary col-2 me-3" type="submit" @click="sign_close">報名</button>
+                    <button class="btn btn-primary col-2 me-3" type="submit">報名</button>
                     <!-- 新增@click，我要在地圖關掉視窗 -->
-                    <button class="btn btn-secondary col-2" type="button" @click="sign_close">取消</button>
+                    <button class="btn btn-secondary col-2" type="button">取消</button>
                 </div>
             </div>
         </form>
