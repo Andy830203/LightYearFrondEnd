@@ -61,7 +61,7 @@ export default function useDataTable() {
                 const locationRes = await fetch(map_loc_url + "/Locations" + `/${event.lId}`);
                 const location = await locationRes.json();
                 const fullAddress = feature_cityname.value + feature_townname.value;
-                if (location.address.startsWith(fullAddress)) {
+                if (location.address.includes(fullAddress)) {
                     data.push({
                         "name": event.belongedEvent,
                         "position": location.address

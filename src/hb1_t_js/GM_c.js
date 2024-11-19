@@ -219,7 +219,7 @@ export function map_init() {
             // 取得經緯度
             const locRes = await fetch(`${map_loc_url}/Locations/${c_e_f.lId}`);
             const locData = await locRes.json();
-            if (locData.address.startsWith(fullAddress)) {
+            if (locData.address.includes(fullAddress)) {
               lat = locData.longitude;
               lng = locData.latitude;
             }
@@ -482,7 +482,7 @@ export function backtotop() {
         // 取得經緯度
         const locRes = await fetch(`${map_loc_url}/Locations/${c_e_f.lId}`);
         const locData = await locRes.json();
-        if (locData.address.startsWith(fullAddress)) {
+        if (locData.address.includes(fullAddress)) {
           lat = locData.longitude;
           lng = locData.latitude;
         }
