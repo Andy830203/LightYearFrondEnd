@@ -1,0 +1,11 @@
+/* 覆蓋層的基本樣式 */
+.ques_over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vw;
+    display: none;
+    z-index: 1000;
+    background-color: aquamarine;
+}

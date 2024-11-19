@@ -5,7 +5,9 @@ import ft_gm from  '@/hb1_t_js/footbar.vue';//icon專用footer
 import { FT_set } from '@/hb1_t_js/FT_c.js';//@/hb1_t_js/FT_c.js，APP.vue footer專用js
 import sidebar_gm from '@/hb1_t_js/sidebar.vue'//sidebar組件
 import '@/hb1_t_js/mp_load_styles.css';//loading動畫
-import  sed  from '@/hb1_t_js/event_detail.vue'//事件細節視窗
+import '@/hb1_t_js/ques_m.css'//網站引導樣式
+import ques from '@/hb1_t_js/ques_m.vue'//地圖導覽
+import { triggerques_display,triggerques_display_close } from'@/hb1_t_js/ques_m.js'
 //sidebar
 map_init();//地圖初始化
 FT_set()//設置footer是否顯示
@@ -19,7 +21,7 @@ function toggleDrawer() {
 <template>
   <div id="map"></div>
   <sidebar_gm></sidebar_gm>
-  <!-- <sed></sed> -->
+  <ques class="ques_over" @click.self="triggerques_display_close" id="quesOverlay"></ques>
   <div class="cloud-overlay" id="cloudOverlay">
     <div class="cloud-container">
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:0%;left: 55%;">
@@ -40,7 +42,10 @@ function toggleDrawer() {
     </div>
   </div>
   <ft_gm v-if="ft_dis_state"></ft_gm>
-  <button @click="backtotop" style="position: absolute; top: 10vw;left: 3vw;border-radius: 5px;width: 100px;background-color: rgb(255, 193, 7);">台灣全景<i class="bi bi-caret-up-square-fill" style="font-size: 50px;"></i></button>
+  <!--網站引導按鈕-->>
+  <button style="position: absolute; top: 8vw;left: 3vw;border-radius: 5px;width: 100px;background-color: rgb(255, 193, 7);" @click="triggerques_display">使用說明<i class="bi bi-question-circle" style="font-size: 50px;"></i></button>
+  <!--台灣全景按鈕-->>
+  <button @click="backtotop" style="position: absolute; top: 15vw;left: 3vw;border-radius: 5px;width: 100px;background-color: rgb(255, 193, 7);">台灣全景<i class="bi bi-caret-up-square-fill" style="font-size: 50px;"></i></button>
 </template>
 <style>
     #map {
