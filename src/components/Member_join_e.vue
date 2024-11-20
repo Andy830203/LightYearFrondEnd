@@ -28,7 +28,7 @@ const fetchFavorites = async () => {
       if (response.ok) {
         evenjoin.value = data.map(event => ({
           name:event.eventName, //活動名
-          id: event.collectionId, //活動id
+          id: event.eventId, //活動id
           periodid:event.eventPeriodId,//時段id
           periodDescription:event.periodDescription//時段描述
         }));

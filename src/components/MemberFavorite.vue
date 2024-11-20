@@ -5,7 +5,7 @@
     <!-- 判斷是否有收藏活動 -->
     <div v-if="hasFavorites">
       <ul class="favorites-list">
-        <li v-for="(favorite, index) in favorites" :key="favorite.id" class="favorite-item" @click="registerEvent(favorite.id)" >
+        <li v-for="(favorite, index) in favorites" :key="favorite.id" class="favorite-item" @click="registerEvent(favorite.eId)" >
           {{ favorite.name }}
           <span
             class="favorite-icon"
@@ -56,7 +56,8 @@ const fetchFavorites = async () => {
       if (response.ok) {
         favorites.value = data.map(event => ({
           name:event.eventName, 
-          id: event.collectionId, 
+          id: event.collectionId,
+          eId: event.eventId,
           isFavorite: true,
         }));
         hasFavorites.value = favorites.value.length > 0;
@@ -95,6 +96,7 @@ const toggleFavorite = async (favorite) => {
 
 const removeFavorite = async (favorite) => {
   const API_URL = `${BASE_URL}/Collections/${favorite.id}`; // 使用 CollectionId 作為取消依據
+  console.log(favorite.id);
   try {
     const response = await fetch(API_URL, {
       method: 'DELETE',
