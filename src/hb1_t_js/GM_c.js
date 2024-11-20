@@ -422,7 +422,7 @@ export function backtotop() {
         // 設定樣式，只渲染與 featureTownName 相符的區域
         map.data.setStyle((feature) => {
           return feature.getProperty('TOWNNAME') === event.feature.Fg.TOWNNAME
-            ? { strokeWeight: 0.5, fillColor: 'green' } // 符合條件的區域樣式
+            ? { strokeWeight: 0.5, fillColor: 'green', clickable: false } // 符合條件的區域樣式
             : { visible: false }; // 其他區域不顯示
         });
       });
