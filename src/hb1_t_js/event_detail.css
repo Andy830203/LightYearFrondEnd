@@ -1,0 +1,9 @@
+#main_div{
+    width: 20vw;
+    height: 20vw;
+    background-color: aqua;
+    position: absolute;
+    right: 22vw;
+    top: 5vw;
+    border-radius: 16px;
+}

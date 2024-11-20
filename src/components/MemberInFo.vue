@@ -16,13 +16,13 @@
         <div class="info-item">
           <strong>Email:</strong> {{ member.email }}
         </div>
-        <div class="info-item">
+        <!-- <div class="info-item">
           <strong>點數:</strong> {{ member.point }}
-        </div>
-        <div class="info-item">
+        </div> -->
+        <!-- <div class="info-item">
           <strong>等級:</strong> {{ member.level }}
-        </div>
-        <div class="info-item">
+        </div> -->
+        <!-- <div class="info-item">
           <strong>經驗值:</strong>
           <div class="exp-container">
             <span class="exp-text">{{ member.exp }}%</span>
@@ -30,11 +30,12 @@
               <div class="progress-bar-fill" :style="{ width: member.exp + '%' }"></div>
             </div>
           </div>
-        </div>
+        </div> -->
         <button @click="editMemberInfo" class="edit-button">修改會員資訊</button>
       </div>      
       <div class="favorite-container">
         <MemberFavorite></MemberFavorite>
+        <MemberJoin></MemberJoin>
       </div>
 
       <div>
@@ -49,6 +50,7 @@ import MemberFavorite from '@/components/MemberFavorite.vue';
 import { reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import ShareButton from './member/ShareButton.vue';
+import MemberJoin from '@/components/Member_join_e.vue';
 
 const router = useRouter();
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
@@ -134,14 +136,12 @@ onMounted(() => {
   align-self: flex-start;
   margin-right: 20px;
 }
-
 .favorite-container {
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
 }
-
 .member-photo {
   width: 120px;
   height: 120px;

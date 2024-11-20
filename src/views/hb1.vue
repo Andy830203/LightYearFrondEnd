@@ -5,6 +5,8 @@ import ft_gm from  '@/hb1_t_js/footbar.vue';//icon專用footer
 import { FT_set } from '@/hb1_t_js/FT_c.js';//@/hb1_t_js/FT_c.js，APP.vue footer專用js
 import sidebar_gm from '@/hb1_t_js/sidebar.vue'//sidebar組件
 import '@/hb1_t_js/mp_load_styles.css';//loading動畫
+import ques from '@/hb1_t_js/ques_m.vue'//地圖導覽
+import { triggerques_display } from'@/hb1_t_js/ques_m.js'
 //sidebar
 map_init();//地圖初始化
 FT_set()//設置footer是否顯示
@@ -18,6 +20,7 @@ function toggleDrawer() {
 <template>
   <div id="map"></div>
   <sidebar_gm></sidebar_gm>
+  <ques id="quesOverlay"></ques>
   <div class="cloud-overlay" id="cloudOverlay">
     <div class="cloud-container">
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:0%;left: 55%;">
@@ -27,6 +30,9 @@ function toggleDrawer() {
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:30%;left: 50%;">
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:50%;left: 50%;">
       <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:70%;left: 50%;">
+      <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:80%;left: 55%;">
+      <img src="@/hb1_t_js/map_load_img/向左衝去背_t1.png" alt="Cloud Left" class="cloud cloud-left" style="top:90%;left: 60%;">
+
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:0%;right: 50%;">
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:5%;right: 60%;">
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:15%;right: 55%;">
@@ -34,11 +40,15 @@ function toggleDrawer() {
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:30%;right: 50%;">
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:50%;right: 50%;">
       <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:70%;right: 50%;">
-
+      <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:80%;right: 55%;">
+      <img src="@/hb1_t_js/map_load_img/向右衝去背_t1.png" alt="Cloud Right" class="cloud cloud-right" style="top:90%;right: 60%;">
     </div>
   </div>
   <ft_gm v-if="ft_dis_state"></ft_gm>
-  <button @click="backtotop" style="position: absolute; top: 10vw;left: 3vw;border-radius: 5px;width: 100px;background-color: rgb(255, 193, 7);">台灣全景<i class="bi bi-caret-up-square-fill" style="font-size: 50px;"></i></button>
+  <!--網站引導按鈕-->
+  <button style="position: absolute; top: 8vw;left: 3vw;border-radius: 5px;width: 100px;background-color: rgb(255, 193, 7);" @click="triggerques_display">使用說明<i class="bi bi-question-circle" style="font-size: 50px;"></i></button>
+  <!--台灣全景按鈕-->
+  <button @click="backtotop" style="position: absolute; top: 15vw;left: 3vw;border-radius: 5px;width: 100px;background-color: rgb(255, 193, 7);">台灣全景<i class="bi bi-caret-up-square-fill" style="font-size: 50px;"></i></button>
 </template>
 <style>
     #map {

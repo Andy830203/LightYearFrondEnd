@@ -131,12 +131,12 @@ const cartUrl = computed(() => {
                             <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'eventStart' }">發起活動</RouterLink>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'eventSignUp' }">報名活動</RouterLink>
                             </li>
                             <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'eventTrack' }">追蹤活動</RouterLink>
-                            </li>
+                            </li> -->
                             <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'Eventlist' }">活動列表</RouterLink>
                             </li>
@@ -150,14 +150,14 @@ const cartUrl = computed(() => {
                         <i v-if="!isLoggedIn" class="bi bi-person-fill" data-bs-toggle="modal" data-bs-target="#exampleModal" title="登入"></i>
 
                 <!-- 已登入狀態顯示會員訊息與登出圖示 -->
-                        <div v-else class="user-info">
+                        <div v-else class="user-info" id="nav_m">
                             <span class="welcome-text">歡迎 <span class="username">{{ memberName }}</span>！</span>
                             <button @click="logout" class="logout-icon" title="登出">
                                 <i class="bi bi-box-arrow-right"></i>
                             </button>
                         </div>
                         <!-- 購物車圖示 -->
-                        <router-link :to="cartUrl" class="cart-icon" aria-controls="offcanvasExample">
+                        <router-link :to="cartUrl" class="cart-icon" aria-controls="offcanvasExample" id="nav_cart">
                             <i class="bi bi-cart-fill" title="購物車"></i>
                         </router-link>
                     </div>
@@ -201,6 +201,7 @@ span,
 
 /*放大i 標籤用*/
 .large-nav i {
+
     opacity: 1;
     transition: font-size ease-in-out .5s;
 }
@@ -224,12 +225,14 @@ span,
 /*放大end*/
 /*放大hover st*/
 .large-nav .nav-item:hover,
-.large-nav #map_nav i:hover {
-    /*放大nav-item 標籤用 */
+.large-nav #map_nav i:hover,
+.large-nav #nav_cart:hover {
+    color:#EA7500;
     transform: scale(1.5);
-    transition: transform .2s ease-in-out;
+    transition: transform .2s ease-in-out,color ease-in-out .2s;
 }
-.nav-link:hover i,.nav-link:hover span,#map_nav:hover i{
+
+.nav-link:hover i,.nav-link:hover span,.large-nav #nav_cart:hover{
     color:#EA7500;
     font-weight: bold;
     transform: scale(1.5);

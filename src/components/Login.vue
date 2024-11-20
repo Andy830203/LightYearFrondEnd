@@ -31,13 +31,13 @@
         <!-- 第三方登入按鈕 -->
         <div class="third-party-login">
           
-          <button @click="facebookLogin" class="auth-button">
+          <!-- <button @click="facebookLogin" class="auth-button">
             <i class="fab fa-facebook"></i>
-          </button>
+          </button> -->
           <!-- <GoogleLogin :callback="handleGoogleLogin" class="mt-1" /> -->
-          <button @click="googleLogin" class="auth-button">
+          <!-- <button @click="googleLogin" class="auth-button">
             <i class="fab fa-google"></i>
-          </button>
+          </button> -->
         </div>
         <!-- <label for="forgot-pwd" class="forgot-password">忘記密碼？</label> -->
       </div>
@@ -133,7 +133,7 @@ async function login() {
     });
 
     // 導向到 MemberInFo 頁面
-    // window.location.href = "/MemberInFo";
+    window.location.href = "/MemberInFo";
 
   } catch (error) {
     console.error("登入發生錯誤", error);

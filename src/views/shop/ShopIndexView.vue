@@ -57,6 +57,7 @@ const pagingHandler = (page) => {
 
 const searchHandler = (keyword) => {
   terms.value.keyword = keyword;
+  terms.value.page = 1;
 };
 
 const handleSortChange = (newSort) => {

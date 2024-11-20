@@ -2,16 +2,18 @@
   <div class="comment-box">
     <h2>提交評論</h2>
     <div class="rating-stars">
-      <span
-        v-for="index in 5"
-        :key="index"
-        class="star"
-        :class="{ active: index <= rating }"
-        @click="setRating(index)"
-      >
-        &#9733;
-      </span>
-    </div>
+  <span
+    v-for="index in 5"
+    :key="index"
+    class="star"
+    :class="{ active: index <= (hoverRating || rating) }"
+    @click="setRating(index)"
+    @mouseover="hoverRating = index"
+    @mouseleave="hoverRating = 0"
+  >
+    &#9733;
+  </span>
+</div>
 
     <textarea
       v-model="commentContent"
@@ -32,6 +34,7 @@ import { ref, defineProps, defineEmits } from 'vue';
 import Swal from 'sweetalert2';  // 引入 SweetAlert2
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
+const hoverRating = ref(0);
 
 const props = defineProps({
   activityId: {

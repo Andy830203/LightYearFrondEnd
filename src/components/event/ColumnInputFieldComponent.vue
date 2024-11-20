@@ -42,7 +42,8 @@ if (props.Indent === 'true') {
                 <label :for="Id" class="col-form-label">{{ Label }}</label>
             </div>
             <div :class="ICol">
-                <input :type="Type" class="form-control" :id="Id" v-model="model" :disabled="Disable">
+                <input :type="Type" class="form-control" :id="Id" v-model="model" :disabled="Disable"
+                    :min="Type === 'number' ? '0' : undefined">
             </div>
             <!-- <div :class="SCol"></div> -->
         </div>

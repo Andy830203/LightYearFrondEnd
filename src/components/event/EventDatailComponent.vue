@@ -1,14 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import CarouselComponent from './CarouselComponent.vue';
-
 //props
 const props = defineProps(['Id', 'API'])
-
 const BASE_URL = import.meta.env.VITE_API_BASEURL
-const SignUp_URL = BASE_URL + '/SignUps/event'
+const SignUp_URL = BASE_URL + '/SignUps'
 const eData = ref('')
-const signNumber = ref('')
+const signNumber = ref('0')
 
 const loadData = async () => {
     const response = await fetch(`${props.API}/${props.Id}`, {
@@ -20,12 +18,15 @@ const loadData = async () => {
 
 const loadSignedNumber = async () => {
     //get sign up
-    const response = await fetch(`${SignUp_URL}/${props.Id}`, {
+    const response = await fetch(`${SignUp_URL}/HowMany/${props.Id}`, {
         method: 'GET'
     })
 
-    const json = await response.json()
-    console.log(json)
+    const num = await response.text()
+
+    const signUpNum = parseInt(num, 10)
+
+    signNumber.value = signUpNum
 }
 
 loadData()
@@ -39,7 +40,7 @@ loadSignedNumber()
         <!-- <CarouselComponent /> -->
         <div>
             <label for="">報名費用</label> {{ eData.fee }}
-            <label for="">剩餘人數</label> {{ eData.capacity }}
+            <label for="">剩餘人數</label> {{ signNumber }} / {{ eData.capacity }}
             <label for="">地點</label>
         </div>
     </div>
