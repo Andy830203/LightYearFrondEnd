@@ -36,9 +36,11 @@ count_init();
       <!-- 使用書本樣式的卡片區域 -->
       <div class="row new-card-section">
         <div class="col-3 g-3">
+          <p style="margin-left: -30%;">我想要註冊</p>
           <div class="book">
             <div class="cover">
-              <p>我想要註冊</p>
+              <img src="/src/assets/images/members/登入.png" alt="">
+              <!-- <p>我想要註冊</p> -->
             </div>
             <div class="inner-content">
 
@@ -47,9 +49,10 @@ count_init();
           </div>
         </div>
         <div class="col-3 g-3">
+          <p style="margin-left: -30%;">我想參加活動</p>
           <div class="book">
             <div class="cover">
-              <p>我想參加活動</p>
+              <img src="/src/assets/images/members/活動.png" alt="">
             </div>
             <div class="inner-content">
               <router-link to="/Eventlist">
@@ -59,9 +62,10 @@ count_init();
           </div>
         </div>
         <div class="col-3 g-3">
+          <p style="margin-left: -30%;">我想買商品</p>
           <div class="book">
             <div class="cover">
-              <p>我想買商品</p>
+              <img src="/src/assets/images/members/商品.png" alt="">
             </div>
             <div class="inner-content">
               <router-link to="/shop">
@@ -71,10 +75,10 @@ count_init();
           </div>
         </div>
         <div class="col-3 g-3">
+          <p style="margin-left: -30%;">我想看地圖</p>
           <div class="book">
             <div class="cover">
-              <p>我想看地圖</p>
-            </div>
+              <img src="/src/assets/images/members/地圖.png" alt="">            </div>
             <div class="inner-content">
               <router-link to="/location">
           <button class="action-button">前往地圖</button>
@@ -275,5 +279,13 @@ p {
   background-color: #004494;
   box-shadow: 0 3px 5px rgba(0, 123, 255, 0.4);
   transform: translateY(1px); /* 向下微移 */
+}
+
+.cover img {
+  border-radius: 10px;
+  width: 100%; /* 圖片寬度匹配 div */
+  height: 100%; /* 圖片高度匹配 div */
+  object-fit: cover; /* 圖片填滿，可能會裁切 */
+  display: block; /* 避免圖片下方的空白間距 */
 }
 </style>
